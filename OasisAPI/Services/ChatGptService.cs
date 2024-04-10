@@ -22,41 +22,20 @@ public class ChatGptService : IChatGptService
         _chatGptConfig = chatGptConfig.CurrentValue;
         _api = new OpenAIClient(_chatGptConfig.ApiKey);
     }
-
-    public async Task<IActionResult> Test()
+    
+    public async Task<IActionResult> CreateThreadSendMessageAndRun(string userMessage)
     {
-        var assistantsList = await _api.AssistantsEndpoint.ListAssistantsAsync();
-        
-        return new JsonResult(assistantsList);
-    }
-
-    public async Task<IActionResult> CreateThread(string userMessage)
-    {
-        if(userMessage is "")
-            return new BadRequestObjectResult("User message cannot be empty.");
-        
-        var assistant = await _api.AssistantsEndpoint.RetrieveAssistantAsync(_chatGptConfig.AssistantId);
-
+        if (string.IsNullOrWhiteSpace(userMessage))
+            return new BadRequestObjectResult("A mensagem não pode ser vazia.");
         var threadRequest = new CreateThreadRequest(new List<Message>() { userMessage });
-
-        var run = await assistant.CreateThreadAndRunAsync(threadRequest);
-
-        while (true)
-        {
-            Console.WriteLine("Esperando resposta...");
-            await Task.Delay(1000);
-            ListResponse<MessageResponse> messages = await _api.ThreadsEndpoint.ListMessagesAsync(run.ThreadId);
-            
-            var lastMessage = await _api.ThreadsEndpoint.RetrieveMessageAsync(run.ThreadId, messages.FirstId);
-
-            Console.WriteLine("Chatgpt: " + lastMessage.Content[0].Text.Value);
-            
-            if (lastMessage.Role == Role.Assistant)
-                return new JsonResult(lastMessage);
-        }
+        var thread = await _api.ThreadsEndpoint.CreateThreadAsync(threadRequest);
+        var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
+        run = await run.WaitForStatusChangeAsync(); //Esperando a resposta do ChatGPT
+        var messageList = await run.ListMessagesAsync();
+        return new JsonResult(messageList);
     }
 
-    public async Task<IActionResult> SendMessageToThread(string threadId, string userMessage) 
+    public async Task<IActionResult> SendMessageToThread(string threadId, string userMessage)
     {
         CreateMessageRequest messageRequest = new(userMessage);
         var response = await _api.ThreadsEndpoint.CreateMessageAsync(threadId, messageRequest);
@@ -72,7 +51,7 @@ public class ChatGptService : IChatGptService
     public async Task<IActionResult> RetrieveMessage(string threadId, string messageId)
     {
         var message = await _api.ThreadsEndpoint.RetrieveMessageAsync(threadId, messageId);
-        
+
         return new JsonResult(message);
     }
 }
