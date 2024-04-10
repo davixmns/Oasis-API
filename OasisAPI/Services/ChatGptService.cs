@@ -32,6 +32,8 @@ public class ChatGptService : IChatGptService
 
     public async Task<IActionResult> CreateThread(string userMessage)
     {
+        if(userMessage is "")
+            return new BadRequestObjectResult("User message cannot be empty.");
         
         var assistant = await _api.AssistantsEndpoint.RetrieveAssistantAsync(_chatGptConfig.AssistantId);
 
@@ -41,17 +43,17 @@ public class ChatGptService : IChatGptService
 
         while (true)
         {
-            await Task.Delay(3000);
-            var messages = await _api.ThreadsEndpoint.ListMessagesAsync(run.ThreadId);
+            Console.WriteLine("Esperando resposta...");
+            await Task.Delay(1000);
+            ListResponse<MessageResponse> messages = await _api.ThreadsEndpoint.ListMessagesAsync(run.ThreadId);
             
             var lastMessage = await _api.ThreadsEndpoint.RetrieveMessageAsync(run.ThreadId, messages.FirstId);
+
+            Console.WriteLine("Chatgpt: " + lastMessage.Content[0].Text.Value);
             
-            if (lastMessage.AssistantId != null)
-            {
+            if (lastMessage.Role == Role.Assistant)
                 return new JsonResult(lastMessage);
-            }
         }
-        
     }
 
     public async Task<IActionResult> SendMessageToThread(string threadId, string userMessage) 

@@ -22,7 +22,7 @@ public class MessageController : ControllerBase
         if(userMessage == "")
             return BadRequest("User message cannot be empty.");
         
-        string formattedMessage = "<NOVA MENSAGEM DO USUÁRIO>" + '\n' + userMessage;
+        string formattedMessage = "<NOVA MENSAGEM DO USUÁRIO>" + '\n' + userMessage + '\n' + "</FIM>";
         var response = await _chatGptService.CreateThread(formattedMessage);
         return Created("", response);
     }
