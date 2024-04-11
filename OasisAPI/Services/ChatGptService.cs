@@ -1,12 +1,8 @@
-using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OasisAPI.Configurations;
-using OasisAPI.Models;
+using OasisAPI.Interfaces;
 using OpenAI;
-using OpenAI.Assistants;
-using OpenAI.Chat;
 using OpenAI.Threads;
 using Message = OpenAI.Threads.Message;
 

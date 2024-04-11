@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace OasisAPI.Services;
+namespace OasisAPI.Interfaces;
 
 public interface IChatGptService
 {

@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Google_GenerativeAI" Version="0.1.19" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
         <PackageReference Include="OpenAI-DotNet" Version="7.7.6" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
@@ -16,6 +17,10 @@
       <Content Update="appsettings.Development.json">
         <DependentUpon>appsettings.json</DependentUpon>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Models\ConversationRequest.cs" />
     </ItemGroup>
 
 </Project>

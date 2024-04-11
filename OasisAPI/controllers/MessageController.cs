@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OasisAPI.Interfaces;
 using OasisAPI.Services;
 
 namespace OasisAPI.controllers;
@@ -7,13 +8,13 @@ namespace OasisAPI.controllers;
 [Route("[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly ILogger<MessageController> _logger;
     private readonly IChatGptService _chatGptService;
+    private readonly IGeminiService _geminiService;
     
-    public MessageController(ILogger<MessageController> logger, IChatGptService chatGptService)
+    public MessageController(IChatGptService chatGptService, IGeminiService geminiService)
     {
-        _logger = logger;
         _chatGptService = chatGptService;
+        _geminiService = geminiService;
     }
     
     [HttpPost("Thread")]
@@ -22,9 +23,11 @@ public class MessageController : ControllerBase
         if(userMessage == "")
             return BadRequest("User message cannot be empty.");
         
-        var response = await _chatGptService.CreateThreadSendMessageAndRun(userMessage);
+        // var chatGptResponse = await _chatGptService.CreateThreadSendMessageAndRun(userMessage);
+
+        var geminiResponse = await _geminiService.StartChat(userMessage);
         
-        return Created("", response);
+        return Created("", geminiResponse);
     }
     
     [HttpPost("Thread/{threadId}")]

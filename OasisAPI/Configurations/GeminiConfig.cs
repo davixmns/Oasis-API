@@ -1,7 +1,6 @@
 namespace OasisAPI.Configurations;
 
-public class ChatGptConfig
+public class GeminiConfig
 {
     public string ApiKey { get; set; } = "";
-    public string AssistantId { get; set; } = "";
 }
