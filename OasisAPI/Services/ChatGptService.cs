@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OasisAPI.Configurations;
 using OasisAPI.Interfaces;
+using OasisAPI.Models;
 using OpenAI;
 using OpenAI.Threads;
 using Message = OpenAI.Threads.Message;
@@ -19,16 +20,17 @@ public class ChatGptService : IChatGptService
         _api = new OpenAIClient(_chatGptConfig.ApiKey);
     }
     
-    public async Task<IActionResult> CreateThreadSendMessageAndRun(string userMessage)
+    public async Task<OasisMessage> CreateThreadSendMessageAndRun(string userMessage)
     {
         if (string.IsNullOrWhiteSpace(userMessage))
-            return new BadRequestObjectResult("A mensagem não pode ser vazia.");
+            throw new NullReferenceException();
         var threadRequest = new CreateThreadRequest(new List<Message>() { userMessage });
         var thread = await _api.ThreadsEndpoint.CreateThreadAsync(threadRequest);
         var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
         run = await run.WaitForStatusChangeAsync(); //Esperando a resposta do ChatGPT
         var messageList = await run.ListMessagesAsync();
-        return new JsonResult(messageList);
+        string gptMessage = messageList.Items[0].Content[0].Text.Value;
+        return new OasisMessage("ChatGPT", gptMessage);
     }
 
     public async Task<IActionResult> SendMessageToThread(string threadId, string userMessage)

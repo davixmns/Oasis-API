@@ -1,5 +1,7 @@
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Mvc;
 using OasisAPI.Interfaces;
+using OasisAPI.Models;
 using OasisAPI.Services;
 
 namespace OasisAPI.controllers;
@@ -20,15 +22,23 @@ public class MessageController : ControllerBase
     [HttpPost("Thread")]
     public async Task<IActionResult> CreateThread([FromBody] string userMessage)
     {
-        if(userMessage == "")
+        if (string.IsNullOrEmpty(userMessage))
             return BadRequest("User message cannot be empty.");
-        
-        // var chatGptResponse = await _chatGptService.CreateThreadSendMessageAndRun(userMessage);
 
-        var geminiResponse = await _geminiService.StartChat(userMessage);
+        // Inicia ambas as tarefas ao mesmo tempo
+        var chatGptTask = _chatGptService.CreateThreadSendMessageAndRun(userMessage);
+        var geminiTask = _geminiService.StartChat(userMessage);
+
+        // Espera ambas as tarefas completarem
+        await Task.WhenAll(chatGptTask, geminiTask);
+
+        // Recupera os resultados das tarefas
+        var chatGptResponse = await chatGptTask;
+        var geminiResponse = await geminiTask;
         
-        return Created("", geminiResponse);
+        return Ok(new {chatGptResponse, geminiResponse});
     }
+
     
     [HttpPost("Thread/{threadId}")]
     public async Task<IActionResult> SendMessageToThread(string threadId, [FromBody] string userMessage)

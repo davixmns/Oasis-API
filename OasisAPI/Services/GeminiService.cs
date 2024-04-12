@@ -1,3 +1,4 @@
+using GenerativeAI.Methods;
 using GenerativeAI.Models;
 using GenerativeAI.Services;
 using GenerativeAI.Types;
@@ -17,18 +18,15 @@ public class GeminiService : IGeminiService
     public GeminiService(IOptions<GeminiConfig> geminiConfig)
     {
         _geminiConfig = geminiConfig.Value;
-        _api = new GenerativeModel(
-            apiKey: _geminiConfig.ApiKey
-            
-        );
+        _api = new GenerativeModel(apiKey: _geminiConfig.ApiKey);
     }
 
-    public async Task<IActionResult> StartChat(string userMessage)
+    public async Task<OasisMessage> StartChat(string userMessage)
     {
+        if (string.IsNullOrWhiteSpace(userMessage))
+            throw new NullReferenceException();
         var chat = _api.StartChat(new StartChatParams());
-
-        var result = await chat.SendMessageAsync(message: userMessage);
-        
-        return new JsonResult(new GeminiResponse(chat, result));
+        var geminiResponse = await chat.SendMessageAsync(userMessage);
+        return new OasisMessage("Gemini", geminiResponse);
     }
 }
