@@ -1,10 +1,19 @@
 namespace OasisAPI.Models;
 
-public class OasisMessage(string name, string message)
+public class OasisMessage
 {
-    public string? Name { get; set; } = name;
-    public string Message { get; set; } = message;
+    public string Name { get; set; }
+    public string Message { get; set; }
     public string? ThreadId { get; set; }
     public string? MessageId { get; set; }
-    public DateTime DateTime { get; set; } = DateTime.UtcNow;
+    public DateTime DateTime { get; set; }
+
+    public OasisMessage(string name, string message, string? threadId = null, string? messageId = null)
+    {
+        Name = name;
+        Message = message;
+        ThreadId = threadId;
+        MessageId = messageId;
+        DateTime = DateTime.UtcNow;
+    }
 }

@@ -4,13 +4,14 @@ using GenerativeAI.Services;
 using GenerativeAI.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OasisAPI.Builders;
 using OasisAPI.Configurations;
 using OasisAPI.Interfaces;
 using OasisAPI.Models;
 
 namespace OasisAPI.Services;
 
-public class GeminiService : IGeminiService
+public class GeminiService : IChatbotService
 {
     private readonly GeminiConfig _geminiConfig;
     private readonly GenerativeModel _api;
@@ -24,9 +25,30 @@ public class GeminiService : IGeminiService
     public async Task<OasisMessage> StartChat(string userMessage)
     {
         if (string.IsNullOrWhiteSpace(userMessage))
-            throw new NullReferenceException();
+            throw new NullReferenceException("Mensagem do usuário vazia!");
+        
         var chat = _api.StartChat(new StartChatParams());
         var geminiResponse = await chat.SendMessageAsync(userMessage);
-        return new OasisMessage("Gemini", geminiResponse);
+
+        var builder = new OasisMessageBuilder()
+            .SetName("Gemini")
+            .SetMessage(geminiResponse);
+        
+        return builder.Build();
+    }
+
+    public Task<OasisMessage> SendMessage(string userMessage, string threadId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IQueryable<OasisMessage>> RetrieveMessageList(string threadId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<OasisMessage> RetrieveMessage(string messageId, string threadId)
+    {
+        throw new NotImplementedException();
     }
 }

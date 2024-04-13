@@ -1,3 +1,4 @@
+using GenerativeAI.Models;
 using OasisAPI.Configurations;
 using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
@@ -5,15 +6,15 @@ using OasisAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var chatGptConfigurations = builder.Configuration.GetSection("ChatGPT");
-var geminiConfigurations = builder.Configuration.GetSection("Gemini");
+//Configuradores de Serviços
+builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));
+builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemini"));
 
-builder.Services.Configure<ChatGptConfig>(chatGptConfigurations);
-builder.Services.Configure<GeminiConfig>(geminiConfigurations);
+//Serviços dos Chatbots
+builder.Services.AddScoped<IChatbotService, ChatGptService>();
+builder.Services.AddScoped<IChatbotService, GeminiService>();
 
-builder.Services.AddScoped<IChatGptService, ChatGptService>();
-builder.Services.AddScoped<IGeminiService, GeminiService>();
-
+//Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

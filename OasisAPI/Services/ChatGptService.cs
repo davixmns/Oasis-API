@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OasisAPI.Builders;
 using OasisAPI.Configurations;
 using OasisAPI.Interfaces;
 using OasisAPI.Models;
@@ -9,7 +10,7 @@ using Message = OpenAI.Threads.Message;
 
 namespace OasisAPI.Services;
 
-public class ChatGptService : IChatGptService
+public class ChatGptService : IChatbotService
 {
     private readonly ChatGptConfig _chatGptConfig;
     private readonly OpenAIClient _api;
@@ -20,36 +21,37 @@ public class ChatGptService : IChatGptService
         _api = new OpenAIClient(_chatGptConfig.ApiKey);
     }
     
-    public async Task<OasisMessage> CreateThreadSendMessageAndRun(string userMessage)
+    public async Task<OasisMessage> StartChat(string userMessage)
     {
         if (string.IsNullOrWhiteSpace(userMessage))
-            throw new NullReferenceException();
-        var threadRequest = new CreateThreadRequest(new List<Message>() { userMessage });
-        var thread = await _api.ThreadsEndpoint.CreateThreadAsync(threadRequest);
+            throw new NullReferenceException("Mensagem do usuário vazia!");
+        
+        var thread = await _api.ThreadsEndpoint.CreateThreadAsync(userMessage);
         var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
         run = await run.WaitForStatusChangeAsync(); //Esperando a resposta do ChatGPT
         var messageList = await run.ListMessagesAsync();
-        string gptMessage = messageList.Items[0].Content[0].Text.Value;
-        return new OasisMessage("ChatGPT", gptMessage);
+
+        var builder = new OasisMessageBuilder()
+            .SetName("ChatGPT")
+            .SetMessage(messageList.Items[0].Content[0].Text.Value)
+            .SetMessageId(messageList.Items[0].Id)
+            .SetThreadId(thread.Id);
+        
+        return builder.Build();
     }
 
-    public async Task<IActionResult> SendMessageToThread(string threadId, string userMessage)
+    public Task<OasisMessage> SendMessage(string userMessage, string threadId)
     {
-        CreateMessageRequest messageRequest = new(userMessage);
-        var response = await _api.ThreadsEndpoint.CreateMessageAsync(threadId, messageRequest);
-        return new JsonResult(response);
+        throw new NotImplementedException();
     }
 
-    public async Task<IActionResult> RetrieveMessageList(string threadId)
+    public Task<IQueryable<OasisMessage>> RetrieveMessageList(string threadId)
     {
-        var messages = await _api.ThreadsEndpoint.ListMessagesAsync(threadId);
-        return new JsonResult(messages);
+        throw new NotImplementedException();
     }
 
-    public async Task<IActionResult> RetrieveMessage(string threadId, string messageId)
+    public Task<OasisMessage> RetrieveMessage(string messageId, string threadId)
     {
-        var message = await _api.ThreadsEndpoint.RetrieveMessageAsync(threadId, messageId);
-
-        return new JsonResult(message);
+        throw new NotImplementedException();
     }
 }
