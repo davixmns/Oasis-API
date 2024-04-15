@@ -6,7 +6,6 @@ using OasisAPI.Interfaces;
 using OasisAPI.Models;
 using OpenAI;
 using OpenAI.Threads;
-using Message = OpenAI.Threads.Message;
 
 namespace OasisAPI.Services;
 
@@ -34,8 +33,7 @@ public class ChatGptService : IChatbotService
         var builder = new OasisMessageBuilder()
             .SetName("ChatGPT")
             .SetMessage(messageList.Items[0].Content[0].Text.Value)
-            .SetMessageId(messageList.Items[0].Id)
-            .SetThreadId(thread.Id);
+            .SetMessageId(messageList.Items[0].Id);
         
         return builder.Build();
     }

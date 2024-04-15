@@ -4,14 +4,13 @@ namespace OasisAPI.Builders;
 
 public class OasisMessageBuilder : IMyBuilder<OasisMessage>
 {
-    private string Name;
+    private string From;
     private string Message;
-    private string? ThreadId;
-    private string? MessageId;
+    private string? FromMessageId;
 
     public OasisMessageBuilder SetName(string name)
     {
-        Name = name;
+        From = name;
         return this;
     }
 
@@ -21,20 +20,14 @@ public class OasisMessageBuilder : IMyBuilder<OasisMessage>
         return this;
     }
 
-    public OasisMessageBuilder SetThreadId(string? threadId)
-    {
-        this.ThreadId = threadId;
-        return this;
-    }
-
     public OasisMessageBuilder SetMessageId(string? messageId)
     {
-        this.MessageId = messageId;
+        this.FromMessageId = messageId;
         return this;
     }
 
     public OasisMessage Build()
     {
-        return new OasisMessage(Name, Message, ThreadId, MessageId);
+        return new OasisMessage(From, Message, FromMessageId);
     }
 }

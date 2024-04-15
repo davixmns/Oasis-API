@@ -1,19 +1,34 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 namespace OasisAPI.Models;
 
 public class OasisMessage
 {
-    public string Name { get; set; }
+    [Key]
+    public int MessageId { get; set; }
+    
+    [Required]
+    [StringLength(50)]
+    public string From { get; set; }
+    
+    [Required]
     public string Message { get; set; }
-    public string? ThreadId { get; set; }
-    public string? MessageId { get; set; }
-    public DateTime DateTime { get; set; }
+    
+    public string? FromMessageId { get; set; }
+    
+    public int ChatId { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+    
+    [JsonIgnore]
+    public OasisChat? Chat { get; set; }
 
-    public OasisMessage(string name, string message, string? threadId = null, string? messageId = null)
+    public OasisMessage(string from, string message, string? fromMessageId = null)
     {
-        Name = name;
+        From = from;
         Message = message;
-        ThreadId = threadId;
-        MessageId = messageId;
-        DateTime = DateTime.UtcNow;
+        FromMessageId = fromMessageId;
+        CreatedAt = DateTime.Now;
     }
 }
