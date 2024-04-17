@@ -11,7 +11,7 @@ using OasisAPI.Models;
 
 namespace OasisAPI.Services;
 
-public class GeminiService : IChatbotService
+public class GeminiService : IGeminiService
 {
     private readonly GeminiConfig _geminiConfig;
     private readonly GenerativeModel _api;
@@ -31,7 +31,7 @@ public class GeminiService : IChatbotService
         var geminiResponse = await chat.SendMessageAsync(userMessage);
 
         var builder = new OasisMessageBuilder()
-            .SetName("Gemini")
+            .SetFrom("Gemini")
             .SetMessage(geminiResponse);
         
         return builder.Build();

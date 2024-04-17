@@ -24,11 +24,11 @@ namespace OasisAPI.Migrations
 
             modelBuilder.Entity("OasisAPI.Models.OasisChat", b =>
                 {
-                    b.Property<int>("ChatId")
+                    b.Property<int>("OasisChatId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ChatId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OasisChatId"));
 
                     b.Property<string>("ChatGptThreadId")
                         .HasMaxLength(100)
@@ -44,7 +44,7 @@ namespace OasisAPI.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ChatId");
+                    b.HasKey("OasisChatId");
 
                     b.HasIndex("UserId");
 
@@ -53,11 +53,11 @@ namespace OasisAPI.Migrations
 
             modelBuilder.Entity("OasisAPI.Models.OasisMessage", b =>
                 {
-                    b.Property<int>("MessageId")
+                    b.Property<int>("OasisMessageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("MessageId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OasisMessageId"));
 
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
@@ -73,11 +73,14 @@ namespace OasisAPI.Migrations
                     b.Property<string>("FromMessageId")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("FromThreadId")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("MessageId");
+                    b.HasKey("OasisMessageId");
 
                     b.HasIndex("ChatId");
 
@@ -86,11 +89,11 @@ namespace OasisAPI.Migrations
 
             modelBuilder.Entity("OasisAPI.Models.OasisUser", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("OasisUserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OasisUserId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -107,7 +110,7 @@ namespace OasisAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("OasisUserId");
 
                     b.ToTable("OasisUsers");
                 });

@@ -9,7 +9,7 @@ using OpenAI.Threads;
 
 namespace OasisAPI.Services;
 
-public class ChatGptService : IChatbotService
+public class ChatGptService : IChatGptService
 {
     private readonly ChatGptConfig _chatGptConfig;
     private readonly OpenAIClient _api;
@@ -31,10 +31,11 @@ public class ChatGptService : IChatbotService
         var messageList = await run.ListMessagesAsync();
 
         var builder = new OasisMessageBuilder()
-            .SetName("ChatGPT")
+            .SetFrom("ChatGPT")
             .SetMessage(messageList.Items[0].Content[0].Text.Value)
-            .SetMessageId(messageList.Items[0].Id);
-        
+            .SetFromMessageId(messageList.Items[0].Id)
+            .SetFromThreadId(run.ThreadId);
+
         return builder.Build();
     }
 

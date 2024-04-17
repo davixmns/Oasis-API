@@ -21,8 +21,8 @@ builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("Chat
 builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemini"));
 
 //Serviços dos Chatbots
-builder.Services.AddScoped<IChatbotService, ChatGptService>();
-builder.Services.AddScoped<IChatbotService, GeminiService>();
+builder.Services.AddScoped<IChatGptService, ChatGptService>();
+builder.Services.AddScoped<IGeminiService, GeminiService>();
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();

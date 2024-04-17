@@ -7,7 +7,7 @@ namespace OasisAPI.Models;
 public class OasisChat
 {
     [Key]
-    public int ChatId { get; set; }
+    public int OasisChatId { get; set; }
     
     public int UserId { get; set; }
     

@@ -6,7 +6,9 @@ namespace OasisAPI.Models;
 public class OasisMessage
 {
     [Key]
-    public int MessageId { get; set; }
+    public int OasisMessageId { get; set; }
+    
+    public int OasisChatId { get; set; }
     
     [Required]
     [StringLength(50)]
@@ -15,19 +17,20 @@ public class OasisMessage
     [Required]
     public string Message { get; set; }
     
-    public string? FromMessageId { get; set; }
+    public string? FromThreadId { get; set; }
     
-    public int ChatId { get; set; }
+    public string? FromMessageId { get; set; }
     
     public DateTime CreatedAt { get; set; }
     
     [JsonIgnore]
     public OasisChat? Chat { get; set; }
 
-    public OasisMessage(string from, string message, string? fromMessageId = null)
+    public OasisMessage(string from, string message, string? fromMessageId = null, string? fromThreadId = null)
     {
         From = from;
         Message = message;
+        FromThreadId = fromThreadId;
         FromMessageId = fromMessageId;
         CreatedAt = DateTime.Now;
     }

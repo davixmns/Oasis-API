@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <Compile Remove="Models\ConversationRequest.cs" />
+      <Compile Remove="Interfaces\IChatbotService.cs" />
     </ItemGroup>
 
 </Project>

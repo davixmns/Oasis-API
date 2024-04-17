@@ -7,7 +7,7 @@ namespace OasisAPI.Models;
 public class OasisUser
 {
     [Key]
-    public int UserId { get; set; }
+    public int OasisUserId { get; set; }
     
     [Required]
     [StringLength(50)]
