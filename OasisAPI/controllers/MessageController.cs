@@ -1,8 +1,5 @@
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Mvc;
 using OasisAPI.Interfaces;
-using OasisAPI.Models;
-using OasisAPI.Services;
 
 namespace OasisAPI.controllers;
 
@@ -10,13 +7,11 @@ namespace OasisAPI.controllers;
 [Route("[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly IChatGptService _chatGptService;
-    private readonly IGeminiService _geminiService;
+    private readonly IChatbotsService _chatbotsService;
     
-    public MessageController(IChatGptService chatGptService, IGeminiService geminiService)
+    public MessageController(IChatbotsService chatbotsService)
     {
-        _chatGptService = chatGptService;
-        _geminiService = geminiService;
+        _chatbotsService = chatbotsService;
     }
     
     [HttpPost("SendFirstMessage")]
@@ -26,8 +21,8 @@ public class MessageController : ControllerBase
             return BadRequest("User message cannot be empty.");
 
         // Inicia ambas as tarefas ao mesmo tempo
-        var chatGptTask = _chatGptService.StartChat(userMessage);
-        var geminiTask = _geminiService.StartChat(userMessage);
+        var chatGptTask = _chatbotsService.StartGptChat(userMessage);
+        var geminiTask = _chatbotsService.StartGeminiChat(userMessage);
         
         // Espera ambas as tarefas completarem
         await Task.WhenAll(chatGptTask, geminiTask);

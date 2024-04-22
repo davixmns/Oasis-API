@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace OasisAPI.Models;
 
+[Table("oasis_messages")]
 public class OasisMessage
 {
     [Key]
@@ -32,6 +34,11 @@ public class OasisMessage
         Message = message;
         FromThreadId = fromThreadId;
         FromMessageId = fromMessageId;
+        CreatedAt = DateTime.Now;
+    }
+    
+    public OasisMessage()
+    {
         CreatedAt = DateTime.Now;
     }
 }

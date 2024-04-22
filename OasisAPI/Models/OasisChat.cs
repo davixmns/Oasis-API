@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace OasisAPI.Models;
 
+[Table("oasis_chats")]
 public class OasisChat
 {
     [Key]
