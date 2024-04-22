@@ -1,10 +1,12 @@
-using GenerativeAI.Models;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.Configurations;
 using OasisAPI.Context;
+using OasisAPI.Dto;
 using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
+using OasisAPI.Repositories;
 using OasisAPI.Services;
+using OasisAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +18,19 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection))
 );
 
+//Repositórios
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 //Configuradores de Serviços
 builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));
 builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemini"));
 
-//Serviços dos Chatbots
-builder.Services.AddScoped<IChatGptService, ChatGptService>();
-builder.Services.AddScoped<IGeminiService, GeminiService>();
+//Serviços
+builder.Services.AddScoped<IChatbotsService, ChatbotsService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -31,19 +39,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<OasisDbContext>();
-    try
-    {
-        dbContext.Database.OpenConnection();
-        dbContext.Database.CloseConnection();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Erro ao conectar com o banco de dados: " + ex.Message);
-    }
-}
+DatabaseConnectionTester.TestConnection(app.Services);
 
 if (app.Environment.IsDevelopment())
 {

@@ -48,7 +48,7 @@ namespace OasisAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OasisChats");
+                    b.ToTable("oasis_chats");
                 });
 
             modelBuilder.Entity("OasisAPI.Models.OasisMessage", b =>
@@ -58,9 +58,6 @@ namespace OasisAPI.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OasisMessageId"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -80,11 +77,14 @@ namespace OasisAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("OasisChatId")
+                        .HasColumnType("int");
+
                     b.HasKey("OasisMessageId");
 
-                    b.HasIndex("ChatId");
+                    b.HasIndex("OasisChatId");
 
-                    b.ToTable("OasisMessages");
+                    b.ToTable("oasis_messages");
                 });
 
             modelBuilder.Entity("OasisAPI.Models.OasisUser", b =>
@@ -97,8 +97,8 @@ namespace OasisAPI.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -107,12 +107,12 @@ namespace OasisAPI.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("OasisUserId");
 
-                    b.ToTable("OasisUsers");
+                    b.ToTable("oasis_users");
                 });
 
             modelBuilder.Entity("OasisAPI.Models.OasisChat", b =>
@@ -130,7 +130,7 @@ namespace OasisAPI.Migrations
                 {
                     b.HasOne("OasisAPI.Models.OasisChat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId")
+                        .HasForeignKey("OasisChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
