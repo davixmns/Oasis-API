@@ -18,12 +18,12 @@ public class OasisUser
     [Required]
     [StringLength(50, ErrorMessage = "This email is too long")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
-    public string? Email { get; set; }
+    public string Email { get; set; }
     
     [Required]
     [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
-    [StringLength(50)]
-    public string? Password { get; set; }
+    [MaxLength(200, ErrorMessage = "Password is too long")]
+    public string Password { get; set; }
     
     [JsonIgnore]
     public ICollection<OasisChat>? Chats { get; set; }

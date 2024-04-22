@@ -16,6 +16,7 @@ public class UserRepository : IUserRepository
     
     public async Task<OasisUser> CreateUserAsync(OasisUser userData)
     {
+        userData.Password = BCrypt.Net.BCrypt.HashPassword(userData.Password);
         _context.OasisUsers.Add(userData);
         await _context.SaveChangesAsync();
         return userData;

@@ -16,10 +16,21 @@ public class UserService : IUserService
         _mapper = mapper;
     }
     
-    public async Task<OasisUserDto> CreateUser(OasisUser userData)
+    public async Task<OasisApiResponse<OasisUserDto>> CreateUserAsync(OasisUser userData)
     {
+        if (userData.Password.Length > 40)
+            return OasisApiResponse<OasisUserDto>.ErrorResponse("Password is too long");
+        
+        var userExists = await _userRepository.GetUserByEmail(userData.Email);
+        
+        if (userExists is not null)
+            return OasisApiResponse<OasisUserDto>.ErrorResponse("User already exists with this email");
+        
         var userCreated = await _userRepository.CreateUserAsync(userData);
+        
         var userDto = _mapper.Map<OasisUserDto>(userCreated);
-        return userDto;
+        
+        return OasisApiResponse<OasisUserDto>.SuccessResponse(userDto);
     }
+    
 }

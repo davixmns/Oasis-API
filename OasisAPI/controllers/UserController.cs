@@ -17,15 +17,14 @@ public class UserController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<OasisUserDto> CreateUser([FromBody] OasisUser userData)
+    public async Task<IActionResult> CreateUser([FromBody] OasisUser userData)
     {
-        var userCreated = await _userService.CreateUser(userData);
+        var createUserResult = await _userService.CreateUserAsync(userData);
         
-        return userCreated;
+        if (!createUserResult.Success)
+            return BadRequest(createUserResult);
+        
+        return Ok(createUserResult.Data);
     }
 }
 
-//wrapper, success, failed, error
-//oneof
-//automapper
-//https://medium.com/@Bigscal-Technologies/oneof-in-c-6a0900cf274e

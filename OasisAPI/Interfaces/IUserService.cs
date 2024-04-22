@@ -5,5 +5,5 @@ namespace OasisAPI.Interfaces;
 
 public interface IUserService
 {
-    Task<OasisUserDto> CreateUser(OasisUser userData);
+    Task<OasisApiResponse<OasisUserDto>> CreateUserAsync(OasisUser userData);
 }
