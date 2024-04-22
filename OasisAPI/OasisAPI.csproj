@@ -32,8 +32,4 @@
       <Compile Remove="Interfaces\IChatbotService.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="AutoMapper\" />
-    </ItemGroup>
-
 </Project>

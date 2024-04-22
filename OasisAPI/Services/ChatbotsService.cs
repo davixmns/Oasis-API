@@ -3,7 +3,7 @@ using GenerativeAI.Models;
 using GenerativeAI.Types;
 using Microsoft.Extensions.Options;
 using OasisAPI.Builders;
-using OasisAPI.Configurations;
+using OasisAPI.Config;
 using OasisAPI.Interfaces;
 using OasisAPI.Models;
 using OpenAI;

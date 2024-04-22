@@ -1,4 +1,4 @@
-namespace OasisAPI.Configurations;
+namespace OasisAPI.Config;
 
 public class ChatGptConfig
 {

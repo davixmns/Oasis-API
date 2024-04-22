@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OasisAPI.Configurations;
+using OasisAPI.Config;
 using OasisAPI.Context;
 using OasisAPI.Dto;
 using OasisAPI.Extensions;
