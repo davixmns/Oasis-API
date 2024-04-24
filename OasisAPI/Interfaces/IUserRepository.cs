@@ -3,9 +3,7 @@ using OasisAPI.Models;
 
 namespace OasisAPI.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<OasisUser>
 {
-    Task<OasisUser> CreateUserAsync(OasisUser userData);
-    Task<OasisUser?> GetUserByEmail(string email);
-    Task<OasisUser?> GetUserById(int id);
+    Task<OasisUser?> GetUserByEmailAsync(string email);
 }

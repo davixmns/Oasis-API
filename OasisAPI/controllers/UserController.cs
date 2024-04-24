@@ -24,7 +24,7 @@ public class UserController : ControllerBase
         if (!createUserResult.Success)
             return BadRequest(createUserResult);
         
-        return Ok(createUserResult.Data);
+        return Ok(createUserResult);
     }
 }
 

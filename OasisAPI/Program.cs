@@ -18,7 +18,11 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection))
 );
 
+//UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 //Repositórios
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Configuradores de Serviços
