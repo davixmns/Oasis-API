@@ -28,10 +28,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 //Configuradores de Serviços
 builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));
 builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemini"));
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
 
 //Serviços
 builder.Services.AddScoped<IChatbotsService, ChatbotsService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

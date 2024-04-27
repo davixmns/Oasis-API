@@ -107,8 +107,15 @@ namespace OasisAPI.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryDateTime")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("OasisUserId");
 

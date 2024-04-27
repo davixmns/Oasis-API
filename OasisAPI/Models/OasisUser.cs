@@ -22,8 +22,13 @@ public class OasisUser
     
     [Required]
     [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
-    [MaxLength(200, ErrorMessage = "Password is too long")]
+    [MaxLength(300, ErrorMessage = "Password is too long")]
     public string Password { get; set; }
+    
+    [StringLength(300)]
+    public string? RefreshToken { get; set; }
+    
+    public DateTime RefreshTokenExpiryDateTime { get; set; }
     
     [JsonIgnore]
     public ICollection<OasisChat>? Chats { get; set; }
