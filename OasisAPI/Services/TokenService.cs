@@ -49,8 +49,26 @@ public class TokenService : ITokenService
         return refreshToken;
     }
 
-    public ClaimsPrincipal GetClaimsPrincipalFromExpiredToken(string token)
+    public ClaimsPrincipal ExtractClaimsFromAccessToken(string expiredAccessToken)
     {
-        throw new NotImplementedException();
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey)),
+            ValidateLifetime = false
+        };
+        var principal = new JwtSecurityTokenHandler().ValidateToken(
+            expiredAccessToken,
+            tokenValidationParameters,
+            out var validatedToken
+        );
+        if (validatedToken is not JwtSecurityToken securityToken ||
+            !securityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                StringComparison.InvariantCultureIgnoreCase))
+            throw new SecurityTokenException("Invalid token");
+
+        return principal;
     }
 }

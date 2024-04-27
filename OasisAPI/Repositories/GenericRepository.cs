@@ -5,11 +5,11 @@ using OasisAPI.Interfaces;
 
 namespace OasisAPI.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class
+public class GenericRepository<T> : IRepository<T> where T : class
 {
     protected readonly OasisDbContext _context;
     
-    public Repository(OasisDbContext context)
+    public GenericRepository(OasisDbContext context)
     {
         _context = context;
     }

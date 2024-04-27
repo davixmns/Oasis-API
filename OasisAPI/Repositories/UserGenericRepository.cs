@@ -6,9 +6,9 @@ using OasisAPI.Models;
 
 namespace OasisAPI.Repositories;
 
-public class UserRepository : Repository<OasisUser>, IUserRepository
+public class UserGenericRepository : GenericRepository<OasisUser>, IUserRepository
 {
-    public UserRepository(OasisDbContext context) : base(context)
+    public UserGenericRepository(OasisDbContext context) : base(context)
     {
     }
 

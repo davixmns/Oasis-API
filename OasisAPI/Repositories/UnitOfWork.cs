@@ -14,7 +14,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context);
+    public IUserRepository UserRepository => _userRepository ?? new UserGenericRepository(_context);
 
     public async Task CommitAsync()
     {

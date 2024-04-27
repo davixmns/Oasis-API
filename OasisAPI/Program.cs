@@ -22,8 +22,8 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Repositórios
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserGenericRepository>();
 
 //Configuradores de Serviços
 builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));
