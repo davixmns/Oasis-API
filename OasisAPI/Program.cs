@@ -45,6 +45,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.Urls.Add("http://0.0.0.0:5013");
+
 DatabaseConnectionTester.TestConnection(app.Services);
 
 if (app.Environment.IsDevelopment())

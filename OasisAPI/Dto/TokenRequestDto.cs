@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OasisAPI.Dto;
 
-public class TokenModelDto
+public class TokenRequestDto
 {
     [Required]
     public string? AccessToken { get; set; }

@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginModelDto loginData)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginData)
     {
         var userExists = await _unitOfWork.UserRepository.GetUserByEmailAsync(loginData.Email!);
 
@@ -61,9 +61,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenModelDto tokenModelDto)
+    public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenRequestDto tokenRequestDto)
     {
-        var principal = _tokenService.ExtractClaimsFromAccessToken(tokenModelDto.AccessToken!);
+        var principal = _tokenService.ExtractClaimsFromAccessToken(tokenRequestDto.AccessToken!);
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
         if (userId is null) 
@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
         
         var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == int.Parse(userId));
         
-        if (userExists is null || userExists.RefreshToken != tokenModelDto.RefreshToken ||
+        if (userExists is null || userExists.RefreshToken != tokenRequestDto.RefreshToken ||
             DateTime.UtcNow < userExists.RefreshTokenExpiryDateTime || userExists.OasisUserId.ToString() != userId)
             return BadRequest("Invalid token");
         

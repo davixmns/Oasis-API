@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OasisAPI.Dto;
 
-public class LoginModelDto
+public class LoginRequestDto
 {
     [Required]
     [EmailAddress]

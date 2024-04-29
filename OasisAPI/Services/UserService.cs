@@ -5,33 +5,46 @@ using OasisAPI.Models;
 
 namespace OasisAPI.Services;
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IMapper mapper;
     
     public UserService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        this.unitOfWork = unitOfWork;
+        this.mapper = mapper;
     }
     
     public async Task<OasisApiResponse<OasisUserDto>> CreateUserAsync(OasisUser userData)
     {
+        //estudar fluent validation
         if (userData.Password.Length > 40)
-            return OasisApiResponse<OasisUserDto>.ErrorResponse("Password is too long");
+        {
+            return OasisApiResponse<OasisUserDto>
+                .ErrorResponse("Password is too long");
+        }
         
-        var userExists = await _unitOfWork.UserRepository.GetUserByEmailAsync(userData.Email);
-        
+        var userExists = await unitOfWork
+            .UserRepository
+            .GetUserByEmailAsync(userData.Email)
+            .ConfigureAwait(false);
+
         if (userExists is not null)
-            return OasisApiResponse<OasisUserDto>.ErrorResponse("User already exists with this email");
+        {
+            return OasisApiResponse<OasisUserDto>
+                .ErrorResponse("User already exists with this email");
+        }
         
         userData.Password = BCrypt.Net.BCrypt.HashPassword(userData.Password);
-        var userCreated = _unitOfWork.UserRepository.Create(userData);
+        var userCreated = unitOfWork
+            .UserRepository
+            .Create(userData);
         
-        await _unitOfWork.CommitAsync();
+        await unitOfWork
+            .CommitAsync();
         
-        var userDto = _mapper.Map<OasisUserDto>(userCreated);
+        var userDto = mapper.Map<OasisUserDto>(userCreated);
         
         return OasisApiResponse<OasisUserDto>.SuccessResponse(userDto);
     }

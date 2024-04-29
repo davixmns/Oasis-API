@@ -19,7 +19,9 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] OasisUser userData)
     {
-        var createUserResult = await _userService.CreateUserAsync(userData);
+        var createUserResult = await _userService
+            .CreateUserAsync(userData)
+            .ConfigureAwait(false);
         
         if (!createUserResult.Success)
             return BadRequest(createUserResult);
