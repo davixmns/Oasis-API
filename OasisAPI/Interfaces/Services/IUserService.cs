@@ -1,7 +1,7 @@
 using OasisAPI.Dto;
 using OasisAPI.Models;
 
-namespace OasisAPI.Interfaces;
+namespace OasisAPI.Interfaces.Services;
 
 public interface IUserService
 {

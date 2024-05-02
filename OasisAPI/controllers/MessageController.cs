@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OasisAPI.Interfaces;
+using OasisAPI.Interfaces.Services;
 
 namespace OasisAPI.controllers;
 

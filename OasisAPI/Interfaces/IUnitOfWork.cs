@@ -1,3 +1,4 @@
+using OasisAPI.Interfaces.Repositories;
 using OasisAPI.Models;
 
 namespace OasisAPI.Interfaces;

@@ -1,6 +1,7 @@
 using AutoMapper;
 using OasisAPI.Dto;
 using OasisAPI.Interfaces;
+using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 
 namespace OasisAPI.Services;
@@ -18,7 +19,6 @@ public sealed class UserService : IUserService
     
     public async Task<OasisApiResponse<OasisUserDto>> CreateUserAsync(OasisUser userData)
     {
-        //estudar fluent validation
         if (userData.Password.Length > 40)
         {
             return OasisApiResponse<OasisUserDto>
@@ -40,9 +40,10 @@ public sealed class UserService : IUserService
         var userCreated = unitOfWork
             .UserRepository
             .Create(userData);
-        
+
         await unitOfWork
-            .CommitAsync();
+            .CommitAsync()
+            .ConfigureAwait(false);
         
         var userDto = mapper.Map<OasisUserDto>(userCreated);
         

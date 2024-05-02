@@ -4,7 +4,7 @@ public class OasisApiResponse<T>
 {
     public bool Success { get; set; }
     public T? Data { get; set; }
-    public string? ErrorMessage { get; set; }
+    public string? Message { get; set; }
     
     public static OasisApiResponse<T> SuccessResponse(T data)
     {
@@ -15,12 +15,12 @@ public class OasisApiResponse<T>
         };
     }
     
-    public static OasisApiResponse<T> ErrorResponse(string errorMessage)
+    public static OasisApiResponse<T> ErrorResponse(string message)
     {
         return new OasisApiResponse<T>
         {
             Success = false,
-            ErrorMessage = errorMessage
+            Message = message
         };
     }
 }

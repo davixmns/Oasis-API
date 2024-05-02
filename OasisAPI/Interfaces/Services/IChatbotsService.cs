@@ -1,6 +1,6 @@
 using OasisAPI.Models;
 
-namespace OasisAPI.Interfaces;
+namespace OasisAPI.Interfaces.Services;
 
 public interface IChatbotsService
 {

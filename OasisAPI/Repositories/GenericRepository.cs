@@ -2,10 +2,11 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.Context;
 using OasisAPI.Interfaces;
+using OasisAPI.Interfaces.Repositories;
 
 namespace OasisAPI.Repositories;
 
-public class GenericRepository<T> : IRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly OasisDbContext _context;
     

@@ -4,6 +4,8 @@ using OasisAPI.Context;
 using OasisAPI.Dto;
 using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
+using OasisAPI.Interfaces.Repositories;
+using OasisAPI.Interfaces.Services;
 using OasisAPI.Repositories;
 using OasisAPI.Services;
 using OasisAPI.Utils;
@@ -22,8 +24,9 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Repositórios
-builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IUserRepository, UserGenericRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
 //Configuradores de Serviços
 builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));

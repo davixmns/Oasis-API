@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
 
-namespace OasisAPI.Interfaces;
+namespace OasisAPI.Interfaces.Repositories;
 
-public interface IRepository<T>
+public interface IGenericRepository<T>
 {
     IQueryable<T> GetAll();
     Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
