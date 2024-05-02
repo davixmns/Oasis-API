@@ -6,8 +6,9 @@ namespace OasisAPI.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private IUserRepository _userRepository;
-    private IChatRepository _chatRepository;
+    private IUserRepository userRepository;
+    private IChatRepository chatRepository;
+    private IMessageRepository messageRepository;
 
     public OasisDbContext context;
 
@@ -16,9 +17,10 @@ public class UnitOfWork : IUnitOfWork
         this.context = context;
     }
 
-    public IUserRepository UserRepository => this._userRepository ?? new UserRepository(this.context);
-    public IChatRepository ChatRepository => this._chatRepository ?? new ChatRepository(this.context);
-
+    public IUserRepository UserRepository => this.userRepository ?? new UserRepository(this.context);
+    public IChatRepository ChatRepository => this.chatRepository ?? new ChatRepository(this.context);
+    public IMessageRepository MessageRepository => this.messageRepository ?? new MessageRepository(this.context);
+    
     public async Task CommitAsync()
     {
         await this.context.SaveChangesAsync();

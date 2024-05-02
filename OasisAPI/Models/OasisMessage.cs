@@ -10,7 +10,7 @@ public class OasisMessage
     [Key]
     public int OasisMessageId { get; set; }
     
-    public int OasisChatId { get; set; }
+    public int? OasisChatId { get; set; }
     
     [Required]
     [StringLength(50)]
@@ -28,10 +28,15 @@ public class OasisMessage
     [JsonIgnore]
     public OasisChat? Chat { get; set; }
 
-    public OasisMessage(string from, string message, string? fromMessageId = null, string? fromThreadId = null)
+    public OasisMessage(string from, string message,
+        string? fromMessageId = null, 
+        string? fromThreadId = null,
+        int? oasisChatId = null)
+    
     {
         From = from;
         Message = message;
+        OasisChatId = oasisChatId;
         FromThreadId = fromThreadId;
         FromMessageId = fromMessageId;
         CreatedAt = DateTime.Now;

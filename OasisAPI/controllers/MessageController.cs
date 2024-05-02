@@ -1,10 +1,13 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using OasisAPI.Dto;
+using OasisAPI.Enums;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
+using OasisAPI.Utils;
 
 namespace OasisAPI.controllers;
 
@@ -25,40 +28,36 @@ public class MessageController : ControllerBase
     [HttpPost("SendFirstMessage")]
     public async Task<IActionResult> SendFirstMessage([FromBody] MessageRequestDto messageRequestDto)
     {
-        if (string.IsNullOrWhiteSpace(messageRequestDto.Message))
+        var formatedUserMessage = UserMessageFormatter.FormatToFirstUserMessage(messageRequestDto.Message);
+        
+        var tasks = new List<Task<OasisMessage>>
         {
-            return BadRequest(OasisApiResponse<IActionResult>.ErrorResponse("Message cannot be empty"));
-        }
+            chatbotsService.StartGptChat(formatedUserMessage),
+            chatbotsService.StartGeminiChat(formatedUserMessage)
+        };
+        await Task.WhenAll(tasks);
 
-        var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var chatbotMessages = tasks.Select(task => task.Result).ToList();
 
-        if (userIdClaim == null)
-        {
-            return Unauthorized(OasisApiResponse<IActionResult>.ErrorResponse("User not found"));
-        }
-
-        var userId = int.Parse(userIdClaim);
         var chat = this.unitOfWork.ChatRepository.Create(new OasisChat(
-            userId: userId,
-            chatGptThreadId: null,
-            geminiThreadId: null
+            userId: int.Parse(HttpContext.Items["UserId"]!.ToString()!),
+            chatGptThreadId: chatbotMessages[0].FromThreadId,
+            geminiThreadId: chatbotMessages[1].FromThreadId
         ));
-
         await this.unitOfWork.CommitAsync();
 
-
-        return Ok();
+        var userMessage = this.unitOfWork.MessageRepository.Create(new OasisMessage(
+            from: "User",
+            message: messageRequestDto.Message,
+            oasisChatId: chat.OasisChatId
+        ));
+        await this.unitOfWork.CommitAsync();
+        
+        return StatusCode(201, new
+        {
+            chat,
+            userMessage,
+            chatbotMessages
+        });
     }
 }
-// // Inicia ambas as tarefas ao mesmo tempo
-// var chatGptTask = chatbotsService.StartGptChat(messageRequestDto.Message);
-// var geminiTask = chatbotsService.StartGeminiChat(messageRequestDto.Message);
-//
-// // Espera ambas as tarefas completarem
-// await Task.WhenAll(chatGptTask, geminiTask);
-//
-// // Recupera os resultados das tarefas
-// var chatGptResponse = await chatGptTask;
-// var geminiResponse = await geminiTask;
-//
-// return Ok(new {chatGptResponse, geminiResponse});

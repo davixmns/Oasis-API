@@ -77,7 +77,7 @@ namespace OasisAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("OasisChatId")
+                    b.Property<int?>("OasisChatId")
                         .HasColumnType("int");
 
                     b.HasKey("OasisMessageId");
@@ -137,9 +137,7 @@ namespace OasisAPI.Migrations
                 {
                     b.HasOne("OasisAPI.Models.OasisChat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("OasisChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OasisChatId");
 
                     b.Navigation("Chat");
                 });

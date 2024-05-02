@@ -34,6 +34,12 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
             var claims = _tokenService.ValidateToken(token);
             var principal = new ClaimsPrincipal(claims);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+            {
+                return AuthenticateResult.Fail("Invalid token.");
+            }
+            Context.Items["UserId"] = int.Parse(userId);
             return AuthenticateResult.Success(ticket);
         }
         catch (Exception ex)
