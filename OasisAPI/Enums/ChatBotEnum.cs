@@ -2,6 +2,6 @@ namespace OasisAPI.Enums;
 
 public enum ChatBotEnum
 {
-    ChatGpt,
-    Gemini
+    ChatGpt = 0,
+    ChatBot = 1,
 }

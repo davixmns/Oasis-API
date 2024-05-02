@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.Config;
 using OasisAPI.Context;
@@ -6,6 +7,7 @@ using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Repositories;
 using OasisAPI.Interfaces.Services;
+using OasisAPI.Middlewares;
 using OasisAPI.Repositories;
 using OasisAPI.Services;
 using OasisAPI.Utils;
@@ -20,6 +22,9 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection))
 );
 
+//jwt
+builder.Services.AddAuthentication("CustomJwtAuth")
+    .AddScheme<AuthenticationSchemeOptions, JwtAuthenticationMiddleware>("CustomJwtAuth", _ => {});
 //UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -58,8 +63,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureExceptionHandler(app.Environment);
+// app.UseMiddleware<JwtMiddleware>();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.ConfigureExceptionHandler(app.Environment);
 app.MapControllers();
 app.MapGet("/", () => "Oasis API!");
 app.Run();

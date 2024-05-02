@@ -6,6 +6,6 @@ namespace OasisAPI.Interfaces;
 public interface IUnitOfWork
 {
     IUserRepository UserRepository { get; }
-    
+    IChatRepository ChatRepository { get; }
     Task CommitAsync();
 }

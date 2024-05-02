@@ -30,7 +30,8 @@ public class TokenService : ITokenService
     public JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims)
     {
         var privateKey = Encoding.UTF8.GetBytes(_secretKey);
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(privateKey), SecurityAlgorithms.HmacSha256Signature);
+        var credentials =
+            new SigningCredentials(new SymmetricSecurityKey(privateKey), SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(claims),
@@ -51,7 +52,38 @@ public class TokenService : ITokenService
         return refreshToken;
     }
 
-    public ClaimsPrincipal ExtractClaimsFromAccessToken(string expiredAccessToken)
+    public ClaimsPrincipal ValidateToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidIssuer = _issuer,
+            ValidateIssuerSigningKey = true,
+            ValidAudience = _audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero // Reduce the default clock skew used for expiration
+        };
+        try
+        {
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+        catch (Exception ex)
+        {
+            throw new SecurityTokenException($"Token validation failed: {ex.Message}");
+        }
+    }
+
+
+    public ClaimsPrincipal ExtractClaimsFromExpiredAccessToken(string expiredAccessToken)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {

@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OasisAPI.Config;
@@ -72,7 +73,7 @@ public class AuthController : ControllerBase
     [HttpPost("refresh-token")]
     public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenRequestDto tokenRequestDto)
     {
-        var principal = _tokenService.ExtractClaimsFromAccessToken(tokenRequestDto.AccessToken!);
+        var principal = _tokenService.ExtractClaimsFromExpiredAccessToken(tokenRequestDto.AccessToken!);
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userId is null)

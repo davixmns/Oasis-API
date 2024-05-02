@@ -26,8 +26,11 @@ public class OasisChat
     
     public DateTime CreatedAt { get; set; }
 
-    public OasisChat()
+    public OasisChat(int userId, string? chatGptThreadId = null, string? geminiThreadId = null)
     {
+        UserId = userId;
+        ChatGptThreadId = chatGptThreadId;
+        GeminiThreadId = geminiThreadId;
         Messages = new Collection<OasisMessage>();
         CreatedAt = DateTime.UtcNow;
     }
