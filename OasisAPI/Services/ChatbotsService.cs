@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using GenerativeAI.Models;
 using GenerativeAI.Types;
@@ -6,6 +7,7 @@ using OasisAPI.Config;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
+using OasisAPI.Texts;
 using OpenAI;
 using OpenAI.Threads;
 
@@ -38,32 +40,34 @@ public class ChatbotsService : IChatbotsService
 
        return _mapper.Map<OasisMessage>(messageList.Items[0]);
     }
-    
+
     public async Task<OasisMessage> StartGeminiChat(string userMessage)
     {
         if (string.IsNullOrWhiteSpace(userMessage))
             throw new NullReferenceException("Mensagem do usuário vazia!");
         
         var chat = _geminiApi.StartChat(new StartChatParams());
+        
+        //initial prompt
+        await chat.SendMessageAsync(PromptForChatbots.PromptText);
+        
+        //user message
         var geminiResponse = await chat.SendMessageAsync(userMessage);
 
         return _mapper.Map<OasisMessage>(geminiResponse);
     }
 
-    public Task<OasisMessage> SendMessageGpt(string userMessage, string threadId)
+    public Task<OasisMessage> SendMessageToGemini(string userMessage)
     {
         throw new NotImplementedException();
     }
 
-    public Task<OasisMessage> SendMessageGemini(string userMessage, string threadId)
+
+    public Task<OasisMessage> SendMessageToGpt(string userMessage, string threadId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IQueryable<OasisMessage>> RetrieveGeminiMessageList(string threadId)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task<OasisMessage> RetrieveGptMessage(string messageId, string threadId)
     {
