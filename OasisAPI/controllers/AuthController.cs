@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,12 +19,15 @@ public class AuthController : ControllerBase
     private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOptions<JwtConfig> _jwtConfig;
+    private readonly IMapper _mapper;
 
-    public AuthController(IUnitOfWork unitOfWork, ITokenService tokenService, IOptions<JwtConfig> jwtConfig)
+    public AuthController(IUnitOfWork unitOfWork, ITokenService tokenService,
+        IOptions<JwtConfig> jwtConfig, IMapper mapper)
     {
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;
         _jwtConfig = jwtConfig;
+        _mapper = mapper;
     }
 
     [HttpPost("login")]
@@ -106,5 +110,15 @@ public class AuthController : ControllerBase
         };
         
         return Ok(OasisApiResponse<TokenResponse>.SuccessResponse(tokenResponse));
+    }
+    
+    [Authorize]
+    [HttpGet("VerifyAccessToken")]
+    public async Task<IActionResult> VerifyAccessToken()
+    {
+        var userId = int.Parse(HttpContext.Items["UserId"]!.ToString()!);
+        var user = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == userId);
+        var userDto = _mapper.Map<OasisUserDto>(user);
+        return Ok(OasisApiResponse<OasisUserDto>.SuccessResponse(userDto));
     }
 }

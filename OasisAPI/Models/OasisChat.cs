@@ -22,7 +22,6 @@ public class OasisChat
     [JsonIgnore]
     public OasisUser? User { get; set; }
     
-    [JsonIgnore]
     public ICollection<OasisMessage>? Messages { get; set; }
     
     public DateTime CreatedAt { get; set; }

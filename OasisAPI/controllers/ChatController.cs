@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
 using OasisAPI.Dto;
 using OasisAPI.Enums;
@@ -13,12 +14,12 @@ namespace OasisAPI.controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MessageController : ControllerBase
+public class ChatController : ControllerBase
 {
     private readonly IChatbotsService chatbotsService;
     private readonly IUnitOfWork unitOfWork;
 
-    public MessageController(IUnitOfWork unitOfWork, IChatbotsService chatbotsService)
+    public ChatController(IUnitOfWork unitOfWork, IChatbotsService chatbotsService)
     {
         this.unitOfWork = unitOfWork;
         this.chatbotsService = chatbotsService;
@@ -59,5 +60,21 @@ public class MessageController : ControllerBase
             userMessage,
             chatbotMessages
         });
+    }
+    
+    [Authorize]
+    [HttpGet("GetAllChats")]
+    public async Task<IActionResult> GetAllChats()
+    {
+        var userId = int.Parse(HttpContext.Items["UserId"]!.ToString()!);
+        
+        var chats = await this.unitOfWork.ChatRepository
+            .GetAll()
+            .Where(chat => chat.UserId == userId)
+            .Include(chat => chat.Messages)
+            .ToListAsync()
+            .ConfigureAwait(false);
+        
+        return Ok(chats);
     }
 }
