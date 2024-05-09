@@ -41,6 +41,10 @@ namespace OasisAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Title")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -72,6 +76,9 @@ namespace OasisAPI.Migrations
 
                     b.Property<string>("FromThreadId")
                         .HasColumnType("longtext");
+
+                    b.Property<bool?>("IsSaved")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Message")
                         .IsRequired()

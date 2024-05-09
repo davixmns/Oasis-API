@@ -13,4 +13,6 @@ public interface IChatbotsService
     
     
     public Task<OasisMessage> RetrieveGptMessage(string messageId, string threadId);
+
+    public Task<OasisMessage> RetrieveChatTheme(string userMessage);
 }

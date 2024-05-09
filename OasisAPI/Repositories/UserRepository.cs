@@ -12,11 +12,4 @@ public class UserRepository : GenericRepository<OasisUser>, IUserRepository
     public UserRepository(OasisDbContext context) : base(context)
     {
     }
-
-    public async Task<OasisUser?> GetUserByEmailAsync(string email)
-    {
-        return await GetAll()
-            .Where(u => u.Email == email)
-            .FirstOrDefaultAsync();
-    }
 }

@@ -7,7 +7,7 @@ using OasisAPI.Config;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
-using OasisAPI.Texts;
+using OasisAPI.Utils;
 using OpenAI;
 using OpenAI.Threads;
 
@@ -72,5 +72,12 @@ public class ChatbotsService : IChatbotsService
     public Task<OasisMessage> RetrieveGptMessage(string messageId, string threadId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<OasisMessage> RetrieveChatTheme(string userMessage)
+    {
+        var formattedMessage = "Em até 3 palavras curtas diga o tema desta mensagem: " + userMessage;
+        var messageTheme = await _geminiApi.GenerateContentAsync(formattedMessage);
+        return _mapper.Map<OasisMessage>(messageTheme);
     }
 }

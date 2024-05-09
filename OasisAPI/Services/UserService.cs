@@ -27,7 +27,7 @@ public sealed class UserService : IUserService
         
         var userExists = await unitOfWork
             .UserRepository
-            .GetUserByEmailAsync(userData.Email)
+            .GetAsync(u => u.Email == userData.Email)
             .ConfigureAwait(false);
 
         if (userExists is not null)

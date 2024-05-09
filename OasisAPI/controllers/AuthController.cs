@@ -16,32 +16,39 @@ namespace OasisAPI.controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly ITokenService _tokenService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IOptions<JwtConfig> _jwtConfig;
-    private readonly IMapper _mapper;
+    private readonly ITokenService tokenService;
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IOptions<JwtConfig> jwtConfig;
+    private readonly IMapper mapper;
 
     public AuthController(IUnitOfWork unitOfWork, ITokenService tokenService,
         IOptions<JwtConfig> jwtConfig, IMapper mapper)
     {
-        _tokenService = tokenService;
-        _unitOfWork = unitOfWork;
-        _jwtConfig = jwtConfig;
-        _mapper = mapper;
+        this.tokenService = tokenService;
+        this.unitOfWork = unitOfWork;
+        this.jwtConfig = jwtConfig;
+        this.mapper = mapper;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto loginData)
     {
-        var userExists = await _unitOfWork.UserRepository.GetUserByEmailAsync(loginData.Email!);
+        var userExists = await this.unitOfWork
+            .UserRepository
+            .GetAsync(u => u.Email == loginData.Email)
+            .ConfigureAwait(false);
 
         if (userExists is null)
+        {
             return NotFound(OasisApiResponse<string>.ErrorResponse("User not found"));
+        }
 
         var passwordIsCorrect = BCrypt.Net.BCrypt.Verify(loginData.Password!, userExists.Password);
 
         if (!passwordIsCorrect)
+        {
             return Unauthorized(OasisApiResponse<string>.ErrorResponse("Incorrect password"));
+        }
 
         List<Claim> userClaims =
         [
@@ -49,15 +56,22 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Email, userExists.Email),
         ];
 
-        var accessToken = _tokenService.GenerateAccessToken(userClaims);
-        var refreshToken = _tokenService.GenerateRefreshToken();
+        var accessToken = tokenService.GenerateAccessToken(userClaims);
+        var refreshToken = tokenService.GenerateRefreshToken();
 
         userExists.RefreshToken = refreshToken;
-        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry!.Value);
+        userExists.RefreshTokenExpiryDateTime = DateTime
+            .UtcNow
+            .AddMinutes(jwtConfig.Value.RefreshTokenExpiry!.Value);
 
-        _unitOfWork.UserRepository.Update(userExists);
-        await _unitOfWork.CommitAsync();
+        this.unitOfWork
+            .UserRepository
+            .Update(userExists);
         
+        await this.unitOfWork
+            .CommitAsync()
+            .ConfigureAwait(false);
+
         var tokenResponse = new TokenResponse()
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
@@ -77,48 +91,59 @@ public class AuthController : ControllerBase
     [HttpPost("refresh-token")]
     public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenRequestDto tokenRequestDto)
     {
-        var principal = _tokenService.ExtractClaimsFromExpiredAccessToken(tokenRequestDto.AccessToken!);
+        var principal = tokenService.ExtractClaimsFromExpiredAccessToken(tokenRequestDto.AccessToken!);
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userId is null)
         {
             return BadRequest(OasisApiResponse<string>.ErrorResponse("Invalid token"));
         }
-        
-        var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == int.Parse(userId));
+
+        var userExists = await this.unitOfWork
+            .UserRepository
+            .GetAsync(u => u.OasisUserId == int.Parse(userId))
+            .ConfigureAwait(false);
 
         if (userExists is null || userExists.RefreshToken != tokenRequestDto.RefreshToken ||
             DateTime.UtcNow < userExists.RefreshTokenExpiryDateTime || userExists.OasisUserId.ToString() != userId)
         {
             return BadRequest(OasisApiResponse<string>.ErrorResponse("Invalid token"));
         }
-        
-        var accessToken = _tokenService.GenerateAccessToken(principal.Claims);
-        var refreshToken = _tokenService.GenerateRefreshToken();
-        
+
+        var accessToken = tokenService.GenerateAccessToken(principal.Claims);
+        var refreshToken = tokenService.GenerateRefreshToken();
+
         userExists.RefreshToken = refreshToken;
-        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry!.Value);
-        
-        _unitOfWork.UserRepository.Update(userExists);
-        await _unitOfWork.CommitAsync();
-        
+        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(jwtConfig.Value.RefreshTokenExpiry!.Value);
+
+        this.unitOfWork
+            .UserRepository
+            .Update(userExists);
+
+        await this.unitOfWork
+            .CommitAsync()
+            .ConfigureAwait(false);
+
         var tokenResponse = new TokenResponse()
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = refreshToken,
             RefreshTokenExpiryDateTime = userExists.RefreshTokenExpiryDateTime
         };
-        
+
         return Ok(OasisApiResponse<TokenResponse>.SuccessResponse(tokenResponse));
     }
-    
+
     [Authorize]
     [HttpGet("VerifyAccessToken")]
     public async Task<IActionResult> VerifyAccessToken()
     {
         var userId = int.Parse(HttpContext.Items["UserId"]!.ToString()!);
-        var user = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == userId);
-        var userDto = _mapper.Map<OasisUserDto>(user);
+        var user = await this.unitOfWork
+            .UserRepository
+            .GetAsync(u => u.OasisUserId == userId)
+            .ConfigureAwait(false);
+        var userDto = mapper.Map<OasisUserDto>(user);
         return Ok(OasisApiResponse<OasisUserDto>.SuccessResponse(userDto));
     }
 }

@@ -1,4 +1,4 @@
-namespace OasisAPI.Texts;
+namespace OasisAPI.Utils;
 
 public static class PromptForChatbots
 {
@@ -28,5 +28,6 @@ public static class PromptForChatbots
         "USUÁRIO>\n...\n</FIM>\n\nEste texto acima é como voce vai continuar" +
         " a conversa a partir de agora, o usuario irá lhe enviar mensagens e" +
         " voce deve seguir responde-lo normalmente no idioma portugues brasil." +
-        "\n\nGere respostas criativas e detalhadas, nao precisa responder essa mensagem.";
+        "\n\nGere respostas criativas e bem detalhadas, gere mensagens sem formatações de resposta " +
+        "suas respostas devem ser como voce responderia uma mensagem comum.";
 }
