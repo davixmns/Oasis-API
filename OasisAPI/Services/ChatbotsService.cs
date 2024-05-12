@@ -74,14 +74,19 @@ public class ChatbotsService : IChatbotsService
         return _mapper.Map<OasisMessage>(messageList.Items[0]);
     }
     
-    public Task<OasisMessage> SendMessageToGeminiChat(string userMessage)
+    public async Task<OasisMessage> SendMessageToGeminiChat(IEnumerable<OasisMessage> chatMessages)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<OasisMessage> RetrieveGptMessage(string messageId, string threadId)
-    {
-        throw new NotImplementedException();
+        var chat = _geminiApi.StartChat(new StartChatParams());
+       
+        await chat
+            .SendMessageAsync(PromptForChatbots.PromptText)
+            .ConfigureAwait(false);
+        
+        var geminiResponse = await chat
+            .SendMessageAsync(string.Join("\n", chatMessages.Select(m => m.Message)))
+            .ConfigureAwait(false);
+        
+        return _mapper.Map<OasisMessage>(geminiResponse);
     }
 
     public async Task<OasisMessage> RetrieveChatTheme(string userMessage)
