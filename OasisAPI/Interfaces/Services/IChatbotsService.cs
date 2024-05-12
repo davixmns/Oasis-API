@@ -1,15 +1,18 @@
+using Microsoft.AspNetCore.Mvc;
 using OasisAPI.Models;
+using OpenAI;
+using OpenAI.Threads;
 
 namespace OasisAPI.Interfaces.Services;
 
 public interface IChatbotsService
 {
-    public Task<OasisMessage> StartGptChat(string userMessage);
-    public Task<OasisMessage> StartGeminiChat(string userMessage);
+    public Task<OasisMessage> CreateGptChat(string userMessage);
+    public Task<OasisMessage> CreateGeminiChat(string userMessage);
     
-    public Task<OasisMessage> SendMessageToGemini(string userMessage);
+    public Task<OasisMessage> SendMessageToGeminiChat(string userMessage);
    
-    public Task<OasisMessage> SendMessageToGpt(string userMessage, string threadId);
+    public Task<OasisMessage> SendMessageToGptChat(string threadId, string userMessage);
     
     
     public Task<OasisMessage> RetrieveGptMessage(string messageId, string threadId);
