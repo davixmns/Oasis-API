@@ -72,7 +72,7 @@ public class ChatbotsService : IChatbotsService
 
     public async Task<OasisMessage> RetrieveChatTheme(string userMessage)
     {
-        var formattedMessage = "Em até 3 palavras curtas diga o tema desta mensagem: " + userMessage;
+        var formattedMessage = "Preciso que voce me diga como seria o titulo dessa mensagem, use no minimo 1 palavra e no maximo 3, precisa ser um titulo curto: " + userMessage;
         var messageTheme = await _geminiApi.GenerateContentAsync(formattedMessage);
         return _mapper.Map<OasisMessage>(messageTheme);
     }
