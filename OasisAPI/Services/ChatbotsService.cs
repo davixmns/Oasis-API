@@ -49,7 +49,7 @@ public class ChatbotsService : IChatbotsService
         }
 
         var chat = _geminiApi.StartChat(new StartChatParams());
-        await chat.SendMessageAsync(PromptForChatbots.PromptText).ConfigureAwait(false);
+        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText).ConfigureAwait(false);
         var geminiResponse = await chat.SendMessageAsync(userMessage).ConfigureAwait(false);
 
         return _mapper.Map<OasisMessage>(geminiResponse);
@@ -79,7 +79,7 @@ public class ChatbotsService : IChatbotsService
         var chat = _geminiApi.StartChat(new StartChatParams());
        
         await chat
-            .SendMessageAsync(PromptForChatbots.PromptText)
+            .SendMessageAsync(PromptForChatbots.GeminiPromptText)
             .ConfigureAwait(false);
         
         var geminiResponse = await chat

@@ -1,8 +1,6 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Extensions;
 using OasisAPI.Dto;
 using OasisAPI.Enums;
 using OasisAPI.Interfaces;
@@ -45,7 +43,7 @@ public class ChatController : ControllerBase
     [HttpPost("SendFirstMessage")]
     public async Task<IActionResult> SendFirstMessage([FromBody] MessageRequestDto messageRequestDto)
     {
-        var formatedUserMessage = UserMessageFormatter.FormatToFirstUserMessage(messageRequestDto.Message);
+        var formatedUserMessage = OasisMessageFormatter.FormatToFirstUserMessage(messageRequestDto.Message);
 
         var tasks = new List<Task<OasisMessage>>
         {
@@ -123,14 +121,22 @@ public class ChatController : ControllerBase
             .Where(m => m.OasisChatId == oasisChatId)
             .ToListAsync()
             .ConfigureAwait(false);
-
+        
+        var choosedChatbotMessage = chatMessages
+            .Where(m => m.From != "User")
+            .MaxBy(m => m.CreatedAt)!
+            .Message;
+        var formattedUserMessage = OasisMessageFormatter.FormatToUserMessage(userMessage);
+        var formattedChatbotMessage = OasisMessageFormatter.FormatToChatbotMessage(choosedChatbotMessage);
+        var formattedMessage =  formattedChatbotMessage + "\n" + formattedUserMessage;
+        
         var tasks = new List<Task<OasisMessage>>();
         foreach (var chatBot in messageRequestDto.ChatBotEnums)
         {
             switch (chatBot)
             {
                 case ChatBotEnum.ChatGpt:
-                    tasks.Add(chatbotsService.SendMessageToGptChat(chatExists.ChatGptThreadId!, userMessage));
+                    tasks.Add(chatbotsService.SendMessageToGptChat(chatExists.ChatGptThreadId!, formattedMessage));
                     break;
                 case ChatBotEnum.Gemini:
                     tasks.Add(chatbotsService.SendMessageToGeminiChat(chatMessages));
