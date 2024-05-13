@@ -28,48 +28,33 @@ public class ChatbotsService : IChatbotsService
 
     public async Task<OasisMessage> CreateGptChat(string userMessage)
     {
-        if (string.IsNullOrWhiteSpace(userMessage))
-        {
-            throw new NullReferenceException("User message is empty!");
-        }
-
-        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(userMessage).ConfigureAwait(false);
-        var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId).ConfigureAwait(false);
-        run = await run.WaitForStatusChangeAsync().ConfigureAwait(false);
-        var messageList = await run.ListMessagesAsync().ConfigureAwait(false);
+        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(userMessage);
+        var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
+        run = await run.WaitForStatusChangeAsync();
+        var messageList = await run.ListMessagesAsync();
 
         return _mapper.Map<OasisMessage>(messageList.Items[0]);
     }
 
     public async Task<OasisMessage> CreateGeminiChat(string userMessage)
     {
-        if (string.IsNullOrWhiteSpace(userMessage))
-        {
-            throw new NullReferenceException("User message is empty!");
-        }
-
         var chat = _geminiApi.StartChat(new StartChatParams());
-        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText).ConfigureAwait(false);
-        var geminiResponse = await chat.SendMessageAsync(userMessage).ConfigureAwait(false);
+        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
+        var geminiResponse = await chat.SendMessageAsync(userMessage);
 
         return _mapper.Map<OasisMessage>(geminiResponse);
     }
 
     public async Task<OasisMessage> SendMessageToGptChat(string threadId, string userMessage)
     {
-        if (string.IsNullOrWhiteSpace(userMessage) || string.IsNullOrWhiteSpace(threadId))
-        {
-            throw new NullReferenceException("there are invalid parameters");
-        }
-
         var messageRequest = new CreateMessageRequest(userMessage);
-        await _chatGptApi.ThreadsEndpoint.CreateMessageAsync(threadId, messageRequest).ConfigureAwait(false);
+        await _chatGptApi.ThreadsEndpoint.CreateMessageAsync(threadId, messageRequest);
         
         var runRequest = new CreateRunRequest(_chatGptConfig.AssistantId);
-        var run = await _chatGptApi.ThreadsEndpoint.CreateRunAsync(threadId, runRequest).ConfigureAwait(false);
+        var run = await _chatGptApi.ThreadsEndpoint.CreateRunAsync(threadId, runRequest);
         
-        run = await run.WaitForStatusChangeAsync().ConfigureAwait(false);
-        var messageList = await run.ListMessagesAsync().ConfigureAwait(false);
+        run = await run.WaitForStatusChangeAsync();
+        var messageList = await run.ListMessagesAsync();
 
         return _mapper.Map<OasisMessage>(messageList.Items[0]);
     }
@@ -77,14 +62,10 @@ public class ChatbotsService : IChatbotsService
     public async Task<OasisMessage> SendMessageToGeminiChat(IEnumerable<OasisMessage> chatMessages)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
-       
-        await chat
-            .SendMessageAsync(PromptForChatbots.GeminiPromptText)
-            .ConfigureAwait(false);
-        
-        var geminiResponse = await chat
-            .SendMessageAsync(string.Join("\n", chatMessages.Select(m => m.Message)))
-            .ConfigureAwait(false);
+
+        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
+
+        var geminiResponse = await chat.SendMessageAsync(string.Join("\n", chatMessages.Select(m => m.Message)));
         
         return _mapper.Map<OasisMessage>(geminiResponse);
     }

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.Dto;
-using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 
@@ -21,8 +19,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateUser([FromBody] OasisUser userData)
     {
         var createUserResult = await this.userService
-            .CreateUserAsync(userData)
-            .ConfigureAwait(false);
+            .CreateUserAsync(userData);
         
         if (!createUserResult.Success)
             return BadRequest(createUserResult);

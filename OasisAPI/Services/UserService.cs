@@ -24,12 +24,11 @@ public sealed class UserService : IUserService
             return OasisApiResponse<OasisUserDto>
                 .ErrorResponse("Password is too long");
         }
-        
+
         var userExists = await unitOfWork
             .UserRepository
-            .GetAsync(u => u.Email == userData.Email)
-            .ConfigureAwait(false);
-
+            .GetAsync(u => u.Email == userData.Email);
+        
         if (userExists is not null)
         {
             return OasisApiResponse<OasisUserDto>
@@ -41,9 +40,7 @@ public sealed class UserService : IUserService
             .UserRepository
             .Create(userData);
 
-        await unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
+        await unitOfWork.CommitAsync();
         
         var userDto = mapper.Map<OasisUserDto>(userCreated);
         

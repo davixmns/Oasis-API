@@ -33,9 +33,8 @@ public class ChatController : ControllerBase
             .GetAll()
             .Where(chat => chat.UserId == userId)
             .Include(chat => chat.Messages)
-            .ToListAsync()
-            .ConfigureAwait(false);
-
+            .ToListAsync();
+        
         return Ok(chats);
     }
 
@@ -52,9 +51,7 @@ public class ChatController : ControllerBase
             chatbotsService.RetrieveChatTheme(messageRequestDto.Message)
         };
 
-        await Task
-            .WhenAll(tasks)
-            .ConfigureAwait(false);
+        await Task.WhenAll(tasks);
 
         var chatbotMessages = tasks
             .Select(task => task.Result)
@@ -67,10 +64,8 @@ public class ChatController : ControllerBase
             title: chatbotMessages[2].Message
         ));
 
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
-
+        await this.unitOfWork.CommitAsync();
+        
         _ = this.unitOfWork.MessageRepository.Create(new OasisMessage(
             from: "User",
             message: messageRequestDto.Message,
@@ -78,10 +73,8 @@ public class ChatController : ControllerBase
             isSaved: true
         ));
 
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
-
+        await this.unitOfWork.CommitAsync();
+        
         return StatusCode(201, new
         {
             chat,
@@ -95,8 +88,7 @@ public class ChatController : ControllerBase
     {
         var chatExists = await this.unitOfWork
             .ChatRepository
-            .GetAsync(c => c.OasisChatId == oasisChatId)
-            .ConfigureAwait(false);
+            .GetAsync(c => c.OasisChatId == oasisChatId);
 
         if (chatExists is null)
         {
@@ -111,16 +103,13 @@ public class ChatController : ControllerBase
             oasisChatId: chatExists.OasisChatId
         ));
 
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
-        
+        await this.unitOfWork.CommitAsync();
+
         var chatMessages = await this.unitOfWork
             .MessageRepository
             .GetAll()
             .Where(m => m.OasisChatId == oasisChatId)
-            .ToListAsync()
-            .ConfigureAwait(false);
+            .ToListAsync();
         
         var choosedChatbotMessage = chatMessages
             .Where(m => m.From != "User")
@@ -146,9 +135,7 @@ public class ChatController : ControllerBase
             }
         }
 
-        await Task
-            .WhenAll(tasks)
-            .ConfigureAwait(false);
+        await Task.WhenAll(tasks);
         
         var chatbotMessages = tasks
             .Select(task => task.Result)
@@ -163,9 +150,8 @@ public class ChatController : ControllerBase
     {
         var chatExists = await this.unitOfWork
             .ChatRepository
-            .GetAsync(c => c.OasisChatId == chatbotMessage.OasisChatId)
-            .ConfigureAwait(false);
-
+            .GetAsync(c => c.OasisChatId == chatbotMessage.OasisChatId);
+        
         if (chatExists is null)
         {
             return NotFound("This chat does not exist");
@@ -173,9 +159,7 @@ public class ChatController : ControllerBase
 
         this.unitOfWork.MessageRepository.Create(chatbotMessage);
 
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
+        await this.unitOfWork.CommitAsync();
 
         return StatusCode(201, chatbotMessage);
     }

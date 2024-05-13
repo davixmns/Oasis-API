@@ -35,9 +35,8 @@ public class AuthController : ControllerBase
     {
         var userExists = await this.unitOfWork
             .UserRepository
-            .GetAsync(u => u.Email == loginData.Email)
-            .ConfigureAwait(false);
-
+            .GetAsync(u => u.Email == loginData.Email);
+        
         if (userExists is null)
         {
             return NotFound(OasisApiResponse<string>.ErrorResponse("User not found"));
@@ -67,11 +66,10 @@ public class AuthController : ControllerBase
         this.unitOfWork
             .UserRepository
             .Update(userExists);
-        
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
 
+        await this.unitOfWork
+            .CommitAsync();
+        
         var tokenResponse = new TokenResponse()
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
@@ -101,8 +99,7 @@ public class AuthController : ControllerBase
 
         var userExists = await this.unitOfWork
             .UserRepository
-            .GetAsync(u => u.OasisUserId == int.Parse(userId))
-            .ConfigureAwait(false);
+            .GetAsync(u => u.OasisUserId == int.Parse(userId));
 
         if (userExists is null || userExists.RefreshToken != tokenRequestDto.RefreshToken ||
             DateTime.UtcNow < userExists.RefreshTokenExpiryDateTime || userExists.OasisUserId.ToString() != userId)
@@ -120,9 +117,7 @@ public class AuthController : ControllerBase
             .UserRepository
             .Update(userExists);
 
-        await this.unitOfWork
-            .CommitAsync()
-            .ConfigureAwait(false);
+        await this.unitOfWork.CommitAsync();
 
         var tokenResponse = new TokenResponse()
         {
@@ -141,8 +136,7 @@ public class AuthController : ControllerBase
         var userId = int.Parse(HttpContext.Items["UserId"]!.ToString()!);
         var user = await this.unitOfWork
             .UserRepository
-            .GetAsync(u => u.OasisUserId == userId)
-            .ConfigureAwait(false);
+            .GetAsync(u => u.OasisUserId == userId);
         var userDto = mapper.Map<OasisUserDto>(user);
         return Ok(OasisApiResponse<OasisUserDto>.SuccessResponse(userDto));
     }
