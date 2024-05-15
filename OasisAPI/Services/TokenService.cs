@@ -5,14 +5,12 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OasisAPI.Config;
-using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
-using OasisAPI.Models;
 using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
 
 namespace OasisAPI.Services;
 
-public class TokenService : ITokenService
+public sealed class TokenService : ITokenService
 {
     private readonly string _secretKey;
     private readonly string _issuer;

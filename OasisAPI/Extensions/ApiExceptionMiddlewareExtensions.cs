@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
+using OasisAPI.Dto;
 using OasisAPI.Models;
 
 namespace OasisAPI.Extensions; 

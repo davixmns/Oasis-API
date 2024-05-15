@@ -1,8 +1,6 @@
-using OasisAPI.Dto;
+namespace OasisAPI.Dto;
 
-namespace OasisAPI.Models;
-
-public class TokenResponse
+public class TokenResponseDto
 {
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }

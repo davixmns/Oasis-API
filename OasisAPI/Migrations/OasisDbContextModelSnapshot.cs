@@ -41,16 +41,16 @@ namespace OasisAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("OasisUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("OasisChatId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OasisUserId");
 
                     b.ToTable("oasis_chats");
                 });
@@ -133,7 +133,7 @@ namespace OasisAPI.Migrations
                 {
                     b.HasOne("OasisAPI.Models.OasisUser", "User")
                         .WithMany("Chats")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OasisUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

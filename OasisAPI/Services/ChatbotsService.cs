@@ -11,7 +11,7 @@ using OpenAI.Threads;
 
 namespace OasisAPI.Services;
 
-public class ChatbotsService : IChatbotsService
+public sealed class ChatbotsService : IChatbotsService
 {
     private readonly GenerativeModel _geminiApi;
     private readonly OpenAIClient _chatGptApi;
@@ -28,9 +28,13 @@ public class ChatbotsService : IChatbotsService
 
     public async Task<OasisMessage> CreateGptChat(string userMessage)
     {
-        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(userMessage);
+        var formatedUserMessage = OasisMessageFormatter.FormatToFirstUserMessage(userMessage);
+        
+        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(formatedUserMessage);
+        
         var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
         run = await run.WaitForStatusChangeAsync();
+        
         var messageList = await run.ListMessagesAsync();
 
         return _mapper.Map<OasisMessage>(messageList.Items[0]);
@@ -39,7 +43,9 @@ public class ChatbotsService : IChatbotsService
     public async Task<OasisMessage> CreateGeminiChat(string userMessage)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
+        
         await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
+        
         var geminiResponse = await chat.SendMessageAsync(userMessage);
 
         return _mapper.Map<OasisMessage>(geminiResponse);
@@ -65,15 +71,17 @@ public class ChatbotsService : IChatbotsService
 
         await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
 
-        var geminiResponse = await chat.SendMessageAsync(string.Join("\n", chatMessages.Select(m => m.Message)));
+        var formattedMessages = string.Join("\n\n", chatMessages.Select(m => m.Message));
+        var geminiResponse = await chat.SendMessageAsync(formattedMessages);
         
         return _mapper.Map<OasisMessage>(geminiResponse);
     }
 
     public async Task<OasisMessage> RetrieveChatTheme(string userMessage)
     {
-        var formattedMessage = "Preciso que voce me diga como seria o titulo dessa mensagem, use no minimo 1 palavra e no maximo 3, precisa ser um titulo curto: " + userMessage;
+        var formattedMessage = OasisMessageFormatter.FormatToGetChatTitle(userMessage);
         var messageTheme = await _geminiApi.GenerateContentAsync(formattedMessage);
+        
         return _mapper.Map<OasisMessage>(messageTheme);
     }
 }

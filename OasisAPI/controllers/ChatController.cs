@@ -12,15 +12,15 @@ namespace OasisAPI.controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ChatController : ControllerBase
+public sealed class ChatController : ControllerBase
 {
-    private readonly IChatbotsService chatbotsService;
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IChatbotsService _chatbotsService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ChatController(IUnitOfWork unitOfWork, IChatbotsService chatbotsService)
     {
-        this.unitOfWork = unitOfWork;
-        this.chatbotsService = chatbotsService;
+        _unitOfWork = unitOfWork;
+        _chatbotsService = chatbotsService;
     }
 
     [Authorize]
@@ -29,9 +29,9 @@ public class ChatController : ControllerBase
     {
         var userId = int.Parse(HttpContext.Items["UserId"]!.ToString()!);
 
-        var chats = await this.unitOfWork.ChatRepository
+        var chats = await _unitOfWork.ChatRepository
             .GetAll()
-            .Where(chat => chat.UserId == userId)
+            .Where(chat => chat.OasisUserId == userId)
             .Include(chat => chat.Messages)
             .ToListAsync();
         
@@ -42,13 +42,11 @@ public class ChatController : ControllerBase
     [HttpPost("SendFirstMessage")]
     public async Task<IActionResult> SendFirstMessage([FromBody] MessageRequestDto messageRequestDto)
     {
-        var formatedUserMessage = OasisMessageFormatter.FormatToFirstUserMessage(messageRequestDto.Message);
-
         var tasks = new List<Task<OasisMessage>>
         {
-            chatbotsService.CreateGptChat(formatedUserMessage),
-            chatbotsService.CreateGeminiChat(formatedUserMessage),
-            chatbotsService.RetrieveChatTheme(messageRequestDto.Message)
+            _chatbotsService.CreateGptChat(messageRequestDto.Message),
+            _chatbotsService.CreateGeminiChat(messageRequestDto.Message),
+            _chatbotsService.RetrieveChatTheme(messageRequestDto.Message)
         };
 
         await Task.WhenAll(tasks);
@@ -56,24 +54,24 @@ public class ChatController : ControllerBase
         var chatbotMessages = tasks
             .Select(task => task.Result)
             .ToList();
-
-        var chat = this.unitOfWork.ChatRepository.Create(new OasisChat(
-            userId: int.Parse(HttpContext.Items["UserId"]!.ToString()!),
+        
+        var chat = _unitOfWork.ChatRepository.Create(new OasisChat(
+            oasisUserId: int.Parse(HttpContext.Items["UserId"]!.ToString()!),
             chatGptThreadId: chatbotMessages[0].FromThreadId,
             geminiThreadId: chatbotMessages[1].FromThreadId,
             title: chatbotMessages[2].Message
         ));
 
-        await this.unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync();
         
-        _ = this.unitOfWork.MessageRepository.Create(new OasisMessage(
+        _unitOfWork.MessageRepository.Create(new OasisMessage(
             from: "User",
             message: messageRequestDto.Message,
             oasisChatId: chat.OasisChatId,
             isSaved: true
         ));
 
-        await this.unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync();
         
         return StatusCode(201, new
         {
@@ -86,58 +84,52 @@ public class ChatController : ControllerBase
     [HttpPost("SendMessage/{oasisChatId:int}")]
     public async Task<IActionResult> SendMessageToChat(int oasisChatId, [FromBody] MessageRequestDto messageRequestDto)
     {
-        var chatExists = await this.unitOfWork
-            .ChatRepository
-            .GetAsync(c => c.OasisChatId == oasisChatId);
+        var chatExists = await _unitOfWork.ChatRepository.GetAsync(c => c.OasisChatId == oasisChatId);
 
         if (chatExists is null)
-        {
             return NotFound("This chat does not exist");
-        }
-
-        var userMessage = messageRequestDto.Message;
-
-        this.unitOfWork.MessageRepository.Create(new OasisMessage(
+        
+        _unitOfWork.MessageRepository.Create(new OasisMessage(
             from: "User",
-            message: userMessage,
+            message: messageRequestDto.Message,
             oasisChatId: chatExists.OasisChatId
         ));
 
-        await this.unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync();
 
-        var chatMessages = await this.unitOfWork
-            .MessageRepository
+        var chatMessages = await _unitOfWork.MessageRepository
             .GetAll()
             .Where(m => m.OasisChatId == oasisChatId)
             .ToListAsync();
         
-        var choosedChatbotMessage = chatMessages
+        var lastestChatbotMessage = chatMessages
             .Where(m => m.From != "User")
             .MaxBy(m => m.CreatedAt)!
             .Message;
-        var formattedUserMessage = OasisMessageFormatter.FormatToUserMessage(userMessage);
-        var formattedChatbotMessage = OasisMessageFormatter.FormatToChatbotMessage(choosedChatbotMessage);
-        var formattedMessage =  formattedChatbotMessage + "\n" + formattedUserMessage;
         
-        var tasks = new List<Task<OasisMessage>>();
+        var formattedMessageToGpt = OasisMessageFormatter
+            .FormatToChatbotAndUserMessage(lastestChatbotMessage, messageRequestDto.Message);
+        
+        var chatbotTasks = new List<Task<OasisMessage>>();
+        
         foreach (var chatBot in messageRequestDto.ChatBotEnums)
         {
             switch (chatBot)
             {
                 case ChatBotEnum.ChatGpt:
-                    tasks.Add(chatbotsService.SendMessageToGptChat(chatExists.ChatGptThreadId!, formattedMessage));
+                    chatbotTasks.Add(_chatbotsService.SendMessageToGptChat(chatExists.ChatGptThreadId!, formattedMessageToGpt));
                     break;
                 case ChatBotEnum.Gemini:
-                    tasks.Add(chatbotsService.SendMessageToGeminiChat(chatMessages));
+                    chatbotTasks.Add(_chatbotsService.SendMessageToGeminiChat(chatMessages));
                     break;
                 default:
                     return BadRequest("Invalid chatbot");
             }
         }
 
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(chatbotTasks);
         
-        var chatbotMessages = tasks
+        var chatbotMessages = chatbotTasks
             .Select(task => task.Result)
             .ToList();
 
@@ -148,18 +140,15 @@ public class ChatController : ControllerBase
     [HttpPost("SaveChatbotMessage")]
     public async Task<IActionResult> SaveChatbotMessage([FromBody] OasisMessage chatbotMessage)
     {
-        var chatExists = await this.unitOfWork
-            .ChatRepository
+        var chatExists = await _unitOfWork.ChatRepository
             .GetAsync(c => c.OasisChatId == chatbotMessage.OasisChatId);
         
-        if (chatExists is null)
-        {
+        if (chatExists is null) 
             return NotFound("This chat does not exist");
-        }
+        
+        _unitOfWork.MessageRepository.Create(chatbotMessage);
 
-        this.unitOfWork.MessageRepository.Create(chatbotMessage);
-
-        await this.unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync();
 
         return StatusCode(201, chatbotMessage);
     }

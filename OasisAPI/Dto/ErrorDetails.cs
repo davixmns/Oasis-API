@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace OasisAPI.Models;
+namespace OasisAPI.Dto;
 
 public class ErrorDetails
 {

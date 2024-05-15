@@ -14,7 +14,7 @@ public class OasisChat
     [StringLength(50)]
     public string? Title { get; set; }
     
-    public int UserId { get; set; }
+    public int OasisUserId { get; set; }
     
     [StringLength(100)]
     public string? ChatGptThreadId { get; set; }
@@ -30,12 +30,12 @@ public class OasisChat
     public DateTime CreatedAt { get; set; }
 
     public OasisChat(
-        int userId,
+        int oasisUserId,
         string? chatGptThreadId = null,
         string? geminiThreadId = null, 
         string? title = null)
     {
-        UserId = userId;
+        OasisUserId = oasisUserId;
         ChatGptThreadId = chatGptThreadId;
         GeminiThreadId = geminiThreadId;
         Messages = new Collection<OasisMessage>();

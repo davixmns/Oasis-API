@@ -4,7 +4,7 @@ using OasisAPI.Interfaces.Repositories;
 
 namespace OasisAPI.Repositories;
 
-public class UnitOfWork : IUnitOfWork
+public sealed class UnitOfWork : IUnitOfWork
 {
     private IUserRepository userRepository;
     private IChatRepository chatRepository;

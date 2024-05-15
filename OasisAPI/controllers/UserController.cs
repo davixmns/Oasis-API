@@ -6,20 +6,19 @@ namespace OasisAPI.controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public sealed class UserController : ControllerBase
 {
-    private readonly IUserService userService;
+    private readonly IUserService _userService;
     
     public UserController(IUserService userService)
     {
-        this.userService = userService;
+        _userService = userService;
     }
     
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] OasisUser userData)
     {
-        var createUserResult = await this.userService
-            .CreateUserAsync(userData);
+        var createUserResult = await _userService.CreateUserAsync(userData);
         
         if (!createUserResult.Success)
             return BadRequest(createUserResult);
