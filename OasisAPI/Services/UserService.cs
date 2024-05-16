@@ -21,12 +21,17 @@ public sealed class UserService : IUserService
     public async Task<OasisApiResponse<OasisUserDto>> CreateUserAsync(OasisUser userData)
     {
         var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.Email == userData.Email);
+        
         if (userExists is not null)
             return OasisApiResponse<OasisUserDto>.ErrorResponse("User already exists with this email");
+        
         userData.Password = PasswordHasher.Hash(userData.Password);
         var userCreated = _unitOfWork.UserRepository.Create(userData);
+        
         await _unitOfWork.CommitAsync();
+        
         var userDto = _mapper.Map<OasisUserDto>(userCreated);
+        
         return OasisApiResponse<OasisUserDto>.SuccessResponse(userDto);
     }
 }
