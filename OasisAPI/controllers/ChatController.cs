@@ -5,7 +5,6 @@ using OasisAPI.Enums;
 using OasisAPI.Interfaces.Clients;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
-using OasisAPI.Services;
 using OasisAPI.Utils;
 
 namespace OasisAPI.controllers;
@@ -18,7 +17,7 @@ public sealed class ChatController : ControllerBase
     private readonly IChatGptClient _chatGptClient;
     private readonly IGeminiClient _geminiClient;
 
-    public ChatController(ChatService chatService, IChatGptClient chatGptClient, IGeminiClient geminiClient)
+    public ChatController(IChatService chatService, IChatGptClient chatGptClient, IGeminiClient geminiClient)
     {
         _chatService = chatService;
         _chatGptClient = chatGptClient;
@@ -82,13 +81,13 @@ public sealed class ChatController : ControllerBase
             isSaved: true
         ));
 
-        var chatMessages = chat.Messages!.ToList();
-
+        var chatMessages = await _chatService.GetMessagesByChatId(oasisChatId);
+        
         var latestChatbotMessage = chatMessages.Last(m => m.From != "User").Message;
-
+        
         var formattedMessageToGpt = OasisMessageFormatter
             .FormatToChatbotAndUserMessage(latestChatbotMessage, messageRequestDto.Message);
-
+        
         var chatbotsTasks = new List<Task<OasisMessage>>();
 
         foreach (var chatBot in messageRequestDto.ChatBotEnums)

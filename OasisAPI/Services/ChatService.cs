@@ -44,4 +44,12 @@ public sealed class ChatService : IChatService
     {
         return await _unitOfWork.ChatRepository.GetAsync(c => c.OasisChatId == chatId);
     }
+    
+    public async Task<IList<OasisMessage>> GetMessagesByChatId(int chatId)
+    {
+        return await _unitOfWork.MessageRepository
+            .GetAll()
+            .Where(message => message.OasisChatId == chatId)
+            .ToListAsync();
+    }
 }

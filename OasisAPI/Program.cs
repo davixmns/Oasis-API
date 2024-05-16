@@ -44,6 +44,7 @@ builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
 
 //Serviços
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 //AutoMapper
