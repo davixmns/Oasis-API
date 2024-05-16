@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using OasisAPI.Clients;
 using OasisAPI.Config;
 using OasisAPI.Context;
 using OasisAPI.Dto;
 using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
+using OasisAPI.Interfaces.Clients;
 using OasisAPI.Interfaces.Repositories;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Middlewares;
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<OasisDbContext>(options =>
 //jwt
 builder.Services.AddAuthentication("CustomJwtAuth")
     .AddScheme<AuthenticationSchemeOptions, JwtAuthenticationMiddleware>("CustomJwtAuth", _ => {});
+
 //UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -40,7 +43,6 @@ builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemin
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
 
 //Serviços
-builder.Services.AddScoped<IChatbotsService, ChatbotsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
@@ -51,6 +53,10 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+//Clientes
+builder.Services.AddScoped<IChatGptClient, ChatGptClient>();
+builder.Services.AddScoped<IGeminiClient, GeminiClient>();
 
 var app = builder.Build();
 
