@@ -19,7 +19,7 @@ public sealed class ChatService : IChatService
         var chats = await _unitOfWork.ChatRepository
             .GetAll()
             .Where(chat => chat.OasisUserId == userId)
-            .Include(chat => chat.Messages)
+            .Include(chat => chat.Messages!.OrderByDescending(m => m.OasisMessageId))
             .ToListAsync();
         
         return chats;

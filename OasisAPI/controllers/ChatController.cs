@@ -47,14 +47,14 @@ public sealed class ChatController : ControllerBase
         await Task.WhenAll(tasks);
 
         var chatbotMessages = tasks.Select(task => task.Result).ToList();
-
+        
         var createdChat = await _chatService.CreateChatAsync(new OasisChat(
             oasisUserId: int.Parse(HttpContext.Items["UserId"]!.ToString()!),
             chatGptThreadId: chatbotMessages[0].FromThreadId,
             geminiThreadId: chatbotMessages[1].FromThreadId,
             title: chatbotMessages[2].Message
         ));
-
+        
         await _chatService.CreateMessageAsync(new OasisMessage(
             from: "User",
             message: messageRequestDto.Message,

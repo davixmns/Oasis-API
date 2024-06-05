@@ -7,13 +7,16 @@ namespace OasisAPI.Models;
 [Table("oasis_messages")]
 public class OasisMessage
 {
-    [Key] public int OasisMessageId { get; set; }
+    [Key] 
+    public int OasisMessageId { get; set; }
 
     public int? OasisChatId { get; set; }
 
-    [Required] [StringLength(50)] public string From { get; set; }
+    [Required] [StringLength(50)] 
+    public string From { get; set; }
 
-    [Required] public string Message { get; set; }
+    [Required] 
+    public string Message { get; set; }
 
     public string? FromThreadId { get; set; }
 
@@ -23,7 +26,8 @@ public class OasisMessage
 
     public DateTime CreatedAt { get; set; }
 
-    [JsonIgnore] public OasisChat? Chat { get; set; }
+    [JsonIgnore]
+    public OasisChat? Chat { get; set; }
 
     public OasisMessage(string from, string message,
         string? fromMessageId = null,
@@ -41,7 +45,7 @@ public class OasisMessage
         CreatedAt = DateTime.UtcNow;
         IsSaved = isSaved;
     }
-
+    
     public OasisMessage()
     {
         CreatedAt = DateTime.UtcNow;
