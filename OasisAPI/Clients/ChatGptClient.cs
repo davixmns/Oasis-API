@@ -28,7 +28,7 @@ public class ChatGptClient : IChatGptClient
         
         var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(formatedUserMessage);
         
-        var run = await thread.CreateRunAsync(assistantId: _chatGptConfig.AssistantId);
+        var run = await thread.CreateRunAsync(new CreateRunRequest(assistantId: _chatGptConfig.AssistantId));
         run = await run.WaitForStatusChangeAsync();
         
         var messageList = await run.ListMessagesAsync();
