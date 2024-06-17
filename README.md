@@ -40,4 +40,4 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 
 ## Arquitetura
 
-![Arquitetura](xxx)
+![arq](https://github.com/davixmns/Oasis-API/assets/82062555/65407a89-d77d-4907-a94a-8af6ed81bb35)
