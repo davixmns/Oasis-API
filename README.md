@@ -1,8 +1,8 @@
-# Oasis WebAPI
+# WebAPI Oasis
 
-Trabalho de conclusão de curso contemplado com nota **9** na graduação de Ciência da Computação na Universidade de Fortaleza.
+Trabalho de conclusão de curso contemplado com nota **9** na graduação de Ciência da Computação da Universidade de Fortaleza.
 
-## Introdução
+## 🌟 Sobre o Projeto
 
 WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móvel para interagir simultaneamente com múltiplos chatbots baseados em LLM.
 
@@ -11,14 +11,14 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 - Google Gemini 1.0 Pro
 - OpenAI GPT-4
 
-## Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas
 
 - [x] WebAPI ASP .NET Core 8.0
 - [x] Banco de dados MySQL
 - [ ] Docker
 - [ ] Nuvem AWS (EC2)
 
-## Pacotes
+## 📦 Pacotes
 - AutoMapper
 - Google_GenerativeAI
 - OpenAI-DotNet
@@ -29,7 +29,7 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 - Microsoft.EntityFrameworkCore.Design
 - Pomelo.EntityFrameworkCore.MySql
 
-## Padrões Utilizados
+## 🏗 Padrões Utilizados
 
 - MVC
 - Service Layer
@@ -38,6 +38,6 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 - Wrapper
 - DTO
 
-## Arquitetura
+## 🌐 Arquitetura
 
 ![arq](https://github.com/davixmns/Oasis-API/assets/82062555/65407a89-d77d-4907-a94a-8af6ed81bb35)
