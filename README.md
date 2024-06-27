@@ -9,7 +9,7 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 ## LLMs Integrados
 
 - Google Gemini 1.0 Pro
-- OpenAI GPT-4
+- OpenAI GPT-4o
 
 ## 🛠 Tecnologias Utilizadas
 
