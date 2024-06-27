@@ -28,6 +28,7 @@ WebAPI do projeto [Oasis](https://github.com/davixmns/Oasis), um aplicativo móv
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.Design
 - Pomelo.EntityFrameworkCore.MySql
+- DotNetEnv
 
 ## 🏗 Padrões Utilizados
 
