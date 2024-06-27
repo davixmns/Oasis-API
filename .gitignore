@@ -1,0 +1,3 @@
+# Ignore hidden folders
+.idea/
+.DS_STORE
