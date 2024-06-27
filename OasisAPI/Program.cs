@@ -16,8 +16,17 @@ using OasisAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//MySql
-var mysqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+DotNetEnv.Env.Load();
+var mysqlConnection = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")!;
+var chatGptApiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY")!;
+var chatGptAssistantId = Environment.GetEnvironmentVariable("CHATGPT_ASSISTANT_ID")!;
+var geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY")!;
+var geminiModel = Environment.GetEnvironmentVariable("GEMINI_MODEL")!;
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")!;
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")!;
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")!;
+int.TryParse(Environment.GetEnvironmentVariable("ACCESS_TOKEN_EXPIRY")!, out var accessTokenExpiry);
+int.TryParse(Environment.GetEnvironmentVariable("REFRESH_TOKEN_EXPIRY")!, out var refreshTokenExpiry);
 
 //Serviço EF
 builder.Services.AddDbContext<OasisDbContext>(options =>
@@ -38,9 +47,26 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 //Configuradores de Serviços
-builder.Services.Configure<ChatGptConfig>(builder.Configuration.GetSection("ChatGPT"));
-builder.Services.Configure<GeminiConfig>(builder.Configuration.GetSection("Gemini"));
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<ChatGptConfig>(config =>
+{
+    config.ApiKey = chatGptApiKey;
+    config.AssistantId = chatGptAssistantId;
+});
+
+builder.Services.Configure<GeminiConfig>(config =>
+{
+    config.ApiKey = geminiApiKey;
+    config.Model = geminiModel;
+});
+
+builder.Services.Configure<JwtConfig>(config =>
+{
+    config.SecretKey = jwtSecret;
+    config.Issuer = jwtIssuer;
+    config.Audience = jwtAudience;
+    config.AccessTokenExpiry = accessTokenExpiry;
+    config.RefreshTokenExpiry = refreshTokenExpiry;
+});
 
 //Serviços
 builder.Services.AddScoped<IUserService, UserService>();
@@ -71,7 +97,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseMiddleware<JwtMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
