@@ -31,20 +31,18 @@ public sealed class AuthController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginData)
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
     {
-        var userExists = await _unitOfWork
-            .UserRepository
-            .GetAsync(u => u.Email == loginData.Email);
+        var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.Email == loginRequestDto.Email);
 
         if (userExists is null)
-            return NotFound("User not found");
+            return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
 
-        var passwordIsCorrect = PasswordHasher.Verify(loginData.Password!, userExists.Password);
+        var passwordIsCorrect = PasswordHasher.Verify(loginRequestDto.Password!, userExists.Password);
 
         if (!passwordIsCorrect)
-            return Unauthorized("Incorrect password");
+            return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
 
         List<Claim> userClaims =
         [
@@ -75,16 +73,17 @@ public sealed class AuthController : ControllerBase
             }
         };
 
-        return Ok(tokenResponse);
+        return Ok(OasisApiResponse<TokenResponseDto>.SuccessResponse(tokenResponse));
     }
 
-    [HttpPost("refresh-token")]
+    [HttpPost("RefreshToken")]
     public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenRequestDto tokenRequestDto)
     {
         var principal = _tokenService.ExtractClaimsFromExpiredAccessToken(tokenRequestDto.AccessToken!);
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (userId is null) return BadRequest("Invalid token");
+        if (userId is null) 
+            return BadRequest("Invalid token");
 
         var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == int.Parse(userId));
 

@@ -4,7 +4,6 @@ using OasisAPI.Clients;
 using OasisAPI.Config;
 using OasisAPI.Context;
 using OasisAPI.Dto;
-using OasisAPI.Extensions;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Clients;
 using OasisAPI.Interfaces.Repositories;
@@ -91,6 +90,8 @@ app.Urls.Add("http://0.0.0.0:5013");
 
 DatabaseConnectionTester.TestConnection(app.Services);
 
+app.UseMiddleware<GlobalExceptionHandler>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -100,7 +101,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.ConfigureExceptionHandler(app.Environment);
 app.MapControllers();
 app.MapGet("/", () => "Oasis API!");
 app.Run();
