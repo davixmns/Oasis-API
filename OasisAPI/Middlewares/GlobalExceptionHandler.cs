@@ -1,3 +1,4 @@
+using OasisAPI.Exceptions;
 using OasisAPI.Models;
 
 namespace OasisAPI.Middlewares;
@@ -21,7 +22,10 @@ public class GlobalExceptionHandler
         }
         catch (Exception ex)
         {
-            await HandleCriticalExceptionAsync(context, ex);
+            if (ex is OasisException)
+                await HandleNonCriticalExceptionAsync(context, ex);
+            else 
+                await HandleCriticalExceptionAsync(context, ex);
         }
     }
 

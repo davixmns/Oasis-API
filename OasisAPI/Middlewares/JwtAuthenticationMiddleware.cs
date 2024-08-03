@@ -23,30 +23,26 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var token = Request.Headers.Authorization.FirstOrDefault()?.Split(' ').Last();
-
-        if (string.IsNullOrEmpty(token))
-        {
-            return AuthenticateResult.Fail("No token provided.");
-        }
         
-        try
-        {
-            var claims = _tokenService.ValidateToken(token);
-            var principal = new ClaimsPrincipal(claims);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
-            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId is null)
-            {
-                return AuthenticateResult.Fail("Invalid token.");
-            }
-            Context.Items["UserId"] = int.Parse(userId);
-            return AuthenticateResult.Success(ticket);
-        }
-        catch (Exception ex)
-        {
-            return AuthenticateResult.Fail($"Authentication failed: {ex.Message}");
-        }
+        if (token is null)
+            return AuthenticateResult.Fail("No token provided.");
+
+        var validatedToken = _tokenService.ValidateAccessToken(token);
+
+        if (!validatedToken.Success)
+            return AuthenticateResult.Fail("Invalid Token");
+
+        var claimsPrincipal = new ClaimsPrincipal(validatedToken.Data!);
+        
+        var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId is null)
+            return AuthenticateResult.Fail("Invalid token.");
+        
+        Context.Items["UserId"] = int.Parse(userId);
+        
+        var ticket = new AuthenticationTicket(claimsPrincipal, Scheme.Name);
+        
+        return AuthenticateResult.Success(ticket);
     }
-    
-    
 }

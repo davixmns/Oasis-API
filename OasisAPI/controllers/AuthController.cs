@@ -34,46 +34,41 @@ public sealed class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
     {
-        var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.Email == loginRequestDto.Email);
+        var oasisUser = await _unitOfWork.UserRepository.GetAsync(u => u.Email == loginRequestDto.Email);
 
-        if (userExists is null)
+        if (oasisUser is null)
             return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
 
-        var passwordIsCorrect = PasswordHasher.Verify(loginRequestDto.Password!, userExists.Password);
+        var passwordIsCorrect = PasswordHasher.Verify(loginRequestDto.Password!, oasisUser.Password);
 
         if (!passwordIsCorrect)
             return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
 
         List<Claim> userClaims =
         [
-            new Claim(ClaimTypes.NameIdentifier, userExists.OasisUserId.ToString()),
-            new Claim(ClaimTypes.Email, userExists.Email),
+            new Claim(ClaimTypes.NameIdentifier, oasisUser.OasisUserId.ToString()),
+            new Claim(ClaimTypes.Email, oasisUser.Email),
         ];
 
         var accessToken = _tokenService.GenerateAccessToken(userClaims);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
-        userExists.RefreshToken = refreshToken;
-        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry!.Value);
+        oasisUser.RefreshToken = refreshToken;
+        oasisUser.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry);
 
-        _unitOfWork.UserRepository.Update(userExists);
+        _unitOfWork.UserRepository.Update(oasisUser);
 
         await _unitOfWork.CommitAsync();
 
-        var tokenResponse = new TokenResponseDto()
+        var loginResponseDto = new LoginResponseDto()
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = refreshToken,
-            RefreshTokenExpiryDateTime = userExists.RefreshTokenExpiryDateTime,
-            OasisUser = new OasisUserDto()
-            {
-                OasisUserId = userExists.OasisUserId,
-                Name = userExists.Name!,
-                Email = userExists.Email
-            }
+            RefreshTokenExpiryDateTime = oasisUser.RefreshTokenExpiryDateTime,
+            OasisUserResponse = _mapper.Map<OasisUserResponseDto>(oasisUser)
         };
 
-        return Ok(OasisApiResponse<TokenResponseDto>.SuccessResponse(tokenResponse));
+        return Ok(OasisApiResponse<LoginResponseDto>.SuccessResponse(loginResponseDto));
     }
 
     [HttpPost("RefreshToken")]
@@ -95,13 +90,13 @@ public sealed class AuthController : ControllerBase
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         userExists.RefreshToken = refreshToken;
-        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry!.Value);
+        userExists.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry);
 
         _unitOfWork.UserRepository.Update(userExists);
 
         await _unitOfWork.CommitAsync();
 
-        var tokenResponse = new TokenResponseDto()
+        var tokenResponse = new LoginResponseDto()
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = refreshToken,
@@ -119,8 +114,8 @@ public sealed class AuthController : ControllerBase
         
         var user = await _unitOfWork.UserRepository.GetAsync(u => u.OasisUserId == userId);
         
-        var userDto = _mapper.Map<OasisUserDto>(user);
+        var userDto = _mapper.Map<OasisUserResponseDto>(user);
         
-        return Ok(OasisApiResponse<OasisUserDto>.SuccessResponse(userDto));
+        return Ok(OasisApiResponse<OasisUserResponseDto>.SuccessResponse(userDto));
     }
 }

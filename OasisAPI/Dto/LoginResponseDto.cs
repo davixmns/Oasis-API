@@ -1,9 +1,9 @@
 namespace OasisAPI.Dto;
 
-public class TokenResponseDto
+public class LoginResponseDto
 {
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
     public DateTime RefreshTokenExpiryDateTime { get; set; }
-    public OasisUserDto OasisUser { get; set; }
+    public OasisUserResponseDto OasisUserResponse { get; set; }
 }

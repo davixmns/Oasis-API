@@ -37,32 +37,54 @@ public sealed class ChatController : ControllerBase
     [HttpPost("SendFirstMessage")]
     public async Task<IActionResult> SendFirstMessage([FromBody] MessageRequestDto messageRequestDto)
     {
-        var tasks = new List<Task<OasisMessage>>
-        {
-            _chatGptClient.CreateChatAndSendMessage(messageRequestDto.Message),
-            _geminiClient.CreateChatAndSendMessageAsync(messageRequestDto.Message),
-            _geminiClient.GetChatTitleAsync(messageRequestDto.Message)
-        };
-
-        await Task.WhenAll(tasks);
-
-        var chatbotMessages = tasks.Select(task => task.Result).ToList();
+        var chatbotTasks = new List<Task<OasisMessage>>();
         
+        //Get chat title
+        chatbotTasks.Add(_geminiClient.GetChatTitleAsync(messageRequestDto.Message));
+
+        //Filtering messages to chatbots
+        foreach (var chatBotNumber in messageRequestDto.ChatBotEnums)
+        {
+            switch (chatBotNumber)
+            {
+                case ChatBotEnum.ChatGpt:
+                    chatbotTasks.Add(_chatGptClient.CreateChatAndSendMessage(messageRequestDto.Message));
+                    break;
+                case ChatBotEnum.Gemini:
+                    chatbotTasks.Add(_geminiClient.CreateChatAndSendMessageAsync(messageRequestDto.Message));
+                    break;
+                default:
+                    return BadRequest("Invalid chatbot");
+            }
+        }
+
+        await Task.WhenAll(chatbotTasks); // Wait for all chatbots to respond parallelly
+
+        var chatbotMessages = chatbotTasks.Select(task => task.Result).ToList();
+        
+        // Save chat
         var createdChat = await _chatService.CreateChatAsync(new OasisChat(
             oasisUserId: int.Parse(HttpContext.Items["UserId"]!.ToString()!),
-            chatGptThreadId: chatbotMessages[0].FromThreadId,
-            geminiThreadId: chatbotMessages[1].FromThreadId,
-            title: chatbotMessages[2].Message
+            title: chatbotMessages[0].Message ?? "Untitled",
+            chatGptThreadId: chatbotMessages[1].FromThreadId ?? null,
+            geminiThreadId: chatbotMessages[2].FromThreadId ?? null
         ));
         
+        // Save user message
         await _chatService.CreateMessageAsync(new OasisMessage(
             from: "User",
             message: messageRequestDto.Message,
             oasisChatId: createdChat.OasisChatId,
             isSaved: true
         ));
+        
+        var response = new
+        {
+            chat = createdChat,
+            chatbotMessages = chatbotMessages.Skip(1)
+        };
 
-        return StatusCode(201, new { chat = createdChat, chatbotMessages });
+        return StatusCode(StatusCodes.Status201Created, response);
     }
 
     [Authorize]

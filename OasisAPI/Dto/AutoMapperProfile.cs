@@ -8,8 +8,8 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<OasisUser, OasisUserDto>();
-        CreateMap<OasisUserDto, OasisUser>();
+        CreateMap<OasisUser, OasisUserResponseDto>();
+        CreateMap<OasisUserResponseDto, OasisUser>();
         
         //ChatGPTMessage -> OasisMessage
         CreateMap<MessageResponse, OasisMessage>()
