@@ -37,12 +37,12 @@ public sealed class AuthController : ControllerBase
         var oasisUser = await _unitOfWork.UserRepository.GetAsync(u => u.Email == loginRequestDto.Email);
 
         if (oasisUser is null)
-            return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
+            return BadRequest(OasisApiResult<string>.ErrorResponse("Email or password is incorrect"));
 
         var passwordIsCorrect = PasswordHasher.Verify(loginRequestDto.Password!, oasisUser.Password);
 
         if (!passwordIsCorrect)
-            return BadRequest(OasisApiResponse<string>.ErrorResponse("Email or password is incorrect"));
+            return BadRequest(OasisApiResult<string>.ErrorResponse("Email or password is incorrect"));
 
         List<Claim> userClaims =
         [
@@ -68,7 +68,7 @@ public sealed class AuthController : ControllerBase
             OasisUserResponse = _mapper.Map<OasisUserResponseDto>(oasisUser)
         };
 
-        return Ok(OasisApiResponse<LoginResponseDto>.SuccessResponse(loginResponseDto));
+        return Ok(OasisApiResult<LoginResponseDto>.SuccessResponse(loginResponseDto));
     }
 
     [HttpPost("RefreshToken")]
@@ -116,6 +116,6 @@ public sealed class AuthController : ControllerBase
         
         var userDto = _mapper.Map<OasisUserResponseDto>(user);
         
-        return Ok(OasisApiResponse<OasisUserResponseDto>.SuccessResponse(userDto));
+        return Ok(OasisApiResult<OasisUserResponseDto>.SuccessResponse(userDto));
     }
 }

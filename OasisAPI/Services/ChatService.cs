@@ -40,7 +40,7 @@ public sealed class ChatService : IChatService
         return createdMessage;
     }
 
-    public async Task<OasisChat?> GetChatById(int chatId)
+    public async Task<OasisChat?> GetChatByIdAsync(int chatId)
     {
         return await _unitOfWork.ChatRepository.GetAsync(c => c.OasisChatId == chatId);
     }

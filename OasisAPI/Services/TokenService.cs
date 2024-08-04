@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OasisAPI.Config;
+using OasisAPI.Exceptions;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
@@ -47,7 +48,7 @@ public sealed class TokenService : ITokenService
         return refreshToken;
     }
 
-    public OasisApiResponse<ClaimsPrincipal> ValidateAccessToken(string token)
+    public ClaimsPrincipal? ValidateAccessToken(string token)
     {
         var validationParameters = new TokenValidationParameters
         {
@@ -60,13 +61,21 @@ public sealed class TokenService : ITokenService
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
-        
-        var principal = new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out var securityToken);
-        
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-            return OasisApiResponse<ClaimsPrincipal>.ErrorResponse("Invalid token");
+        try
+        {
+            var principal = new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out var securityToken);
 
-        return OasisApiResponse<ClaimsPrincipal>.SuccessResponse(principal);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+                return null;
+
+            return principal;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
 

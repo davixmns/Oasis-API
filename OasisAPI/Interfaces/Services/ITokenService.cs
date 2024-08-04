@@ -8,6 +8,6 @@ public interface ITokenService
 {
     JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims);
     string GenerateRefreshToken();
-    OasisApiResponse<ClaimsPrincipal> ValidateAccessToken(string token);
+    ClaimsPrincipal? ValidateAccessToken(string token);
     ClaimsPrincipal ExtractClaimsFromExpiredAccessToken(string expiredAccessToken);
 }

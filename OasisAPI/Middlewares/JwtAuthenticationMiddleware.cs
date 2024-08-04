@@ -25,14 +25,12 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
         var token = Request.Headers.Authorization.FirstOrDefault()?.Split(' ').Last();
         
         if (token is null)
-            return AuthenticateResult.Fail("No token provided.");
+            return AuthenticateResult.Fail("Token not found.");
 
-        var validatedToken = _tokenService.ValidateAccessToken(token);
+        var claimsPrincipal = _tokenService.ValidateAccessToken(token);
 
-        if (!validatedToken.Success)
-            return AuthenticateResult.Fail("Invalid Token");
-
-        var claimsPrincipal = new ClaimsPrincipal(validatedToken.Data!);
+        if (claimsPrincipal is null)
+            return AuthenticateResult.Fail("Invalid token.");
         
         var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 

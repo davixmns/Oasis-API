@@ -1,23 +1,23 @@
 namespace OasisAPI.Models;
 
-public class OasisApiResponse<T>
+public class OasisApiResult<T>
 {
     public bool Success { get; set; }
     public T? Data { get; set; }
     public string? Message { get; set; }
     
-    public static OasisApiResponse<T> SuccessResponse(T data)
+    public static OasisApiResult<T> SuccessResponse(T data)
     {
-        return new OasisApiResponse<T>
+        return new OasisApiResult<T>
         {
             Success = true,
             Data = data
         };
     }
     
-    public static OasisApiResponse<T> ErrorResponse(string message)
+    public static OasisApiResult<T> ErrorResponse(string message)
     {
-        return new OasisApiResponse<T>
+        return new OasisApiResult<T>
         {
             Success = false,
             Message = message

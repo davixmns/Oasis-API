@@ -18,12 +18,12 @@ public sealed class UserService : IUserService
         _mapper = mapper;
     }
     
-    public async Task<OasisApiResponse<OasisUserResponseDto>> CreateUserAsync(OasisUser userData)
+    public async Task<OasisApiResult<OasisUserResponseDto>> CreateUserAsync(OasisUser userData)
     {
         var userExists = await _unitOfWork.UserRepository.GetAsync(u => u.Email == userData.Email);
         
         if (userExists is not null)
-            return OasisApiResponse<OasisUserResponseDto>.ErrorResponse("User already exists with this email");
+            return OasisApiResult<OasisUserResponseDto>.ErrorResponse("User already exists with this email");
         
         userData.Password = PasswordHasher.Hash(userData.Password);
         var userCreated = _unitOfWork.UserRepository.Create(userData);
@@ -32,6 +32,6 @@ public sealed class UserService : IUserService
         
         var userDto = _mapper.Map<OasisUserResponseDto>(userCreated);
         
-        return OasisApiResponse<OasisUserResponseDto>.SuccessResponse(userDto);
+        return OasisApiResult<OasisUserResponseDto>.SuccessResponse(userDto);
     }
 }
