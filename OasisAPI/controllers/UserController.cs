@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OasisAPI.Dto;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 
@@ -22,7 +23,7 @@ public sealed class UserController : ControllerBase
         
         if (!createUserResult.Success)
             return BadRequest(createUserResult);
-        
+
         return Ok(createUserResult);
     }
 }

@@ -118,10 +118,10 @@ public sealed class ChatController : ControllerBase
         {
             switch (chatBot)
             {
-                case ChatBotEnum.ChatGpt:
+                case ChatBotsEnum.ChatGpt:
                     chatbotsTasks.Add(_chatGptClient.CreateChatAndSendMessage(messageRequestDto.Message));
                     break;
-                case ChatBotEnum.Gemini:
+                case ChatBotsEnum.Gemini:
                     chatbotsTasks.Add(_geminiClient.CreateChatAndSendMessageAsync(messageRequestDto.Message));
                     break;
                 default:
@@ -132,7 +132,7 @@ public sealed class ChatController : ControllerBase
         return await ExecuteChatbotTasks(chatbotsTasks);
     }
 
-    private async Task<List<OasisMessage>> SendMessageToChatbotsThreads(IEnumerable<ChatBotEnum> chatBotEnums, OasisChat chat, string formattedMessage)
+    private async Task<List<OasisMessage>> SendMessageToChatbotsThreads(IEnumerable<ChatBotsEnum> chatBotEnums, OasisChat chat, string formattedMessage)
     {
         var chatbotsTasks = new List<Task<OasisMessage>>();
 
@@ -140,10 +140,10 @@ public sealed class ChatController : ControllerBase
         {
             switch (chatBot)
             {
-                case ChatBotEnum.ChatGpt:
+                case ChatBotsEnum.ChatGpt:
                     chatbotsTasks.Add(_chatGptClient.SendMessageToChat(chat.ChatGptThreadId!, formattedMessage));
                     break;
-                case ChatBotEnum.Gemini:
+                case ChatBotsEnum.Gemini:
                     chatbotsTasks.Add(_geminiClient.SendMessageToChatAsync(chat.Messages));
                     break;
                 default:

@@ -12,5 +12,5 @@ public class MessageRequestDto
     
     [Required]
     [MinLength(1)] //min of 1 chatbot
-    public HashSet<ChatBotEnum> ChatBotEnums { get; set; }
+    public HashSet<ChatBotsEnum> ChatBotEnums { get; set; }
 }
