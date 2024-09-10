@@ -1,10 +1,9 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.Infra.Repositories;
-using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 
-namespace OasisAPI.Services;
+namespace OasisAPI.App.Services;
 
 public sealed class ChatService : IChatService
 {

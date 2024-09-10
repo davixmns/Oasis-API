@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using OasisAPI.App.Interfaces.Services;
 using OasisAPI.Interfaces.Services;
 
 namespace OasisAPI.Middlewares;

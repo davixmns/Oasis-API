@@ -1,17 +1,22 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using OasisAPI.App.Commands;
 using OasisAPI.App.Config;
 using OasisAPI.App.Dto;
+using OasisAPI.App.Interfaces.Services;
 using OasisAPI.App.Mapper;
+using OasisAPI.App.Services;
+using OasisAPI.App.Validators;
 using OasisAPI.Infra.Clients;
 using OasisAPI.Infra.Context;
 using OasisAPI.Infra.Mapper;
 using OasisAPI.Infra.Repositories;
+using OasisAPI.Infra.Utils;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Middlewares;
-using OasisAPI.Services;
-using OasisAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +36,13 @@ int.TryParse(Environment.GetEnvironmentVariable("REFRESH_TOKEN_EXPIRY")!, out va
 builder.Services.AddDbContext<OasisDbContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection))
 );
+
+//MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<LoginCommand>());
+
+//FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 //jwt
 builder.Services.AddAuthentication("CustomJwtAuth")

@@ -1,14 +1,12 @@
 using AutoMapper;
 using Domain.Entities;
-using OasisAPI.App.Dto;
 using OasisAPI.App.Dto.Response;
 using OasisAPI.Infra.Repositories;
 using OasisAPI.Infra.Utils;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
-using OasisAPI.Utils;
 
-namespace OasisAPI.Services;
+namespace OasisAPI.App.Services;
 
 public sealed class UserService : IUserService
 {

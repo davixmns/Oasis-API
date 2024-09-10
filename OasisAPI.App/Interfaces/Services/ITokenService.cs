@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace OasisAPI.Interfaces.Services;
+namespace OasisAPI.App.Interfaces.Services;
 
 public interface ITokenService
 {
@@ -9,4 +9,5 @@ public interface ITokenService
     string GenerateRefreshToken();
     ClaimsPrincipal? ValidateAccessToken(string token);
     ClaimsPrincipal ExtractClaimsFromExpiredAccessToken(string expiredAccessToken);
+    DateTime GetRefreshTokenExpiryDateTime();
 }

@@ -23,6 +23,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateOasisUserCommand, 
     public async Task<AppResult<OasisUserResponseDto>> Handle(CreateOasisUserCommand request, CancellationToken cancellationToken)
     {
         var hashedPassword = PasswordHasher.Hash(request.Password);
+        
         var user = new OasisUser(request.Name, request.Email, hashedPassword);
         
         var createdUser = _unitOfWork.GetRepository<OasisUser>().Create(user);

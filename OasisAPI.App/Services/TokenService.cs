@@ -4,10 +4,10 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using OasisAPI.App.Config;
-using OasisAPI.Interfaces.Services;
+using OasisAPI.App.Interfaces.Services;
 using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
 
-namespace OasisAPI.Services;
+namespace OasisAPI.App.Services;
 
 public sealed class TokenService : ITokenService
 {
@@ -97,5 +97,10 @@ public sealed class TokenService : ITokenService
             throw new SecurityTokenException("Invalid token");
 
         return principal;
+    }
+    
+    public DateTime GetRefreshTokenExpiryDateTime()
+    {
+        return DateTime.UtcNow.AddMinutes(_jwtConfig.RefreshTokenExpiry);
     }
 }
