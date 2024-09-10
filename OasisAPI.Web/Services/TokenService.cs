@@ -2,12 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OasisAPI.Config;
-using OasisAPI.Exceptions;
+using OasisAPI.App.Config;
 using OasisAPI.Interfaces.Services;
-using OasisAPI.Models;
 using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
 
 namespace OasisAPI.Services;
@@ -16,9 +13,9 @@ public sealed class TokenService : ITokenService
 {
     private readonly JwtConfig _jwtConfig;
 
-    public TokenService(IOptions<JwtConfig> jwtConfig)
+    public TokenService(JwtConfig jwtConfig)
     {
-        _jwtConfig = jwtConfig.Value;
+        _jwtConfig = jwtConfig;
     }
 
     public JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims)

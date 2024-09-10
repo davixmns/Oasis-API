@@ -1,7 +1,9 @@
 using AutoMapper;
 using Domain.Entities;
-using OasisAPI.Dto;
-using OasisAPI.Interfaces;
+using OasisAPI.App.Dto;
+using OasisAPI.App.Dto.Response;
+using OasisAPI.Infra.Repositories;
+using OasisAPI.Infra.Utils;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 using OasisAPI.Utils;
@@ -19,12 +21,12 @@ public sealed class UserService : IUserService
         _mapper = mapper;
     }
     
-    public async Task<OasisApiResult<OasisUserResponseDto>> CreateUserAsync(OasisUser userData)
+    public async Task<AppResult<OasisUserResponseDto>> CreateUserAsync(OasisUser userData)
     {
         var userExists = await _unitOfWork.GetRepository<OasisUser>().GetAsync(u => u.Email == userData.Email);
         
         if (userExists is not null)
-            return OasisApiResult<OasisUserResponseDto>.ErrorResponse("User already exists with this email");
+            return AppResult<OasisUserResponseDto>.ErrorResponse("User already exists with this email");
         
         userData.Password = PasswordHasher.Hash(userData.Password);
         var userCreated = _unitOfWork.GetRepository<OasisUser>().Create(userData);
@@ -33,6 +35,6 @@ public sealed class UserService : IUserService
         
         var userDto = _mapper.Map<OasisUserResponseDto>(userCreated);
         
-        return OasisApiResult<OasisUserResponseDto>.SuccessResponse(userDto);
+        return AppResult<OasisUserResponseDto>.SuccessResponse(userDto);
     }
 }

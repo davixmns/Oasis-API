@@ -10,90 +10,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/BaseEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.Domain/OasisAPI.Domain.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.sln" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Clients/ChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Clients/ChatGptClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Clients/GeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Clients/GeminiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Config/ChatGptConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Config/ChatGptConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Config/GeminiConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Config/GeminiConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Config/JwtConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Config/JwtConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Context/OasisDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Context/OasisDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/AutoMapperProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/AutoMapperProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/LoginRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/LoginRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/LoginResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/LoginResponseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/MessageRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/MessageRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/OasisUserResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/OasisUserResponseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Dto/TokenRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Dto/TokenRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Enums/ChatBotsEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Enums/ChatBotsEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Exceptions/OasisException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Exceptions/OasisException.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Clients/IChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Clients/IChatGptClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Clients/IGeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Clients/IGeminiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/IChatbotService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/IChatbotService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/IUnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/IUnitOfWork.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Repositories/IChatRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IChatRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Repositories/IGenericRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Repositories/IMessageRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IMessageRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Repositories/IUserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IUserRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Services/IChatService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IChatService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Services/ITokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/ITokenService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Interfaces/Services/IUserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IUserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Middlewares/GlobalExceptionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/GlobalExceptionHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240415224419_fisrt.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240415224419_fisrt.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240417214756_formatting.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240417214756_formatting.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422172059_adjust.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422172059_adjust.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422174216_password_correction.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422174216_password_correction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422174558_password_correction2.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240422174558_password_correction2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240427023347_refreshtoken.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240427023347_refreshtoken.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240502183137_adjust3.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240502183137_adjust3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240503135953_chatTitle.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240503135953_chatTitle.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240508193919_isSavedAttribute.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240508193919_isSavedAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240508200711_isSavedAttribute2.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240508200711_isSavedAttribute2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240509170310_chat_title.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240509170310_chat_title.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240515191444_rename_UserId.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/20240515191444_rename_UserId.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Migrations/OasisDbContextModelSnapshot.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Models/ConversationRequest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Models/OasisChat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/OasisChat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Models/OasisMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/OasisMessage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Models/OasisUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/OasisUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/OasisAPI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/OasisAPI.http" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Repositories/ChatRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Repositories/ChatRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Repositories/GenericRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Repositories/Repository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Repositories/MessageRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Repositories/MessageRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Repositories/UnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Repositories/UnitOfWork.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Repositories/UserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Repositories/UserRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Services/ChatService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/ChatService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Services/TokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/TokenService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/UserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Utils/DatabaseConnectionTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Utils/DatabaseConnectionTester.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Utils/OasisMessageFormatter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Utils/OasisMessageFormatter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Utils/PasswordHasher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Utils/PasswordHasher.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Utils/PromptForChatbots.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Utils/PromptForChatbots.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/Wrappers/OasisApiResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Wrappers/OasisApiResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/controllers/ChatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI/controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/OasisAPI.Infra.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/OasisAPI.Infra.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Clients/ChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Clients/ChatGptClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Clients/GeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Clients/GeminiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Config/ChatGptConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Config/ChatGptConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Config/GeminiConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Config/GeminiConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Config/JwtConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Config/JwtConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Context/OasisDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Context/OasisDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/AutoMapperProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/AutoMapperProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/LoginRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/LoginRequestDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/LoginResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/LoginResponseDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/MessageRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/MessageRequestDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/OasisUserResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/OasisUserResponseDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Dto/TokenRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/TokenRequestDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Enums/ChatBotsEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Enums/ChatBotsEnum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Clients/IChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Clients/IChatGptClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Clients/IGeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Clients/IGeminiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/IUnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Repositories/IUnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IChatRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IMessageRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Repositories/IRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Repositories/IUserRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IUserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IUserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Repositories/ChatRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Repositories/MessageRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Repositories/Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Repositories/UnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Repositories/UnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Repositories/UserRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/ChatService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/ChatService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/TokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/TokenService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Utils/DatabaseConnectionTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Utils/DatabaseConnectionTester.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Utils/OasisMessageFormatter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Utils/OasisMessageFormatter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Utils/PromptForChatbots.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Utils/PromptForChatbots.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -347,6 +303,8 @@
       <workItem from="1724276305609" duration="313000" />
       <workItem from="1725910740796" duration="1175000" />
       <workItem from="1725911919102" duration="2394000" />
+      <workItem from="1725916780327" duration="1705000" />
+      <workItem from="1725969634901" duration="4158000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

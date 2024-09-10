@@ -1,5 +1,6 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using OasisAPI.Infra.Repositories;
 using OasisAPI.Interfaces;
 using OasisAPI.Interfaces.Services;
 

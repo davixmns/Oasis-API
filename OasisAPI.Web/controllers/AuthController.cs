@@ -5,10 +5,12 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OasisAPI.Config;
-using OasisAPI.Dto;
-using OasisAPI.Interfaces;
-using OasisAPI.Interfaces.Repositories;
+using OasisAPI.App.Config;
+using OasisAPI.App.Dto;
+using OasisAPI.App.Dto.Request;
+using OasisAPI.App.Dto.Response;
+using OasisAPI.Infra.Repositories;
+using OasisAPI.Infra.Utils;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
 using OasisAPI.Utils;
@@ -39,12 +41,12 @@ public sealed class AuthController : ControllerBase
         var oasisUser = await _unitOfWork.GetRepository<OasisUser>().GetAsync(u => u.Email == dto.Email);
 
         if (oasisUser is null)
-            return BadRequest(OasisApiResult<string>.ErrorResponse("Email or password is incorrect"));
+            return BadRequest(AppResult<string>.ErrorResponse("Email or password is incorrect"));
 
         var passwordIsCorrect = PasswordHasher.Verify(dto.Password!, oasisUser.Password);
 
         if (!passwordIsCorrect)
-            return BadRequest(OasisApiResult<string>.ErrorResponse("Email or password is incorrect"));
+            return BadRequest(AppResult<string>.ErrorResponse("Email or password is incorrect"));
 
         List<Claim> userClaims =
         [
@@ -70,7 +72,7 @@ public sealed class AuthController : ControllerBase
             OasisUserResponse = _mapper.Map<OasisUserResponseDto>(oasisUser)
         };
 
-        return Ok(OasisApiResult<LoginResponseDto>.SuccessResponse(loginResponseDto));
+        return Ok(AppResult<LoginResponseDto>.SuccessResponse(loginResponseDto));
     }
 
     [HttpPost("RefreshToken")]
@@ -118,6 +120,6 @@ public sealed class AuthController : ControllerBase
         
         var userDto = _mapper.Map<OasisUserResponseDto>(user);
         
-        return Ok(OasisApiResult<OasisUserResponseDto>.SuccessResponse(userDto));
+        return Ok(AppResult<OasisUserResponseDto>.SuccessResponse(userDto));
     }
 }

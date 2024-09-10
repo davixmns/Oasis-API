@@ -1,13 +1,14 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.Dto;
+using OasisAPI.App.Dto;
+using OasisAPI.App.Dto.Request;
+using OasisAPI.App.Utils;
 using OasisAPI.Enums;
 using OasisAPI.Exceptions;
-using OasisAPI.Interfaces.Clients;
+using OasisAPI.Infra.Clients;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
-using OasisAPI.Utils;
 
 namespace OasisAPI.controllers;
 
@@ -34,7 +35,7 @@ public sealed class ChatController : ControllerBase
         
         var chatsResponse = await _chatService.GetAllChatsAsync(userId);
         
-        return Ok(OasisApiResult<IEnumerable<OasisChat>>.SuccessResponse(chatsResponse));
+        return Ok(AppResult<IEnumerable<OasisChat>>.SuccessResponse(chatsResponse));
     }
 
     [Authorize]
@@ -65,7 +66,7 @@ public sealed class ChatController : ControllerBase
             chatbotMessages = chatbotsMessages.Skip(1)
         };
 
-        return StatusCode(StatusCodes.Status201Created, OasisApiResult<object>.SuccessResponse(response));
+        return StatusCode(StatusCodes.Status201Created, AppResult<object>.SuccessResponse(response));
     }
 
     [Authorize]
@@ -75,7 +76,7 @@ public sealed class ChatController : ControllerBase
         var chat = await _chatService.GetChatByIdAsync(oasisChatId);
         
         if (chat is null) 
-            return NotFound(OasisApiResult<string>.ErrorResponse("Chat not found"));
+            return NotFound(AppResult<string>.ErrorResponse("Chat not found"));
 
         await _chatService.CreateMessageAsync(new OasisMessage(
             from: "User",
@@ -91,7 +92,7 @@ public sealed class ChatController : ControllerBase
         
         var chatbotMessages = await SendMessageToChatbotsThreads(messageRequestDto.ChatBotEnums, chat, formattedMessageToGpt);
 
-        return Ok(OasisApiResult<List<OasisMessage>>.SuccessResponse(chatbotMessages));
+        return Ok(AppResult<List<OasisMessage>>.SuccessResponse(chatbotMessages));
     }
 
     [Authorize]
@@ -101,7 +102,7 @@ public sealed class ChatController : ControllerBase
         var chatExists = await _chatService.GetChatByIdAsync(chatbotMessage.OasisChatId!.Value);
         
         if (chatExists is null) 
-            return NotFound(OasisApiResult<string>.ErrorResponse("Chat not found"));
+            return NotFound(AppResult<string>.ErrorResponse("Chat not found"));
 
         await _chatService.CreateMessageAsync(chatbotMessage);
         

@@ -1,6 +1,7 @@
-using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.Interfaces.Services;
+using OasisAPI.App.Commands;
+using OasisAPI.App.Dto.Request;
 
 namespace OasisAPI.controllers;
 
@@ -8,22 +9,23 @@ namespace OasisAPI.controllers;
 [Route("[controller]")]
 public sealed class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IMediator _mediator;
     
-    public UserController(IUserService userService)
+    public UserController(IMediator mediator)
     {
-        _userService = userService;
+        _mediator = mediator;
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] OasisUser userData)
+    public async Task<IActionResult> CreateUser(CreateOasisUserRequestDto dto)
     {
-        var createUserResult = await _userService.CreateUserAsync(userData);
+        var command = new CreateOasisUserCommand(dto.Name, dto.Email, dto.Password);
         
-        if (!createUserResult.Success)
-            return BadRequest(createUserResult);
-
-        return Ok(createUserResult);
+        var createUserResult = await _mediator.Send(command);
+        
+        return createUserResult.IsSuccess
+            ? Ok(createUserResult.Data)
+            : BadRequest(createUserResult.Message);
     }
 }
 

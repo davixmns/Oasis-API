@@ -1,29 +1,29 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using OasisAPI.Clients;
-using OasisAPI.Config;
-using OasisAPI.Context;
-using OasisAPI.Dto;
-using OasisAPI.Interfaces;
-using OasisAPI.Interfaces.Clients;
-using OasisAPI.Interfaces.Repositories;
+using OasisAPI.App.Config;
+using OasisAPI.App.Dto;
+using OasisAPI.App.Mapper;
+using OasisAPI.Infra.Clients;
+using OasisAPI.Infra.Context;
+using OasisAPI.Infra.Mapper;
+using OasisAPI.Infra.Repositories;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Middlewares;
-using OasisAPI.Repositories;
 using OasisAPI.Services;
 using OasisAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
-var mysqlConnection = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")!;
-var chatGptApiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY")!;
-var chatGptAssistantId = Environment.GetEnvironmentVariable("CHATGPT_ASSISTANT_ID")!;
-var geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY")!;
-var geminiModel = Environment.GetEnvironmentVariable("GEMINI_MODEL")!;
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")!;
-var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")!;
-var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")!;
+var mysqlConnection = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? throw new Exception("DATABASE_CONNECTION_STRING not found");
+var chatGptApiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY") ?? throw new Exception("CHATGPT_API_KEY not found");
+var chatGptAssistantId = Environment.GetEnvironmentVariable("CHATGPT_ASSISTANT_ID") ?? throw new Exception("CHATGPT_ASSISTANT_ID not found");
+var geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY") ?? throw new Exception("GEMINI_API_KEY not found");
+var geminiModel = Environment.GetEnvironmentVariable("GEMINI_MODEL") ?? throw new Exception("GEMINI_MODEL not found");
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new Exception("JWT_SECRET not found");
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new Exception("JWT_ISSUER not found");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new Exception("JWT_AUDIENCE not found");
 int.TryParse(Environment.GetEnvironmentVariable("ACCESS_TOKEN_EXPIRY")!, out var accessTokenExpiry);
 int.TryParse(Environment.GetEnvironmentVariable("REFRESH_TOKEN_EXPIRY")!, out var refreshTokenExpiry);
 
@@ -41,39 +41,28 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Repositórios
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IChatRepository, ChatRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-
-//Configuradores de Serviços
-builder.Services.Configure<ChatGptConfig>(config =>
-{
-    config.ApiKey = chatGptApiKey;
-    config.AssistantId = chatGptAssistantId;
-});
-
-builder.Services.Configure<GeminiConfig>(config =>
-{
-    config.ApiKey = geminiApiKey;
-    config.Model = geminiModel;
-});
-
-builder.Services.Configure<JwtConfig>(config =>
-{
-    config.SecretKey = jwtSecret;
-    config.Issuer = jwtIssuer;
-    config.Audience = jwtAudience;
-    config.AccessTokenExpiry = accessTokenExpiry;
-    config.RefreshTokenExpiry = refreshTokenExpiry;
-});
 
 //Serviços
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>(s =>
+{
+    var jwtConfig = new JwtConfig(
+        secretKey: jwtSecret,
+        issuer: jwtIssuer,
+        audience: jwtAudience,
+        accessTokenExpiry: accessTokenExpiry,
+        refreshTokenExpiry: refreshTokenExpiry
+    );
+    return new TokenService(jwtConfig);
+});
 
 //AutoMapper
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<AutoMapperInfraProfile>();
+    cfg.AddProfile<AutoMapperAppProfile>();
+});
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -81,8 +70,17 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 //Clientes
-builder.Services.AddScoped<IChatGptClient, ChatGptClient>();
-builder.Services.AddScoped<IGeminiClient, GeminiClient>();
+builder.Services.AddScoped<IChatGptClient, ChatGptClient>(c =>
+{
+    var chatGtpConfig = new ChatGptConfig(apiKey: chatGptApiKey, assistantId: chatGptAssistantId);
+    return new ChatGptClient(chatGtpConfig, c.GetRequiredService<IMapper>());
+});
+
+builder.Services.AddScoped<IGeminiClient, GeminiClient>(c =>
+{
+    var geminiConfig = new GeminiConfig(apiKey: geminiApiKey, model: geminiModel);
+    return new GeminiClient(geminiConfig, c.GetRequiredService<IMapper>());
+});
 
 var app = builder.Build();
 

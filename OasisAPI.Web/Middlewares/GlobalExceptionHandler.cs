@@ -32,7 +32,7 @@ public class GlobalExceptionHandler
     private Task HandleNonCriticalExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        var apiResult = OasisApiResult<string>.ErrorResponse(exception.Message);
+        var apiResult = AppResult<string>.ErrorResponse(exception.Message);
         return context.Response.WriteAsJsonAsync(apiResult);
     }
 
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler
     {
         _logger.LogError(exception, "An unexpected error occurred.");
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        var apiResult = OasisApiResult<string>.ErrorResponse("An unexpected error occurred. Please try again later.");
+        var apiResult = AppResult<string>.ErrorResponse("An unexpected error occurred. Please try again later.");
         return context.Response.WriteAsJsonAsync(apiResult);
     }
 }
