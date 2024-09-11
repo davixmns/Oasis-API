@@ -12,28 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/LoginCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/LoginCommandHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IChatService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/ITokenService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IUserService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Services/TokenService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Services/UserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Handlers/CreateUserCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/CreateUserCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Utils/DatabaseConnectionTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Utils/DatabaseConnectionTester.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/IChatbotService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IChatService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/ITokenService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Interfaces/Services/IUserService.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/ChatService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/TokenService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Services/UserService.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -288,6 +268,7 @@
       <workItem from="1725916780327" duration="1705000" />
       <workItem from="1725969634901" duration="4158000" />
       <workItem from="1725975658291" duration="7049000" />
+      <workItem from="1726054176726" duration="7542000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

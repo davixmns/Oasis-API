@@ -28,46 +28,6 @@ public sealed class AuthController : ControllerBase
             : BadRequest(result);
     }
 
-    // [HttpPost("Login")]
-    // public async Task<IActionResult> Login(LoginRequestDto dto)
-    // {
-    //     var oasisUser = await _unitOfWork.GetRepository<OasisUser>().GetAsync(u => u.Email == dto.Email);
-    //
-    //     if (oasisUser is null)
-    //         return BadRequest(AppResult<string>.ErrorResponse("Email or password is incorrect"));
-    //
-    //     var passwordIsCorrect = PasswordHasher.Verify(dto.Password!, oasisUser.Password);
-    //
-    //     if (!passwordIsCorrect)
-    //         return BadRequest(AppResult<string>.ErrorResponse("Email or password is incorrect"));
-    //
-    //     List<Claim> userClaims =
-    //     [
-    //         new Claim(ClaimTypes.NameIdentifier, oasisUser.Id.ToString()),
-    //         new Claim(ClaimTypes.Email, oasisUser.Email),
-    //     ];
-    //
-    //     var accessToken = _tokenService.GenerateAccessToken(userClaims);
-    //     var refreshToken = _tokenService.GenerateRefreshToken();
-    //
-    //     oasisUser.RefreshToken = refreshToken;
-    //     oasisUser.RefreshTokenExpiryDateTime = DateTime.UtcNow.AddMinutes(_jwtConfig.Value.RefreshTokenExpiry);
-    //
-    //     _unitOfWork.GetRepository<OasisUser>().Update(oasisUser);
-    //
-    //     await _unitOfWork.CommitAsync();
-    //
-    //     var loginResponseDto = new LoginResponseDto()
-    //     {
-    //         AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-    //         RefreshToken = refreshToken,
-    //         RefreshTokenExpiryDateTime = oasisUser.RefreshTokenExpiryDateTime,
-    //         OasisUserResponse = _mapper.Map<OasisUserResponseDto>(oasisUser)
-    //     };
-    //
-    //     return Ok(AppResult<LoginResponseDto>.SuccessResponse(loginResponseDto));
-    // }
-
     // [HttpPost("RefreshToken")]
     // public async Task<IActionResult> CreateNewAccessToken([FromBody] TokenRequestDto tokenRequestDto)
     // {
