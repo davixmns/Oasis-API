@@ -1,11 +1,12 @@
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.App.Dto;
+using OasisAPI.App.Commands;
 using OasisAPI.App.Dto.Request;
+using OasisAPI.App.Exceptions;
 using OasisAPI.App.Utils;
 using OasisAPI.Enums;
-using OasisAPI.Exceptions;
 using OasisAPI.Infra.Clients;
 using OasisAPI.Interfaces.Services;
 using OasisAPI.Models;
@@ -16,26 +17,32 @@ namespace OasisAPI.controllers;
 [Route("[controller]")]
 public sealed class ChatController : ControllerBase
 {
+    private readonly IMediator _mediator;
     private readonly IChatService _chatService;
     private readonly IChatGptClient _chatGptClient;
     private readonly IGeminiClient _geminiClient;
 
-    public ChatController(IChatService chatService, IChatGptClient chatGptClient, IGeminiClient geminiClient)
+    public ChatController(IMediator mediator, IChatService chatService, IChatGptClient chatGptClient, IGeminiClient geminiClient)
     {
         _chatService = chatService;
         _chatGptClient = chatGptClient;
         _geminiClient = geminiClient;
+        _mediator = mediator;
     }
 
     [Authorize]
-    [HttpGet("GetAllChats")]
-    public async Task<IActionResult> GetAllChats()
+    [HttpGet("GetAllUserChats")]
+    public async Task<IActionResult> GetAllUserChats()
     {
         var userId = GetUserIdFromContext();
         
-        var chatsResponse = await _chatService.GetAllChatsAsync(userId);
+        var command = new GetAllUserChatsQuery(userId);
         
-        return Ok(AppResult<IEnumerable<OasisChat>>.SuccessResponse(chatsResponse));
+        var result = await _mediator.Send(command);
+        
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
     }
 
     [Authorize]
@@ -108,7 +115,8 @@ public sealed class ChatController : ControllerBase
         
         return StatusCode(201, chatbotMessage);
     }
-
+    
+    //Shot to all chatbots simultaneously
     private async Task<List<OasisMessage>> CreateThreadAndSendMessageToChatbots(MessageRequestDto messageRequestDto)
     {
         var chatbotsTasks = new List<Task<OasisMessage>>

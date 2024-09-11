@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.App.Commands;
 using OasisAPI.App.Config;
-using OasisAPI.App.Dto;
 using OasisAPI.App.Interfaces.Services;
 using OasisAPI.App.Mapper;
 using OasisAPI.App.Services;
@@ -54,6 +53,19 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //Repositórios
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+//Clientes
+builder.Services.AddScoped<IChatGptClient, ChatGptClient>(c =>
+{
+    var chatGtpConfig = new ChatGptConfig(apiKey: chatGptApiKey, assistantId: chatGptAssistantId);
+    return new ChatGptClient(chatGtpConfig, c.GetRequiredService<IMapper>());
+});
+
+builder.Services.AddScoped<IGeminiClient, GeminiClient>(c =>
+{
+    var geminiConfig = new GeminiConfig(apiKey: geminiApiKey, model: geminiModel);
+    return new GeminiClient(geminiConfig, c.GetRequiredService<IMapper>());
+});
+
 //Serviços
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
@@ -80,19 +92,6 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-
-//Clientes
-builder.Services.AddScoped<IChatGptClient, ChatGptClient>(c =>
-{
-    var chatGtpConfig = new ChatGptConfig(apiKey: chatGptApiKey, assistantId: chatGptAssistantId);
-    return new ChatGptClient(chatGtpConfig, c.GetRequiredService<IMapper>());
-});
-
-builder.Services.AddScoped<IGeminiClient, GeminiClient>(c =>
-{
-    var geminiConfig = new GeminiConfig(apiKey: geminiApiKey, model: geminiModel);
-    return new GeminiClient(geminiConfig, c.GetRequiredService<IMapper>());
-});
 
 var app = builder.Build();
 

@@ -31,13 +31,13 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
         var accessToken = GetAccessTokenFromHeader();
         var refreshToken = GetRefreshTokenFromHeader();
 
-        if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
-            return AuthenticateResult.Fail("Access or refresh token not found.");
+        if (string.IsNullOrWhiteSpace(accessToken))
+            return AuthenticateResult.Fail("Access token not found.");
 
         var claimsPrincipal = _tokenService.ValidateAccessToken(accessToken);
 
         if (claimsPrincipal is null) // Token inválido
-            return await CreateNewTokensToUserAsync(accessToken, refreshToken);
+            return await CreateNewTokensToUserAsync(accessToken, refreshToken!);
 
         return ContinueWithRequest(claimsPrincipal);
     }
@@ -107,6 +107,7 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
         Context.Items["UserId"] = userId;
 
         var ticket = new AuthenticationTicket(claimsPrincipal, Scheme.Name);
+        
         return AuthenticateResult.Success(ticket);
     }
 }

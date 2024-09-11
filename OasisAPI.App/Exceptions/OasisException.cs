@@ -1,4 +1,4 @@
-namespace OasisAPI.Exceptions;
+namespace OasisAPI.App.Exceptions;
 
 public class OasisException : Exception
 {

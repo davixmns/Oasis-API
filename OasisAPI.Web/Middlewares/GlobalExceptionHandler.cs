@@ -1,4 +1,4 @@
-using OasisAPI.Exceptions;
+using OasisAPI.App.Exceptions;
 using OasisAPI.Models;
 
 namespace OasisAPI.Middlewares;

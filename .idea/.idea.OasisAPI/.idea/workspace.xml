@@ -12,9 +12,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/ContinueConversationWithChatBotsCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/CreateChatTitleCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/GetAllUserChatsQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/GetUserDataQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/StartConversationWithChatBotsCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/GetAllUserChatsQueryHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/GetUserDataQueryHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/StartConversationWithChatBotsCommandHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IChatBotsClientFacade.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotsClientFacade.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Exceptions/OasisException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Exceptions/OasisException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/GlobalExceptionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/GlobalExceptionHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +55,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/69feb48542a2f6ffe27b1e26a645865384dbc188ed99ae988c598976ab1f3381/ChatSession.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ce16ece8ec143956ea3c4730e5d257a793f641e8b6e9328fd955e0c9abb99/Requests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ec45a28378face7b514e17aad8fd31f6121afe58f1719b3d92de706684acf4/ServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/davixmns/projetos/dotnet/OasisAPI/OasisAPI.Web/controllers/AuthController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -268,7 +284,9 @@
       <workItem from="1725916780327" duration="1705000" />
       <workItem from="1725969634901" duration="4158000" />
       <workItem from="1725975658291" duration="7049000" />
-      <workItem from="1726054176726" duration="7542000" />
+      <workItem from="1726054176726" duration="8282000" />
+      <workItem from="1726080407275" duration="3266000" />
+      <workItem from="1726093742025" duration="3518000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
