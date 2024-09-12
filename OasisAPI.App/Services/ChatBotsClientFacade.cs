@@ -2,7 +2,6 @@ using Domain.Entities;
 using OasisAPI.App.Dto.Request;
 using OasisAPI.App.Exceptions;
 using OasisAPI.App.Interfaces.Services;
-using OasisAPI.Enums;
 using OasisAPI.Infra.Clients;
 using OasisAPI.Infra.Dto;
 
@@ -82,7 +81,7 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
                 {
                     Message = "Internal Error in Chatbot, please try again later",
                     ThreadId = "",
-                    ChatBotName = "Error",
+                    ChatBotEnum = ChatBotEnum.Unknown,
                     MessageId = ""
                 };
             }

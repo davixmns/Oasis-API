@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.ValueObjects;
 using MediatR;
 using OasisAPI.App.Commands;
 using OasisAPI.Infra.Repositories;
@@ -19,11 +20,21 @@ public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, AppRe
     {
         var newOasisChat = new OasisChat(
             oasisUserId: request.OasisUserId,
-            title: request.Title,
-            chatGptThreadId: request.ChatGptThreadId,
-            geminiThreadId: request.GeminiThreadId
+            title: request.Title
         );
 
+        newOasisChat.ChatBots = new List<OasisChatBotInfo>()
+        {
+            new(newOasisChat.Id, ChatBotEnum.ChatGpt, true, null),
+            new(newOasisChat.Id, ChatBotEnum.Gemini, true, null)
+        };
+        
+        newOasisChat.Messages!.Add(new OasisMessage(
+            oasisChatId: newOasisChat.Id,
+            message: request.InitialMessage,
+            from: ChatBotEnum.User
+        ));
+        
         _unitOfWork.GetRepository<OasisChat>().Create(newOasisChat);
 
         await _unitOfWork.CommitAsync();

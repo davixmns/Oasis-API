@@ -1,7 +1,9 @@
-namespace OasisAPI.Enums;
+namespace Domain.Entities;
 
 public enum ChatBotEnum
 {
-    ChatGpt = 0,
-    Gemini = 1,
+    Unknown, 
+    User,
+    ChatGpt,
+    Gemini,
 }

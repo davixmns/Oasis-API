@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
-using OasisAPI.Enums;
 
 namespace Domain.ValueObjects;
 

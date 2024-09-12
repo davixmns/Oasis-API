@@ -8,10 +8,10 @@ public class CreateMessageCommand : IRequest<AppResult<OasisMessage>>
 {
     public int OasisChatId { get; }
     public string Message { get; }
-    public string From { get; }
+    public ChatBotEnum From { get; }
     public bool IsSaved { get; }
     
-    public CreateMessageCommand(int oasisChatId, string message, string from, bool isSaved)
+    public CreateMessageCommand(int oasisChatId, string message, ChatBotEnum from, bool isSaved)
     {
         OasisChatId = oasisChatId;
         Message = message;

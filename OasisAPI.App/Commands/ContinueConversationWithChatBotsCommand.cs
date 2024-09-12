@@ -1,6 +1,5 @@
 using Domain.Entities;
 using MediatR;
-using OasisAPI.Enums;
 using OasisAPI.Infra.Dto;
 using OasisAPI.Models;
 

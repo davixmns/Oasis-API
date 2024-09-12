@@ -1,6 +1,5 @@
 using Domain.Entities;
 using OasisAPI.App.Dto.Request;
-using OasisAPI.Enums;
 using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Interfaces.Services;

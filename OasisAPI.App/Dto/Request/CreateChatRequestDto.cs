@@ -1,6 +1,6 @@
-using OasisAPI.Enums;
+using Domain.Entities;
 
-namespace OasisAPI.Infra.Dto;
+namespace OasisAPI.App.Dto.Request;
 
 public class CreateChatRequestDto
 {

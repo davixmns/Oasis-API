@@ -30,23 +30,15 @@ namespace OasisAPI.Infra.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ChatGptThreadId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("GeminiThreadId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("OasisUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -66,16 +58,8 @@ namespace OasisAPI.Infra.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("FromMessageId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("FromThreadId")
-                        .HasColumnType("longtext");
+                    b.Property<int>("From")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("IsSaved")
                         .HasColumnType("tinyint(1)");
@@ -125,6 +109,33 @@ namespace OasisAPI.Infra.Migrations
                     b.ToTable("oasis_users");
                 });
 
+            modelBuilder.Entity("Domain.ValueObjects.OasisChatBotInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChatBotEnum")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("OasisChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThreadId")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OasisChatId");
+
+                    b.ToTable("OasisChatBotInfos");
+                });
+
             modelBuilder.Entity("Domain.Entities.OasisChat", b =>
                 {
                     b.HasOne("Domain.Entities.OasisUser", "User")
@@ -138,15 +149,24 @@ namespace OasisAPI.Infra.Migrations
 
             modelBuilder.Entity("Domain.Entities.OasisMessage", b =>
                 {
-                    b.HasOne("Domain.Entities.OasisChat", "Chat")
+                    b.HasOne("Domain.Entities.OasisChat", null)
                         .WithMany("Messages")
                         .HasForeignKey("OasisChatId");
+                });
 
-                    b.Navigation("Chat");
+            modelBuilder.Entity("Domain.ValueObjects.OasisChatBotInfo", b =>
+                {
+                    b.HasOne("Domain.Entities.OasisChat", null)
+                        .WithMany("ChatBots")
+                        .HasForeignKey("OasisChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.OasisChat", b =>
                 {
+                    b.Navigation("ChatBots");
+
                     b.Navigation("Messages");
                 });
 
