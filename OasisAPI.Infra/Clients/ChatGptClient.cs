@@ -2,6 +2,7 @@ using AutoMapper;
 using Domain.Entities;
 using OasisAPI.App.Config;
 using OasisAPI.App.Utils;
+using OasisAPI.Infra.Dto;
 using OpenAI;
 using OpenAI.Threads;
 
@@ -20,21 +21,24 @@ public class ChatGptClient : IChatGptClient
         _mapper = mapper;
     }
     
-    public async Task<OasisMessage> CreateChatAndSendMessage(string userMessage)
+    public async Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message)
     {
-        var formatedUserMessage = OasisMessageFormatter.FormatToFirstUserMessage(userMessage);
+        var formattedMessage = OasisMessageFormatter.FormatToFirstUserMessage(message);
         
-        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(formatedUserMessage);
+        var thread = await _chatGptApi.ThreadsEndpoint.CreateThreadAsync(formattedMessage);
         
         var run = await thread.CreateRunAsync(new CreateRunRequest(assistantId: _chatGptConfig.AssistantId));
+        
         run = await run.WaitForStatusChangeAsync();
         
         var messageList = await run.ListMessagesAsync();
+        
+        var firstMessage = messageList.Items[0];
 
-        return _mapper.Map<OasisMessage>(messageList.Items[0]);
+        return _mapper.Map<ChatBotMessageResponseDto>(firstMessage);
     }
 
-    public async Task<OasisMessage> SendMessageToChat(string threadId, string userMessage)
+    public async Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(string threadId, string userMessage)
     {
         await _chatGptApi.ThreadsEndpoint.CreateMessageAsync(threadId, new Message(userMessage));
         
@@ -47,6 +51,6 @@ public class ChatGptClient : IChatGptClient
         
         var messageList = await run.ListMessagesAsync();
 
-        return _mapper.Map<OasisMessage>(messageList.Items[0]);
+        return _mapper.Map<ChatBotMessageResponseDto>(messageList.Items[0]);
     }
 }

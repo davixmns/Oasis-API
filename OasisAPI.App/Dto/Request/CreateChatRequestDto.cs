@@ -1,10 +1,9 @@
 using OasisAPI.Enums;
 
-namespace OasisAPI.App.Dto.Request;
+namespace OasisAPI.Infra.Dto;
 
-public class MessageRequestDto
+public class CreateChatRequestDto
 {
-    public int ChatId { get; set; }
     public string Message { get; set; } = string.Empty;
     public HashSet<ChatBotEnum> ChatBotEnums { get; set; } = [];
 }

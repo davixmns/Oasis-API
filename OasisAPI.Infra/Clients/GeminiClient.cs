@@ -4,6 +4,7 @@ using GenerativeAI.Models;
 using GenerativeAI.Types;
 using OasisAPI.App.Config;
 using OasisAPI.App.Utils;
+using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.Infra.Clients;
 
@@ -21,30 +22,30 @@ public class GeminiClient : IGeminiClient
         _mapper = mapper;
     }
 
-    public async Task<OasisMessage> CreateChatAndSendMessageAsync(string userMessage)
+    public async Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
         await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
 
-        var geminiResponse = await chat.SendMessageAsync(userMessage);
+        var geminiResponse = await chat.SendMessageAsync(message);
 
-        return _mapper.Map<OasisMessage>(geminiResponse);
+        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
     }
 
-    public async Task<OasisMessage> SendMessageToChatAsync(IEnumerable<OasisMessage> chatMessages)
+    public async Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(IEnumerable<string> chatMessages)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
         await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
 
-        var formattedMessages = string.Join("\n\n", chatMessages.Select(m => m.Message));
+        var formattedMessages = string.Join("\n\n", chatMessages);
         var geminiResponse = await chat.SendMessageAsync(formattedMessages);
 
-        return _mapper.Map<OasisMessage>(geminiResponse);
+        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
     }
 
-    public async Task<OasisMessage> GetChatTitleAsync(string userMessage)
+    public async Task<ChatBotMessageResponseDto> GetChatTitleAsync(string userMessage)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
@@ -52,6 +53,6 @@ public class GeminiClient : IGeminiClient
 
         var geminiResponse = await chat.SendMessageAsync(formattedMessage);
 
-        return _mapper.Map<OasisMessage>(geminiResponse);
+        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
     }
 }

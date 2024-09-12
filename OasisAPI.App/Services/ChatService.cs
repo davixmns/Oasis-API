@@ -27,7 +27,6 @@ public sealed class ChatService : IChatService
     
     public async Task<OasisChat> CreateChatAsync(OasisChat oasisChat)
     {
-        
         var createdChat = _unitOfWork.GetRepository<OasisChat>().Create(oasisChat);
         await _unitOfWork.CommitAsync();
         return createdChat;

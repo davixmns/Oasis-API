@@ -1,10 +1,11 @@
 using Domain.Entities;
+using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.Infra.Clients;
 
 public interface IGeminiClient
 {
-    Task<OasisMessage> CreateChatAndSendMessageAsync(string userMessage);
-    Task<OasisMessage> SendMessageToChatAsync(IEnumerable<OasisMessage> chatMessages);
-    Task<OasisMessage> GetChatTitleAsync(string userMessage);
+    Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message);
+    Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(IEnumerable<string> chatMessages);
+    Task<ChatBotMessageResponseDto> GetChatTitleAsync(string userMessage);
 }

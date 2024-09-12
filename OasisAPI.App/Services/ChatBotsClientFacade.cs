@@ -1,8 +1,10 @@
 using Domain.Entities;
+using OasisAPI.App.Dto.Request;
 using OasisAPI.App.Exceptions;
 using OasisAPI.App.Interfaces.Services;
 using OasisAPI.Enums;
 using OasisAPI.Infra.Clients;
+using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Services;
 
@@ -17,9 +19,10 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
         _geminiClient = geminiClient;
     }
     
-    public async Task<IEnumerable<OasisMessage>> CreateThreadsAndSendMessageAsync(string message, HashSet<ChatBotsEnum> selectedChatBots)
+    //Create a new thread and send message to selected chatbots
+    public async Task<IEnumerable<ChatBotMessageResponseDto>> CreateThreadsAndSendMessageAsync(string message, HashSet<ChatBotEnum> selectedChatBots)
     {
-        var chatbotsTasks = new List<Task<OasisMessage>>
+        var chatbotsTasks = new List<Task<ChatBotMessageResponseDto>>
         {
             _geminiClient.GetChatTitleAsync(message) // Get title from Gemini
         };
@@ -28,11 +31,11 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
         {
             switch (chatBot)
             {
-                case ChatBotsEnum.ChatGpt:
-                    chatbotsTasks.Add(_chatGptClient.CreateChatAndSendMessage(message));
+                case ChatBotEnum.ChatGpt:
+                    chatbotsTasks.Add(_chatGptClient.CreateThreadAndSendMessageAsync(message));
                     break;
-                case ChatBotsEnum.Gemini:
-                    chatbotsTasks.Add(_geminiClient.CreateChatAndSendMessageAsync(message));
+                case ChatBotEnum.Gemini:
+                    chatbotsTasks.Add(_geminiClient.CreateThreadAndSendMessageAsync(message));
                     break;
                 default:
                     throw new OasisException("Invalid chatbot");
@@ -42,12 +45,30 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
         return await ExecuteChatBotsTasks(chatbotsTasks);
     }
 
-    public Task<IEnumerable<OasisMessage>> SendMessageToThreadsAsync(string message, HashSet<ChatBotsEnum> chatBotsEnums)
+    //Send message to a existing thread in selected chatbots
+    public async Task<IEnumerable<ChatBotMessageResponseDto>> SendMessageToThreadsAsync(string message, IList<string> allMessages, HashSet<ChatBotAndThreadDto> chatBotAndThreadDtos)
     {
-        throw new NotImplementedException();
+        var chatbotsTasks = new List<Task<ChatBotMessageResponseDto>>();
+        
+        foreach (var chatBot in chatBotAndThreadDtos)
+        {
+            switch (chatBot.ChatBotEnum)
+            {
+                case ChatBotEnum.ChatGpt:
+                    chatbotsTasks.Add(_chatGptClient.SendMessageToThreadAsync(chatBot.threadId!, message));
+                    break;
+                case ChatBotEnum.Gemini:
+                    chatbotsTasks.Add(_geminiClient.SendMessageToThreadAsync(allMessages));
+                    break;
+                default:
+                    throw new OasisException("Invalid chatbot");
+            }
+        }
+        
+        return await ExecuteChatBotsTasks(chatbotsTasks);
     }
     
-    private async Task<IEnumerable<OasisMessage>> ExecuteChatBotsTasks(IEnumerable<Task<OasisMessage>> chatbotTasks)
+    private async Task<IEnumerable<ChatBotMessageResponseDto>> ExecuteChatBotsTasks(List<Task<ChatBotMessageResponseDto>> chatbotTasks)
     {
         var completedTasks = await Task.WhenAll(chatbotTasks.Select(task => Task.Run(async () =>
         {
@@ -57,11 +78,13 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
             }
             catch (Exception)
             {
-                return new OasisMessage(
-                    from: "Error",
-                    message: "Error processing message, try again later",
-                    isSaved: false
-                );
+                return new ChatBotMessageResponseDto
+                {
+                    Message = "Internal Error in Chatbot, please try again later",
+                    ThreadId = "",
+                    ChatBotName = "Error",
+                    MessageId = ""
+                };
             }
         })));
 

@@ -1,10 +1,11 @@
 using FluentValidation;
 using OasisAPI.App.Dto;
 using OasisAPI.App.Dto.Request;
+using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Validators;
 
-public class MessageRequestDtoValidator : AbstractValidator<MessageRequestDto>
+public class MessageRequestDtoValidator : AbstractValidator<CreateChatRequestDto>
 {
     public MessageRequestDtoValidator()
     {

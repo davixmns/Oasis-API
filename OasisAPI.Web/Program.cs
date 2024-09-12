@@ -67,6 +67,7 @@ builder.Services.AddScoped<IGeminiClient, GeminiClient>(c =>
 });
 
 //Serviços
+builder.Services.AddScoped<IChatBotsClientFacade, ChatBotsClientFacade>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<ITokenService, TokenService>(s =>

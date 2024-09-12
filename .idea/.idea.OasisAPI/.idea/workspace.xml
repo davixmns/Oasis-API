@@ -12,23 +12,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/ContinueConversationWithChatBotsCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/CreateChatTitleCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/GetAllUserChatsQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/GetUserDataQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/StartConversationWithChatBotsCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/GetAllUserChatsQueryHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/GetUserDataQueryHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/StartConversationWithChatBotsCommandHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IChatBotsClientFacade.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotsClientFacade.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/CreateChatCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/CreateMessageCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/Request/ChatBotAndThreadDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/Request/CreateChatRequestDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/ContinueConversationWithChatBotsCommandHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/CreateChatCommandHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/CreateMessageCommandHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.Domain/ValueObjects/OasisChatBotInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.Domain/utils/FromNames.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OasisAPI.Infra/Dto/ChatBotMessageResponseDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Exceptions/OasisException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Exceptions/OasisException.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/GlobalExceptionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/GlobalExceptionHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Commands/ContinueConversationWithChatBotsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/ContinueConversationWithChatBotsCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Commands/StartConversationWithChatBotsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Commands/StartConversationWithChatBotsCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Dto/Request/MessageRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Dto/Request/MessageRequestDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Handlers/StartConversationWithChatBotsCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Handlers/StartConversationWithChatBotsCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IChatBotsClientFacade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Interfaces/Services/IChatBotsClientFacade.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotsClientFacade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotsClientFacade.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Services/ChatService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Validators/MessageRequestDtoValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Validators/MessageRequestDtoValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Domain/Entities/OasisChat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/OasisChat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Domain/Enums/ChatBotsEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Domain/Entities/ChatBotEnum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Clients/GeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/GeminiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Clients/IChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/IChatGptClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Clients/IGeminiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/IGeminiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Mapper/AutoMapperInfraProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Mapper/AutoMapperInfraProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/AuthController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,36 +76,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.OasisAPI: Development.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.OasisAPI: http.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.48955223&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.OasisAPI: Development.executor": "Debug",
+    ".NET Launch Settings Profile.OasisAPI: http.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "XThreadsFramesViewSplitterKey": "0.48955223",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlserver&quot;,
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver",
+      "mysql"
     ],
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;GitIgnore&quot;
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "GitIgnore"
     ],
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/davixmns/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/davixmns/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
-      &quot;/Users/davixmns/.local/share/Symbols/src&quot;
+    "rider.external.source.directories": [
+      "/Users/davixmns/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/Users/davixmns/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
+      "/Users/davixmns/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.OasisAPI: Development">
     <configuration name="OasisAPI: Development" type="LaunchSettings" factoryName=".NET Launch Settings Profile" temporary="true">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/OasisAPI.Web/OasisAPI.Web.csproj" />
@@ -286,7 +296,9 @@
       <workItem from="1725975658291" duration="7049000" />
       <workItem from="1726054176726" duration="8282000" />
       <workItem from="1726080407275" duration="3266000" />
-      <workItem from="1726093742025" duration="3518000" />
+      <workItem from="1726093742025" duration="3555000" />
+      <workItem from="1726098127440" duration="2628000" />
+      <workItem from="1726139473183" duration="12416000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
