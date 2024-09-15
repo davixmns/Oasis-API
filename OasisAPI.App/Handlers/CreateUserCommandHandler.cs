@@ -3,9 +3,9 @@ using Domain.Entities;
 using MediatR;
 using OasisAPI.App.Commands;
 using OasisAPI.App.Dto.Response;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Repositories;
 using OasisAPI.Infra.Utils;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Handlers;
 
@@ -32,6 +32,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateOasisUserCommand, 
         
         var userDto = _mapper.Map<OasisUserResponseDto>(createdUser);
 
-        return AppResult<OasisUserResponseDto>.SuccessResponse(userDto);
+        return AppResult<OasisUserResponseDto>.Success(userDto);
     }
 }

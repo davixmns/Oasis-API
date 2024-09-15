@@ -1,11 +1,11 @@
 using Domain.Entities;
 using MediatR;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Dto;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Commands;
 
-public class ContinueConversationWithChatBotsCommand : IRequest<AppResult<IEnumerable<ChatBotMessageResponseDto>>>
+public class ContinueConversationWithChatBotsCommand : IRequest<AppResult<IEnumerable<ChatBotMessageDto>>>
 {
     public int OasisChatId { get; }
     public string Message { get; }

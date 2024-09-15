@@ -1,4 +1,4 @@
-namespace OasisAPI.Models;
+namespace OasisAPI.App.Result;
 
 public class AppResult<T>
 {
@@ -6,7 +6,7 @@ public class AppResult<T>
     public T? Data { get; set; }
     public string? Message { get; set; }
     
-    public static AppResult<T> SuccessResponse(T data)
+    public static AppResult<T> Success(T data)
     {
         return new AppResult<T>
         {
@@ -15,7 +15,7 @@ public class AppResult<T>
         };
     }
     
-    public static AppResult<T> ErrorResponse(string message)
+    public static AppResult<T> Fail(string message)
     {
         return new AppResult<T>
         {

@@ -1,6 +1,6 @@
 using Domain.Entities;
 using MediatR;
-using OasisAPI.Models;
+using OasisAPI.App.Result;
 
 namespace OasisAPI.App.Commands;
 

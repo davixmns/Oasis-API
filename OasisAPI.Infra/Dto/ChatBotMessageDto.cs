@@ -2,7 +2,7 @@ using Domain.Entities;
 
 namespace OasisAPI.Infra.Dto;
 
-public class ChatBotMessageResponseDto
+public class ChatBotMessageDto
 {
     public string Message { get; set; }
     public ChatBotEnum ChatBotEnum { get; set; }

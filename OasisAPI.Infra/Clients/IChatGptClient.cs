@@ -5,6 +5,6 @@ namespace OasisAPI.Infra.Clients;
 
 public interface IChatGptClient
 {
-    Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message);
-    Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(string threadId, string userMessage);
+    Task<ChatBotMessageDto> CreateThreadAndSendMessageAsync(string message);
+    Task<ChatBotMessageDto> SendMessageToThreadAsync(string threadId, string userMessage);
 }

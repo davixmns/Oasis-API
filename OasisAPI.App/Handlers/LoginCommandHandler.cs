@@ -6,9 +6,9 @@ using MediatR;
 using OasisAPI.App.Commands;
 using OasisAPI.App.Dto.Response;
 using OasisAPI.App.Interfaces.Services;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Repositories;
 using OasisAPI.Infra.Utils;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Handlers;
 
@@ -32,7 +32,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AppResult<Login
         var passwordIsCorrect = PasswordHasher.Verify(request.Password, user!.Password);
         
         if (!passwordIsCorrect)
-            return AppResult<LoginResponseDto>.ErrorResponse("Email or password is incorrect");
+            return AppResult<LoginResponseDto>.Fail("Email or password is incorrect");
 
         List<Claim> userClaims =
         [
@@ -58,6 +58,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AppResult<Login
             OasisUserResponse = _mapper.Map<OasisUserResponseDto>(user)
         };
         
-        return AppResult<LoginResponseDto>.SuccessResponse(loginResponseDto);
+        return AppResult<LoginResponseDto>.Success(loginResponseDto);
     }
 }

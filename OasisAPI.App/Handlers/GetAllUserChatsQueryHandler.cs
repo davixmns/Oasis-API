@@ -2,8 +2,8 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.App.Commands;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Repositories;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Handlers;
 
@@ -23,6 +23,6 @@ public class GetAllUserChatsQueryHandler : IRequestHandler<GetAllUserChatsQuery,
             .Where(c => c.OasisUserId == request.UserId)
             .ToListAsync(cancellationToken);
         
-        return AppResult<IEnumerable<OasisChat>>.SuccessResponse(chats);
+        return AppResult<IEnumerable<OasisChat>>.Success(chats);
     }
 }

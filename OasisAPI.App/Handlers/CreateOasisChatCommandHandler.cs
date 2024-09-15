@@ -1,29 +1,28 @@
 using Domain.Entities;
-using Domain.ValueObjects;
 using MediatR;
 using OasisAPI.App.Commands;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Repositories;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Handlers;
 
-public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, AppResult<OasisChat>>
+public class CreateOasisChatCommandHandler : IRequestHandler<CreateOasisChatCommand, AppResult<OasisChat>>
 {
     private readonly IUnitOfWork _unitOfWork;
     
-    public CreateChatCommandHandler(IUnitOfWork unitOfWork)
+    public CreateOasisChatCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<AppResult<OasisChat>> Handle(CreateChatCommand request, CancellationToken cancellationToken)
+    public async Task<AppResult<OasisChat>> Handle(CreateOasisChatCommand request, CancellationToken cancellationToken)
     {
         var newOasisChat = new OasisChat(
             oasisUserId: request.OasisUserId,
             title: request.Title
         );
 
-        newOasisChat.ChatBots = new List<OasisChatBotInfo>()
+        newOasisChat.ChatBots = new List<OasisChatBotDetails>()
         {
             new(newOasisChat.Id, ChatBotEnum.ChatGpt, true, null),
             new(newOasisChat.Id, ChatBotEnum.Gemini, true, null)
@@ -39,6 +38,6 @@ public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, AppRe
 
         await _unitOfWork.CommitAsync();
         
-        return AppResult<OasisChat>.SuccessResponse(newOasisChat);
+        return AppResult<OasisChat>.Success(newOasisChat);
     }
 }

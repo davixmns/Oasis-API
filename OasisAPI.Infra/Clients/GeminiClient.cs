@@ -4,12 +4,15 @@ using GenerativeAI.Models;
 using GenerativeAI.Types;
 using OasisAPI.App.Config;
 using OasisAPI.App.Utils;
+using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.Infra.Clients;
 
-public class GeminiClient : IGeminiClient
+public class GeminiClient : IChatBotClient, ICreateThreadAndSendMessage, ISendAllMessagesToThread, IGetChatTitle
 {
+    public ChatBotEnum ChatBotEnum => ChatBotEnum.Gemini;
+    
     private readonly GenerativeModel _geminiApi;
     private readonly IMapper _mapper;
 
@@ -22,7 +25,7 @@ public class GeminiClient : IGeminiClient
         _mapper = mapper;
     }
 
-    public async Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message)
+    public async Task<ChatBotMessageDto> CreateThreadAndSendMessageAsync(string message)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
@@ -30,10 +33,10 @@ public class GeminiClient : IGeminiClient
 
         var geminiResponse = await chat.SendMessageAsync(message);
 
-        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
+        return _mapper.Map<ChatBotMessageDto>(geminiResponse);
     }
 
-    public async Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(IEnumerable<string> chatMessages)
+    public async Task<ChatBotMessageDto> SendAllMessagesAsync(IEnumerable<string> chatMessages)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
@@ -42,10 +45,10 @@ public class GeminiClient : IGeminiClient
         var formattedMessages = string.Join("\n\n", chatMessages);
         var geminiResponse = await chat.SendMessageAsync(formattedMessages);
 
-        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
+        return _mapper.Map<ChatBotMessageDto>(geminiResponse);
     }
 
-    public async Task<ChatBotMessageResponseDto> GetChatTitleAsync(string userMessage)
+    public async Task<ChatBotMessageDto> GetChatTitleAsync(string userMessage)
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
@@ -53,6 +56,6 @@ public class GeminiClient : IGeminiClient
 
         var geminiResponse = await chat.SendMessageAsync(formattedMessage);
 
-        return _mapper.Map<ChatBotMessageResponseDto>(geminiResponse);
+        return _mapper.Map<ChatBotMessageDto>(geminiResponse);
     }
 }

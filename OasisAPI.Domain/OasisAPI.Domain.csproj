@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <Folder Include="utils\" />
+      <Folder Include="ValueObjects\" />
     </ItemGroup>
 
 </Project>

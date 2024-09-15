@@ -1,11 +1,11 @@
 using Domain.Entities;
 using MediatR;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Dto;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Commands;
 
-public class StartConversationWithChatBotsCommand : IRequest<AppResult<IEnumerable<ChatBotMessageResponseDto>>>
+public class StartConversationWithChatBotsCommand : IRequest<AppResult<IEnumerable<ChatBotMessageDto>>>
 {
     public string Message { get; }
     public HashSet<ChatBotEnum> ChatBotsEnums { get; }

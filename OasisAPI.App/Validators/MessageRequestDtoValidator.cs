@@ -5,7 +5,7 @@ using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Validators;
 
-public class MessageRequestDtoValidator : AbstractValidator<CreateChatRequestDto>
+public class MessageRequestDtoValidator : AbstractValidator<StartConversationRequestDto>
 {
     public MessageRequestDtoValidator()
     {

@@ -1,7 +1,7 @@
 using Domain.Entities;
 using OasisAPI.App.Dto;
 using OasisAPI.App.Dto.Response;
-using OasisAPI.Models;
+using OasisAPI.App.Result;
 
 namespace OasisAPI.Interfaces.Services;
 

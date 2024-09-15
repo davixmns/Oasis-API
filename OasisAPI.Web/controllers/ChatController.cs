@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,20 +13,17 @@ namespace OasisAPI.controllers;
 public sealed class ChatController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly int _userId;
 
     public ChatController(IMediator mediator)
     {
         _mediator = mediator;
-        _userId = HttpContext.Items["UserId"] as int? 
-                  ?? throw new Exception("User id not found in context");
     }
 
     [Authorize]
     [HttpGet("GetAllUserChats")]
     public async Task<IActionResult> GetAllUserChats()
     {
-        var command = new GetAllUserChatsQuery(_userId);
+        var command = new GetAllUserChatsQuery(GetUserIdFromContext());
 
         var result = await _mediator.Send(command);
 
@@ -36,35 +34,51 @@ public sealed class ChatController : ControllerBase
 
     [Authorize]
     [HttpPost("StartConversation")]
-    public async Task<IActionResult> StartConversation([FromBody] CreateChatRequestDto dto)
+    public async Task<IActionResult> StartConversationWithChatBots(StartConversationRequestDto dto)
     {
-        var createChatCommand = new CreateChatCommand(_userId, "Untitled", dto.Message);
+        var createOasisChatCommand = new CreateOasisChatCommand(GetUserIdFromContext(), "Untitled", dto.Message);
+        var createdOasisChatResult = await _mediator.Send(createOasisChatCommand);
 
-        var createdChatResult = await _mediator.Send(createChatCommand);
-
-        if (!createdChatResult.IsSuccess)
-            return BadRequest(createdChatResult);
+        if (!createdOasisChatResult.IsSuccess)
+            return BadRequest(createdOasisChatResult);
 
         var startConversationCommand = new StartConversationWithChatBotsCommand(dto.Message, dto.ChatBotEnums);
-
         var messagesResult = await _mediator.Send(startConversationCommand);
 
         if (!messagesResult.IsSuccess)
             return BadRequest(messagesResult);
 
+        var updateOasisChatCommand = new UpdateOasisChatDetailsCommand(createdOasisChatResult.Data!, messagesResult.Data!);
+        var updatedChatResult = await _mediator.Send(updateOasisChatCommand);
+
+        if (!updatedChatResult.IsSuccess)
+            return BadRequest(updatedChatResult);
+
         var response = new
         {
-            Chat = createdChatResult.Data,
-            Messages = messagesResult.Data!.Skip(1)
+            OasisChat = createdOasisChatResult.Data,
+            ChatBotMessages = messagesResult.Data!.Skip(1)
         };
 
         return Ok(response);
     }
 
     [Authorize]
-    [HttpPost("SendMessage/{oasisChatId:int}")]
-    public async Task<IActionResult> SendMessageToChat(int oasisChatId, CreateChatRequestDto createChatRequestDto)
+    [HttpPost("ContinueConversation")]
+    public async Task<IActionResult> SendMessageToChat(ContinueConversationRequestDto dto)
     {
+        var createMessageCommand = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, ChatBotEnum.User);
+        var createMessageResult = await _mediator.Send(createMessageCommand);
+        
+        if (!createMessageResult.IsSuccess)
+            return BadRequest(createMessageResult);
+        
+        var continueConversationCommand = new ContinueConversationWithChatBotsCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnums);
+        var chatBotMessagesResult = await _mediator.Send(continueConversationCommand);
+        
+        if (!chatBotMessagesResult.IsSuccess)
+            return BadRequest(chatBotMessagesResult);
+        
         return Ok();
         // var chat = await _chatService.GetChatByIdAsync(oasisChatId);
         //
@@ -102,5 +116,10 @@ public sealed class ChatController : ControllerBase
         // await _chatService.CreateMessageAsync(chatbotMessage);
         //
         // return StatusCode(201, chatbotMessage);
+    }
+
+    private int GetUserIdFromContext()
+    {
+        return HttpContext.Items["UserId"] as int? ?? throw new Exception("User Id not found");
     }
 }

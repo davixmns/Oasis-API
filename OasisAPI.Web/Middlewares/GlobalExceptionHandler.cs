@@ -1,5 +1,5 @@
 using OasisAPI.App.Exceptions;
-using OasisAPI.Models;
+using OasisAPI.App.Result;
 
 namespace OasisAPI.Middlewares;
 
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler
     private Task HandleNonCriticalExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        var apiResult = AppResult<string>.ErrorResponse(exception.Message);
+        var apiResult = AppResult<string>.Fail(exception.Message);
         return context.Response.WriteAsJsonAsync(apiResult);
     }
 
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler
     {
         _logger.LogError(exception, "An unexpected error occurred.");
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        var apiResult = AppResult<string>.ErrorResponse("An unexpected error occurred. Please try again later.");
+        var apiResult = AppResult<string>.Fail("An unexpected error occurred. Please try again later.");
         return context.Response.WriteAsJsonAsync(apiResult);
     }
 }

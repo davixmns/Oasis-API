@@ -5,7 +5,7 @@ namespace OasisAPI.Infra.Clients;
 
 public interface IGeminiClient
 {
-    Task<ChatBotMessageResponseDto> CreateThreadAndSendMessageAsync(string message);
-    Task<ChatBotMessageResponseDto> SendMessageToThreadAsync(IEnumerable<string> chatMessages);
-    Task<ChatBotMessageResponseDto> GetChatTitleAsync(string userMessage);
+    Task<ChatBotMessageDto> CreateThreadAndSendMessageAsync(string message);
+    Task<ChatBotMessageDto> SendMessageToThreadAsync(IEnumerable<string> chatMessages);
+    Task<ChatBotMessageDto> GetChatTitleAsync(string userMessage);
 }

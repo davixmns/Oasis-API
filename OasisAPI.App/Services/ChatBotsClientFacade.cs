@@ -1,75 +1,65 @@
 using Domain.Entities;
-using OasisAPI.App.Dto.Request;
-using OasisAPI.App.Exceptions;
 using OasisAPI.App.Interfaces.Services;
-using OasisAPI.Infra.Clients;
+using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Services;
 
 public class ChatBotsClientFacade : IChatBotsClientFacade
 {
-    private readonly IChatGptClient _chatGptClient;
-    private readonly IGeminiClient _geminiClient;
-    
-    public ChatBotsClientFacade(IChatGptClient chatGptClient, IGeminiClient geminiClient)
+    private readonly IDictionary<ChatBotEnum, IChatBotClient> _chatBotClients;
+
+    public ChatBotsClientFacade(IEnumerable<IChatBotClient> chatBotClients)
     {
-        _chatGptClient = chatGptClient;
-        _geminiClient = geminiClient;
+        _chatBotClients = chatBotClients.ToDictionary(client => client.ChatBotEnum);
     }
     
-    //Create a new thread and send message to selected chatbots
-    public async Task<IEnumerable<ChatBotMessageResponseDto>> CreateThreadsAndSendMessageAsync(string message, HashSet<ChatBotEnum> selectedChatBots)
+    public async Task<IEnumerable<ChatBotMessageDto>> StartConversationWithChatBots(string message, HashSet<ChatBotEnum> selectedChatBots)
     {
-        var chatbotsTasks = new List<Task<ChatBotMessageResponseDto>>
+        var tasks = new List<Task<ChatBotMessageDto>>();
+        
+        foreach (var chatBotEnum in selectedChatBots)
         {
-            _geminiClient.GetChatTitleAsync(message) // Get title from Gemini
-        };
-
-        foreach (var chatBot in selectedChatBots)
-        {
-            switch (chatBot)
+            var actualClient = _chatBotClients[chatBotEnum];
+            
+            switch (actualClient)
             {
-                case ChatBotEnum.ChatGpt:
-                    chatbotsTasks.Add(_chatGptClient.CreateThreadAndSendMessageAsync(message));
+                case ICreateThreadAndSendMessage c:
+                    tasks.Add(c.CreateThreadAndSendMessageAsync(message));
                     break;
-                case ChatBotEnum.Gemini:
-                    chatbotsTasks.Add(_geminiClient.CreateThreadAndSendMessageAsync(message));
-                    break;
-                default:
-                    throw new OasisException("Invalid chatbot");
             }
         }
         
-        return await ExecuteChatBotsTasks(chatbotsTasks);
+        return await ExecuteChatBotsTasks(tasks);
     }
-
-    //Send message to a existing thread in selected chatbots
-    public async Task<IEnumerable<ChatBotMessageResponseDto>> SendMessageToThreadsAsync(string message, IList<string> allMessages, HashSet<ChatBotAndThreadDto> chatBotAndThreadDtos)
+    
+    public Task<IEnumerable<ChatBotMessageDto>> ContinueConversationWithChatBotsAsync(string message, 
+        IList<string> allMessages, HashSet<OasisChatBotDetails> chatBotDetailsSet)
     {
-        var chatbotsTasks = new List<Task<ChatBotMessageResponseDto>>();
-        
-        foreach (var chatBot in chatBotAndThreadDtos)
+        var tasks = new List<Task<ChatBotMessageDto>>();
+
+        foreach (var chatBotAndThreadDto in chatBotDetailsSet)
         {
-            switch (chatBot.ChatBotEnum)
+            var actualClient = _chatBotClients[chatBotAndThreadDto.ChatBotEnum];
+            
+            switch (actualClient)
             {
-                case ChatBotEnum.ChatGpt:
-                    chatbotsTasks.Add(_chatGptClient.SendMessageToThreadAsync(chatBot.threadId!, message));
+                case ISendMessageToThread c:
+                    tasks.Add(c.SendMessageToThreadAsync(chatBotAndThreadDto.ThreadId!, message));
                     break;
-                case ChatBotEnum.Gemini:
-                    chatbotsTasks.Add(_geminiClient.SendMessageToThreadAsync(allMessages));
+                
+                case ISendAllMessagesToThread c:
+                    tasks.Add(c.SendAllMessagesAsync(allMessages));
                     break;
-                default:
-                    throw new OasisException("Invalid chatbot");
             }
         }
         
-        return await ExecuteChatBotsTasks(chatbotsTasks);
+        return ExecuteChatBotsTasks(tasks);
     }
     
-    private async Task<IEnumerable<ChatBotMessageResponseDto>> ExecuteChatBotsTasks(List<Task<ChatBotMessageResponseDto>> chatbotTasks)
+    private async Task<IEnumerable<ChatBotMessageDto>> ExecuteChatBotsTasks(IEnumerable<Task<ChatBotMessageDto>> chatbotTasks)
     {
-        var completedTasks = await Task.WhenAll(chatbotTasks.Select(task => Task.Run(async () =>
+        var handlingTasks = chatbotTasks.Select(async task =>
         {
             try
             {
@@ -77,16 +67,18 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
             }
             catch (Exception)
             {
-                return new ChatBotMessageResponseDto
+                return new ChatBotMessageDto
                 {
-                    Message = "Internal Error in Chatbot, please try again later",
+                    Message = "Internal error processing message",
                     ThreadId = "",
-                    ChatBotEnum = ChatBotEnum.Unknown,
+                    ChatBotEnum = task.Result.ChatBotEnum,
                     MessageId = ""
                 };
             }
-        })));
-
-        return completedTasks.ToList();
+        });
+        
+        return await Task.WhenAll(handlingTasks);
     }
+
+
 }

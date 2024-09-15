@@ -1,33 +1,33 @@
 using Domain.Entities;
 using MediatR;
 using OasisAPI.App.Commands;
+using OasisAPI.App.Result;
 using OasisAPI.Infra.Repositories;
-using OasisAPI.Models;
 
 namespace OasisAPI.App.Handlers;
 
-public class CreateMessageCommandHandler : IRequestHandler<CreateMessageCommand, AppResult<OasisMessage>>
+public class CreateOasisMessageCommandHandler : IRequestHandler<CreateOasisMessageCommand, AppResult<OasisMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
     
-    public CreateMessageCommandHandler(IUnitOfWork unitOfWork)
+    public CreateOasisMessageCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<AppResult<OasisMessage>> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
+    public async Task<AppResult<OasisMessage>> Handle(CreateOasisMessageCommand request, CancellationToken cancellationToken)
     {
         var newMessage = new OasisMessage(
             oasisChatId: request.OasisChatId,
             message: request.Message,
             from: request.From,
-            isSaved: request.IsSaved
+            isSaved: true
         );
         
         _unitOfWork.GetRepository<OasisMessage>().Create(newMessage);
         
         await _unitOfWork.CommitAsync();
         
-        return AppResult<OasisMessage>.SuccessResponse(newMessage);
+        return AppResult<OasisMessage>.Success(newMessage);
     }
 }

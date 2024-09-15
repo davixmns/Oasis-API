@@ -1,3 +1,4 @@
+using System.Collections;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -10,6 +11,7 @@ using OasisAPI.App.Mapper;
 using OasisAPI.App.Services;
 using OasisAPI.App.Validators;
 using OasisAPI.Infra.Clients;
+using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Context;
 using OasisAPI.Infra.Mapper;
 using OasisAPI.Infra.Repositories;
@@ -54,13 +56,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 //Clientes
-builder.Services.AddScoped<IChatGptClient, ChatGptClient>(c =>
+builder.Services.AddScoped<IChatBotClient>(c =>
 {
     var chatGtpConfig = new ChatGptConfig(apiKey: chatGptApiKey, assistantId: chatGptAssistantId);
     return new ChatGptClient(chatGtpConfig, c.GetRequiredService<IMapper>());
 });
 
-builder.Services.AddScoped<IGeminiClient, GeminiClient>(c =>
+builder.Services.AddScoped<IChatBotClient>(c =>
 {
     var geminiConfig = new GeminiConfig(apiKey: geminiApiKey, model: geminiModel);
     return new GeminiClient(geminiConfig, c.GetRequiredService<IMapper>());
