@@ -18,14 +18,18 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
     {
         var tasks = new List<Task<ChatBotMessageDto>>();
         
+        // Get the chat title from Gemini
+        if(_chatBotClients[ChatBotEnum.Gemini] is IGetChatTitle geminiClient)
+            tasks.Add(geminiClient.GetChatTitleAsync(message));
+        
         foreach (var chatBotEnum in selectedChatBots)
         {
             var actualClient = _chatBotClients[chatBotEnum];
             
             switch (actualClient)
             {
-                case ICreateThreadAndSendMessage c:
-                    tasks.Add(c.CreateThreadAndSendMessageAsync(message));
+                case ICreateThreadAndSendMessage client:
+                    tasks.Add(client.CreateThreadAndSendMessageAsync(message));
                     break;
             }
         }
@@ -44,12 +48,12 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
             
             switch (actualClient)
             {
-                case ISendMessageToThread c:
-                    tasks.Add(c.SendMessageToThreadAsync(chatBotAndThreadDto.ThreadId!, message));
+                case ISendMessageToThread client:
+                    tasks.Add(client.SendMessageToThreadAsync(chatBotAndThreadDto.ThreadId!, message));
                     break;
                 
-                case ISendAllMessagesToThread c:
-                    tasks.Add(c.SendAllMessagesAsync(allMessages));
+                case ISendAllMessagesToThread client:
+                    tasks.Add(client.SendAllMessagesAsync(allMessages));
                     break;
             }
         }
@@ -79,6 +83,5 @@ public class ChatBotsClientFacade : IChatBotsClientFacade
         
         return await Task.WhenAll(handlingTasks);
     }
-
 
 }

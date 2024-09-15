@@ -17,7 +17,8 @@ public class StartConversationWithChatBotsCommandHandler : IRequestHandler<Start
     
     public async Task<AppResult<IEnumerable<ChatBotMessageDto>>> Handle(StartConversationWithChatBotsCommand request, CancellationToken cancellationToken)
     {
-        var receivedMessages = await _chatBotsClientFacade.StartConversationWithChatBots(request.Message, request.ChatBotsEnums);
+        var receivedMessages = await _chatBotsClientFacade
+            .StartConversationWithChatBots(request.Message, request.ChatBotsEnums);
         
         return AppResult<IEnumerable<ChatBotMessageDto>>.Success(receivedMessages);
     }

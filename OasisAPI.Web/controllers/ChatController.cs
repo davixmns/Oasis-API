@@ -1,4 +1,3 @@
-using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -65,7 +64,7 @@ public sealed class ChatController : ControllerBase
 
     [Authorize]
     [HttpPost("ContinueConversation")]
-    public async Task<IActionResult> SendMessageToChat(ContinueConversationRequestDto dto)
+    public async Task<IActionResult> ContinueConversationWithChatbots(ContinueConversationRequestDto dto)
     {
         var createMessageCommand = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, ChatBotEnum.User);
         var createMessageResult = await _mediator.Send(createMessageCommand);

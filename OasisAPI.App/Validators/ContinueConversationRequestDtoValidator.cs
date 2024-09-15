@@ -1,13 +1,12 @@
+using Domain.Entities;
 using FluentValidation;
-using OasisAPI.App.Dto;
 using OasisAPI.App.Dto.Request;
-using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Validators;
 
-public class MessageRequestDtoValidator : AbstractValidator<StartConversationRequestDto>
+public class ContinueConversationRequestDtoValidator : AbstractValidator<ContinueConversationRequestDto>
 {
-    public MessageRequestDtoValidator()
+    public ContinueConversationRequestDtoValidator()
     {
         RuleFor(x => x.Message)
             .NotEmpty()
@@ -18,5 +17,10 @@ public class MessageRequestDtoValidator : AbstractValidator<StartConversationReq
             .NotEmpty()
             .Must((chatBotEnums) => chatBotEnums.Count >= 1)
             .WithMessage("At least one chatbot must be selected");
+        
+        RuleFor(x => x.ChatBotEnums)
+            .Must((chatBotEnums) => chatBotEnums.All(x => Enum.IsDefined(typeof(ChatBotEnum), x)))
+            .WithMessage("Invalid chatbot enum value");
     }
+    
 }
