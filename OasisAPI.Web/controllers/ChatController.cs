@@ -1,9 +1,13 @@
 using Domain.Entities;
+using Domain.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OasisAPI.App.Commands;
 using OasisAPI.App.Dto.Request;
+using OasisAPI.App.Features.Chat.CreateOasisChat.Command;
+using OasisAPI.App.Features.Chat.GetAllUserChats.Query;
+using OasisAPI.App.Features.Chat.UpdateOasisChatDetails.Command;
 
 namespace OasisAPI.controllers;
 
@@ -33,7 +37,7 @@ public sealed class ChatController : ControllerBase
 
     [Authorize]
     [HttpPost("StartConversation")]
-    public async Task<IActionResult> StartConversationWithChatBots(StartConversationRequestDto dto)
+    public async Task<IActionResult> StartConversationWithChatBots(StartConversationWithChatBotsDto dto)
     {
         var createOasisChatCommand = new CreateOasisChatCommand(GetUserIdFromContext(), "Untitled", dto.Message);
         var createdOasisChatResult = await _mediator.Send(createOasisChatCommand);
@@ -64,7 +68,7 @@ public sealed class ChatController : ControllerBase
 
     [Authorize]
     [HttpPost("ContinueConversation")]
-    public async Task<IActionResult> ContinueConversationWithChatbots(ContinueConversationRequestDto dto)
+    public async Task<IActionResult> ContinueConversationWithChatBots(ContinueConversationRequestDto dto)
     {
         var createMessageCommand = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, ChatBotEnum.User);
         var createMessageResult = await _mediator.Send(createMessageCommand);
@@ -103,18 +107,15 @@ public sealed class ChatController : ControllerBase
 
     [Authorize]
     [HttpPost("SaveChatbotMessage")]
-    public async Task<IActionResult> SaveChatbotMessage([FromBody] OasisMessage chatbotMessage)
+    public async Task<IActionResult> SaveChatBotMessage(CreateOasisMessageRequestDto dto)
     {
-        return Ok();
+        var command = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnum);
 
-        // var chatExists = await _chatService.GetChatByIdAsync(chatbotMessage.OasisChatId!.Value);
-        //
-        // if (chatExists is null) 
-        //     return NotFound(AppResult<string>.ErrorResponse("Chat not found"));
-        //
-        // await _chatService.CreateMessageAsync(chatbotMessage);
-        //
-        // return StatusCode(201, chatbotMessage);
+        var result = await _mediator.Send(command);
+
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
     }
 
     private int GetUserIdFromContext()

@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Utils;
 
 namespace OasisAPI.Infra.Clients.Interfaces;
 

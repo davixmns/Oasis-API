@@ -19,7 +19,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Queries\" />
+      <Folder Include="Features\Auth\" />
+      <Folder Include="Features\ChatBot\" />
+      <Folder Include="Features\Message\" />
+      <Folder Include="Features\Chat\" />
+      <Folder Include="Features\User\" />
     </ItemGroup>
 
 </Project>

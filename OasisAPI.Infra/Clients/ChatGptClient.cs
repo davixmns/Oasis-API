@@ -1,5 +1,6 @@
 using AutoMapper;
 using Domain.Entities;
+using Domain.Utils;
 using OasisAPI.App.Config;
 using OasisAPI.App.Utils;
 using OasisAPI.Infra.Clients.Interfaces;

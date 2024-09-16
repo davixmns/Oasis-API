@@ -1,3 +1,5 @@
+using Domain.Utils;
+
 namespace Domain.Entities;
 
 public class OasisMessage : BaseEntity

@@ -29,12 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
-      <Folder Include="Repositories\" />
-      <Folder Include="Utils\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\OasisAPI.App\OasisAPI.App.csproj" />
       <ProjectReference Include="..\OasisAPI.Domain\OasisAPI.Domain.csproj" />
       <ProjectReference Include="..\OasisAPI.Infra\OasisAPI.Infra.csproj" />

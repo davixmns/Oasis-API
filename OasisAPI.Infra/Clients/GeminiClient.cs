@@ -1,5 +1,6 @@
 using AutoMapper;
 using Domain.Entities;
+using Domain.Utils;
 using GenerativeAI.Models;
 using GenerativeAI.Types;
 using OasisAPI.App.Config;

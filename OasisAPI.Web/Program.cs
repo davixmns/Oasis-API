@@ -1,4 +1,3 @@
-using System.Collections;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -6,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.App.Commands;
 using OasisAPI.App.Config;
+using OasisAPI.App.Features.Auth.Login.Command;
 using OasisAPI.App.Interfaces.Services;
 using OasisAPI.App.Mapper;
 using OasisAPI.App.Services;
@@ -70,7 +70,6 @@ builder.Services.AddScoped<IChatBotClient>(c =>
 
 //Serviços
 builder.Services.AddScoped<IChatBotsClientFacade, ChatBotsClientFacade>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<ITokenService, TokenService>(s =>
 {
