@@ -4,10 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using OasisAPI.App.Config;
-using OasisAPI.App.Interfaces.Services;
 using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
 
-namespace OasisAPI.App.Services;
+namespace OasisAPI.App.Services.TokenService;
 
 public sealed class TokenService : ITokenService
 {

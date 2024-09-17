@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace OasisAPI.App.Interfaces.Services;
+namespace OasisAPI.App.Services.TokenService;
 
 public interface ITokenService
 {

@@ -4,7 +4,7 @@ using System.Text.Encodings.Web;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using OasisAPI.App.Interfaces.Services;
+using OasisAPI.App.Services.TokenService;
 using OasisAPI.Infra.Repositories;
 
 namespace OasisAPI.Middlewares;

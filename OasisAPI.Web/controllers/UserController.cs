@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.App.Commands;
-using OasisAPI.App.Dto.Request;
+using OasisAPI.App.Features.User.Commands.CreateOasisUser;
 
 namespace OasisAPI.controllers;
 

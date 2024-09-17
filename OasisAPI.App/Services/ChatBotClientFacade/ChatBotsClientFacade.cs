@@ -1,10 +1,9 @@
 using Domain.Entities;
 using Domain.Utils;
-using OasisAPI.App.Interfaces.Services;
 using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Dto;
 
-namespace OasisAPI.App.Services;
+namespace OasisAPI.App.Services.ChatBotClientFacade;
 
 public class ChatBotsClientFacade : IChatBotsClientFacade
 {

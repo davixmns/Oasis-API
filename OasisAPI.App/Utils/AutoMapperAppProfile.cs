@@ -1,7 +1,6 @@
 using AutoMapper;
 using Domain.Entities;
-using OasisAPI.App.Dto.Request;
-using OasisAPI.App.Dto.Response;
+using OasisAPI.App.Features.User.Queries.GetUserData;
 using OasisAPI.Infra.Dto;
 
 namespace OasisAPI.App.Mapper;

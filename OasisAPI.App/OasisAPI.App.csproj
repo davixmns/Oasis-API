@@ -20,10 +20,10 @@
 
     <ItemGroup>
       <Folder Include="Features\Auth\" />
-      <Folder Include="Features\ChatBot\" />
-      <Folder Include="Features\Message\" />
-      <Folder Include="Features\Chat\" />
-      <Folder Include="Features\User\" />
+      <Folder Include="Features\Chat\Commands\" />
+      <Folder Include="Features\Chat\Queries\" />
+      <Folder Include="Features\Message\Commands\" />
+      <Folder Include="Features\User\Commands\" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace OasisAPI.Interfaces.Services;
+namespace OasisAPI.App.Services.ChatService;
 
 public interface IChatService
 {

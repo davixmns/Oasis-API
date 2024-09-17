@@ -3,11 +3,12 @@ using Domain.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.App.Commands;
-using OasisAPI.App.Dto.Request;
-using OasisAPI.App.Features.Chat.CreateOasisChat.Command;
-using OasisAPI.App.Features.Chat.GetAllUserChats.Query;
-using OasisAPI.App.Features.Chat.UpdateOasisChatDetails.Command;
+using OasisAPI.App.Features.Chat.Commands.CreateOasisChat;
+using OasisAPI.App.Features.Chat.Commands.UpdateOasisChatDetails;
+using OasisAPI.App.Features.Chat.Queries.GetAllUserChats;
+using OasisAPI.App.Features.ChatBot.Commands.ContinueConversationWithChatBots;
+using OasisAPI.App.Features.ChatBot.Commands.StartConversationWithChatBots;
+using OasisAPI.App.Features.Message.Commands.CreateOasisMessage;
 
 namespace OasisAPI.controllers;
 
