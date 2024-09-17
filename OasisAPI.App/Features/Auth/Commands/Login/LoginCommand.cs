@@ -1,7 +1,7 @@
 using MediatR;
 using OasisAPI.App.Result;
 
-namespace OasisAPI.App.Features.Auth.Login;
+namespace OasisAPI.App.Features.Auth.Commands.Login;
 
 public class LoginCommand : IRequest<AppResult<LoginResponseDto>>
 {

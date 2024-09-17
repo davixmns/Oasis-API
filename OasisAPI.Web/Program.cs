@@ -4,7 +4,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using OasisAPI.App.Config;
-using OasisAPI.App.Features.Auth.Login;
+using OasisAPI.App.Features.Auth.Commands.Login;
 using OasisAPI.App.Mapper;
 using OasisAPI.App.Services;
 using OasisAPI.App.Services.ChatBotClientFacade;

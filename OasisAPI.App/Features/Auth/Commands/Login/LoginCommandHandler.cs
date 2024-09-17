@@ -9,7 +9,7 @@ using OasisAPI.App.Services.TokenService;
 using OasisAPI.Infra.Repositories;
 using OasisAPI.Infra.Utils;
 
-namespace OasisAPI.App.Features.Auth.Login;
+namespace OasisAPI.App.Features.Auth.Commands.Login;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, AppResult<LoginResponseDto>>
 {

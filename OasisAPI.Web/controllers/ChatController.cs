@@ -80,34 +80,13 @@ public sealed class ChatController : ControllerBase
         var continueConversationCommand = new ContinueConversationWithChatBotsCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnums);
         var chatBotMessagesResult = await _mediator.Send(continueConversationCommand);
         
-        if (!chatBotMessagesResult.IsSuccess)
-            return BadRequest(chatBotMessagesResult);
-        
-        return Ok();
-        // var chat = await _chatService.GetChatByIdAsync(oasisChatId);
-        //
-        // if (chat is null) 
-        //     return NotFound(AppResult<string>.ErrorResponse("Chat not found"));
-        //
-        // await _chatService.CreateMessageAsync(new OasisMessage(
-        //     from: "User",
-        //     message: createChatRequestDto.Message,
-        //     oasisChatId: oasisChatId,
-        //     isSaved: true
-        // ));
-        //
-        // var chatMessages = await _chatService.GetMessagesByChatId(oasisChatId);
-        // var latestChatbotMessage = chatMessages.LastOrDefault(m => m.From != "User")?.Message;
-        //
-        // var formattedMessageToGpt = OasisMessageFormatter.FormatToChatbotAndUserMessage(latestChatbotMessage!, createChatRequestDto.Message);
-        //
-        // var chatbotMessages = await SendMessageToChatbotsThreads(createChatRequestDto.ChatBotEnums, chat, formattedMessageToGpt);
-        //
-        // return Ok(AppResult<List<OasisMessage>>.SuccessResponse(chatbotMessages));
+        return chatBotMessagesResult.IsSuccess 
+            ? Ok(chatBotMessagesResult)
+            : BadRequest(chatBotMessagesResult);
     }
 
     [Authorize]
-    [HttpPost("SaveChatbotMessage")]
+    [HttpPost("SaveChatBotMessage")]
     public async Task<IActionResult> SaveChatBotMessage(CreateOasisMessageRequestDto dto)
     {
         var command = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnum);

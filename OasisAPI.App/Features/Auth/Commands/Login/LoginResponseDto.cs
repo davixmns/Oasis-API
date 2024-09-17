@@ -1,6 +1,6 @@
 using OasisAPI.App.Features.User.Queries.GetUserData;
 
-namespace OasisAPI.App.Features.Auth.Login;
+namespace OasisAPI.App.Features.Auth.Commands.Login;
 
 public class LoginResponseDto
 {

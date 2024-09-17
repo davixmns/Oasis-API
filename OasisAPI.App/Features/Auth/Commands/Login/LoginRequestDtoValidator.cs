@@ -2,7 +2,7 @@ using Domain.Entities;
 using FluentValidation;
 using OasisAPI.Infra.Repositories;
 
-namespace OasisAPI.App.Features.Auth.Login;
+namespace OasisAPI.App.Features.Auth.Commands.Login;
 
 public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
 {

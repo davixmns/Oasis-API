@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Auth\" />
+      <Folder Include="Features\Auth\Commands\" />
       <Folder Include="Features\Chat\Commands\" />
       <Folder Include="Features\Chat\Queries\" />
       <Folder Include="Features\Message\Commands\" />

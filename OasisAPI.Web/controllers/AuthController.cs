@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OasisAPI.App.Features.Auth.Login;
+using OasisAPI.App.Features.Auth.Commands.Login;
 using OasisAPI.App.Features.User.Queries.GetUserData;
 
 namespace OasisAPI.controllers;

@@ -1,4 +1,4 @@
-namespace OasisAPI.App.Features.Auth.Login;
+namespace OasisAPI.App.Features.Auth.Commands.Login;
 
 public class LoginRequestDto
 {

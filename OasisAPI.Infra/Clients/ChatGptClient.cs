@@ -1,5 +1,4 @@
 using AutoMapper;
-using Domain.Entities;
 using Domain.Utils;
 using OasisAPI.App.Config;
 using OasisAPI.App.Utils;
@@ -44,12 +43,11 @@ public class ChatGptClient : IChatBotClient, ICreateThreadAndSendMessage, ISendM
 
     public async Task<ChatBotMessageDto> SendMessageToThreadAsync(string threadId, string userMessage)
     {
-        await _chatGptApi.ThreadsEndpoint.CreateMessageAsync(threadId, new Message(userMessage));
+        var thread = await _chatGptApi.ThreadsEndpoint.RetrieveThreadAsync(threadId);
+
+        await thread.CreateMessageAsync(new Message(userMessage));
         
-        var run = await _chatGptApi.ThreadsEndpoint.CreateRunAsync<RunResponse>(
-            threadId: threadId,
-            request: new CreateRunRequest(_chatGptConfig.AssistantId)
-        );
+        var run = await thread.CreateRunAsync(new CreateRunRequest(_chatGptConfig.AssistantId));
         
         run = await run.WaitForStatusChangeAsync();
         
