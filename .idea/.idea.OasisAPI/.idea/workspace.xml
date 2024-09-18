@@ -13,8 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -294,7 +292,7 @@
       <workItem from="1726429770278" duration="287000" />
       <workItem from="1726516642431" duration="10555000" />
       <workItem from="1726571621723" duration="7425000" />
-      <workItem from="1726657516464" duration="5031000" />
+      <workItem from="1726657516464" duration="7031000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
