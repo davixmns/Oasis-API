@@ -37,7 +37,12 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
         var claimsPrincipal = _tokenService.ValidateAccessToken(accessToken);
 
         if (claimsPrincipal is null) // Token inválido
+        {
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                return AuthenticateResult.Fail("Invalid token.");
+            
             return await CreateNewTokensToUserAsync(accessToken, refreshToken!);
+        }
 
         return ContinueWithRequest(claimsPrincipal);
     }
@@ -76,6 +81,7 @@ public class JwtAuthenticationMiddleware : AuthenticationHandler<AuthenticationS
         await _unitOfWork.CommitAsync();
 
         // Retorna o novo AccessToken e RefreshToken
+        Response.Headers.Append("X-New-Tokens", "true");
         Response.Headers.Append("X-New-Access-Token", new JwtSecurityTokenHandler().WriteToken(newAccessToken));
         Response.Headers.Append("X-New-Refresh-Token", newRefreshToken);
 

@@ -91,11 +91,26 @@ builder.Services.AddAutoMapper(cfg =>
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers();
+
+builder.Services.AddCors(); // Habilitar o serviço de CORS
 
 var app = builder.Build();
 
+//allow all origins
+app.UseCors(corsPolicyBuilder =>
+        corsPolicyBuilder
+            .AllowAnyOrigin()         // Permite qualquer origem (frontend)
+            .AllowAnyMethod()         // Permite todos os métodos HTTP (GET, POST, etc.)
+            .AllowAnyHeader()         // Permite todos os cabeçalhos de requisição
+            .WithExposedHeaders(
+                "X-New-Tokens",
+                "X-New-Access-Token",
+                "X-New-Refresh-Token"
+            ) // Expõe os cabeçalhos personalizados
+);
 app.Urls.Add("http://0.0.0.0:5013");
 
 DatabaseConnectionTester.TestConnection(app.Services);

@@ -13,17 +13,8 @@
   <component name="ChangeListManager">
     <list default="true" id="53aa37bb-1ead-42a8-bf2f-2c07df54f4e7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OasisAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Login/LoginCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Commands/Login/LoginCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Login/LoginCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Commands/Login/LoginCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Login/LoginRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Commands/Login/LoginRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Login/LoginRequestDtoValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Commands/Login/LoginRequestDtoValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Login/LoginResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/Auth/Commands/Login/LoginResponseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Features/ChatBot/Commands/ContinueConversationWithChatBots/ContinueConversationWithChatBotsCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Features/ChatBot/Commands/ContinueConversationWithChatBots/ContinueConversationWithChatBotsCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/OasisAPI.App.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotClientFacade/ChatBotsClientFacade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.App/Services/ChatBotClientFacade/ChatBotsClientFacade.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Infra/OasisAPI.Infra.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Infra/OasisAPI.Infra.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/controllers/ChatController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Middlewares/JwtAuthenticationMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OasisAPI.Web/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +61,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.OasisAPI: Development.executor": "Debug",
+    ".NET Launch Settings Profile.OasisAPI: Development.executor": "Run",
     ".NET Launch Settings Profile.OasisAPI: http.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -302,7 +293,8 @@
       <workItem from="1726426531274" duration="3173000" />
       <workItem from="1726429770278" duration="287000" />
       <workItem from="1726516642431" duration="10555000" />
-      <workItem from="1726571621723" duration="7174000" />
+      <workItem from="1726571621723" duration="7425000" />
+      <workItem from="1726657516464" duration="5031000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -632,23 +624,6 @@
     <option name="LAST_COMMIT_MESSAGE" value=":recycle: Refatorando codigo" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs</url>
-          <line>44</line>
-          <properties documentPath="$PROJECT_DIR$/OasisAPI.Infra/Clients/ChatGptClient.cs" initialLine="45" containingFunctionPresentation="Method 'SendMessageToThreadAsync'">
-            <startOffsets>
-              <option value="1511" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1512" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Type#Domain.Entities.BaseEntity" memberName="Id" />
