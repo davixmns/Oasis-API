@@ -19,7 +19,9 @@ public class GetChatMessagesQueryHandler : IRequestHandler<GetChatMessagesQuery,
         var chat = await _unitOfWork.GetRepository<OasisChat>()
             .GetAsync(c => c.Id == request.OasisChatId, c => c.Messages!);
 
+        var messages = chat!.Messages!.Reverse();
+
         return AppResult<IEnumerable<OasisMessage>> 
-            .Success(chat?.Messages ?? []);
+            .Success(messages);
     }
 }
