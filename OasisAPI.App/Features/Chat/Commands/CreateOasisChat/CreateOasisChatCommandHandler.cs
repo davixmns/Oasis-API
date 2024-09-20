@@ -31,7 +31,7 @@ public class CreateOasisChatCommandHandler : IRequestHandler<CreateOasisChatComm
         newOasisChat.Messages!.Add(new OasisMessage(
             oasisChatId: newOasisChat.Id,
             message: request.InitialMessage,
-            from: ChatBotEnum.User
+            chatBotEnum: ChatBotEnum.User
         ));
         
         _unitOfWork.GetRepository<OasisChat>().Create(newOasisChat);

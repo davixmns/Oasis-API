@@ -36,7 +36,7 @@ public class ContinueConversationWithChatBotsCommandHandler : IRequestHandler<Co
         var allMessagesString = allMessages.Select(m => m.Message).ToList();
 
         //Choose the last message from a chatbot
-        var latestChatBotMessage = allMessages.LastOrDefault(m => m.From != ChatBotEnum.User)?.Message ?? "";
+        var latestChatBotMessage = allMessages.LastOrDefault(m => m.ChatBotEnum != ChatBotEnum.User)?.Message ?? "";
         var formattedMessageToGpt = OasisMessageFormatter.FormatToChatbotAndUserMessage(
             chatbotMessage: latestChatBotMessage,
             userMessage: request.Message

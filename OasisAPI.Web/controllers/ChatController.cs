@@ -1,11 +1,13 @@
-using Domain.Entities;
 using Domain.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OasisAPI.App.Features.Chat.Commands.CreateOasisChat;
+using OasisAPI.App.Features.Chat.Commands.InitializeOasisChatDetails;
+using OasisAPI.App.Features.Chat.Commands.UpdateOasisChatBotDetails;
 using OasisAPI.App.Features.Chat.Commands.UpdateOasisChatDetails;
 using OasisAPI.App.Features.Chat.Queries.GetAllUserChats;
+using OasisAPI.App.Features.Chat.Queries.GetChatMessages;
 using OasisAPI.App.Features.ChatBot.Commands.ContinueConversationWithChatBots;
 using OasisAPI.App.Features.ChatBot.Commands.StartConversationWithChatBots;
 using OasisAPI.App.Features.Message.Commands.CreateOasisMessage;
@@ -35,6 +37,19 @@ public sealed class ChatController : ControllerBase
             ? Ok(result)
             : BadRequest(result);
     }
+    
+    [Authorize]
+    [HttpGet("GetChatMessages/{oasisChatId:int}")]
+    public async Task<IActionResult> GetChatMessages(int oasisChatId)
+    {
+        var command = new GetChatMessagesQuery(oasisChatId);
+
+        var result = await _mediator.Send(command);
+
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
+    }
 
     [Authorize]
     [HttpPost("StartConversation")]
@@ -52,7 +67,7 @@ public sealed class ChatController : ControllerBase
         if (!messagesResult.IsSuccess)
             return BadRequest(messagesResult);
 
-        var updateOasisChatCommand = new UpdateOasisChatDetailsCommand(createdOasisChatResult.Data!, messagesResult.Data!);
+        var updateOasisChatCommand = new InitializeOasisChatBotDetailsCommand(createdOasisChatResult.Data!, messagesResult.Data!);
         var updatedChatResult = await _mediator.Send(updateOasisChatCommand);
 
         if (!updatedChatResult.IsSuccess)
@@ -61,7 +76,11 @@ public sealed class ChatController : ControllerBase
         var response = new
         {
             OasisChat = createdOasisChatResult.Data,
-            ChatBotMessages = messagesResult.Data!.Skip(1)
+            ChatBotMessages = messagesResult.Data!.Select(m => new
+            {
+                m.Message,
+                m.ChatBotEnum
+            }).Skip(1)
         };
 
         return Ok(response);
@@ -90,7 +109,18 @@ public sealed class ChatController : ControllerBase
     public async Task<IActionResult> SaveChatBotMessage(CreateOasisMessageRequestDto dto)
     {
         var command = new CreateOasisMessageCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnum);
+        var result = await _mediator.Send(command);
 
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
+    }
+    
+    [Authorize]
+    [HttpPut("UpdateChatBotDetails")]
+    public async Task<IActionResult> UpdateChatBotDetails(UpdateOasisChatBotDetailsDto dto)
+    {
+        var command = new UpdateOasisChatBotDetailsCommand(dto.OasisChatBotDetailsId, dto.IsActive);
         var result = await _mediator.Send(command);
 
         return result.IsSuccess

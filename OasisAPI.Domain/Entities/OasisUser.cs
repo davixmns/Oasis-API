@@ -1,9 +1,7 @@
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-[Table("oasis_users")]
 public class OasisUser : BaseEntity
 {
     public string Name { get; set; }

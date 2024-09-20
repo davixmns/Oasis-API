@@ -38,7 +38,7 @@ namespace OasisAPI.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OasisChats",
+                name: "oasis_chats",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,9 +50,9 @@ namespace OasisAPI.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OasisChats", x => x.Id);
+                    table.PrimaryKey("PK_oasis_chats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OasisChats_oasis_users_OasisUserId",
+                        name: "FK_oasis_chats_oasis_users_OasisUserId",
                         column: x => x.OasisUserId,
                         principalTable: "oasis_users",
                         principalColumn: "Id",
@@ -61,37 +61,37 @@ namespace OasisAPI.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OasisChatBotInfos",
+                name: "oasis_chat_bot_details",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OasisChatId = table.Column<int>(type: "int", nullable: false),
                     ChatBotEnum = table.Column<int>(type: "int", nullable: false),
-                    IsSelected = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ThreadId = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OasisChatBotInfos", x => x.Id);
+                    table.PrimaryKey("PK_oasis_chat_bot_details", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OasisChatBotInfos_OasisChats_OasisChatId",
+                        name: "FK_oasis_chat_bot_details_oasis_chats_OasisChatId",
                         column: x => x.OasisChatId,
-                        principalTable: "OasisChats",
+                        principalTable: "oasis_chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OasisMessages",
+                name: "oasis_messages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OasisChatId = table.Column<int>(type: "int", nullable: true),
-                    From = table.Column<int>(type: "int", nullable: false),
+                    ChatBotEnum = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsSaved = table.Column<bool>(type: "tinyint(1)", nullable: true),
@@ -99,28 +99,28 @@ namespace OasisAPI.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OasisMessages", x => x.Id);
+                    table.PrimaryKey("PK_oasis_messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OasisMessages_OasisChats_OasisChatId",
+                        name: "FK_oasis_messages_oasis_chats_OasisChatId",
                         column: x => x.OasisChatId,
-                        principalTable: "OasisChats",
+                        principalTable: "oasis_chats",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OasisChatBotInfos_OasisChatId",
-                table: "OasisChatBotInfos",
+                name: "IX_oasis_chat_bot_details_OasisChatId",
+                table: "oasis_chat_bot_details",
                 column: "OasisChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OasisChats_OasisUserId",
-                table: "OasisChats",
+                name: "IX_oasis_chats_OasisUserId",
+                table: "oasis_chats",
                 column: "OasisUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OasisMessages_OasisChatId",
-                table: "OasisMessages",
+                name: "IX_oasis_messages_OasisChatId",
+                table: "oasis_messages",
                 column: "OasisChatId");
         }
 
@@ -128,13 +128,13 @@ namespace OasisAPI.Infra.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OasisChatBotInfos");
+                name: "oasis_chat_bot_details");
 
             migrationBuilder.DropTable(
-                name: "OasisMessages");
+                name: "oasis_messages");
 
             migrationBuilder.DropTable(
-                name: "OasisChats");
+                name: "oasis_chats");
 
             migrationBuilder.DropTable(
                 name: "oasis_users");

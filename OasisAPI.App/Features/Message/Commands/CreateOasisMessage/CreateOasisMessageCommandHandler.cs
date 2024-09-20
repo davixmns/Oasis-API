@@ -19,7 +19,7 @@ public class CreateOasisMessageCommandHandler : IRequestHandler<CreateOasisMessa
         var newMessage = new OasisMessage(
             oasisChatId: request.OasisChatId,
             message: request.Message,
-            from: request.From,
+            chatBotEnum: request.ChatBotEnum,
             isSaved: true
         );
         

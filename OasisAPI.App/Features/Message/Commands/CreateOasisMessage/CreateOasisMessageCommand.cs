@@ -9,12 +9,12 @@ public class CreateOasisMessageCommand : IRequest<AppResult<OasisMessage>>
 {
     public int OasisChatId { get; }
     public string Message { get; }
-    public ChatBotEnum From { get; }
+    public ChatBotEnum ChatBotEnum { get; }
     
-    public CreateOasisMessageCommand(int oasisChatId, string message, ChatBotEnum from)
+    public CreateOasisMessageCommand(int oasisChatId, string message, ChatBotEnum chatBotEnum)
     {
         OasisChatId = oasisChatId;
         Message = message;
-        From = from;
+        ChatBotEnum = chatBotEnum;
     }
 }

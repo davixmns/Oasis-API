@@ -44,7 +44,34 @@ namespace OasisAPI.Infra.Migrations
 
                     b.HasIndex("OasisUserId");
 
-                    b.ToTable("OasisChats");
+                    b.ToTable("oasis_chats", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.OasisChatBotDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChatBotEnum")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("OasisChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThreadId")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OasisChatId");
+
+                    b.ToTable("oasis_chat_bot_details", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OasisMessage", b =>
@@ -55,11 +82,11 @@ namespace OasisAPI.Infra.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ChatBotEnum")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("From")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("IsSaved")
                         .HasColumnType("tinyint(1)");
@@ -75,7 +102,7 @@ namespace OasisAPI.Infra.Migrations
 
                     b.HasIndex("OasisChatId");
 
-                    b.ToTable("OasisMessages");
+                    b.ToTable("oasis_messages", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OasisUser", b =>
@@ -106,34 +133,7 @@ namespace OasisAPI.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("oasis_users");
-                });
-
-            modelBuilder.Entity("Domain.ValueObjects.OasisChatBotInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatBotEnum")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsSelected")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("OasisChatId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ThreadId")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OasisChatId");
-
-                    b.ToTable("OasisChatBotInfos");
+                    b.ToTable("oasis_users", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OasisChat", b =>
@@ -147,20 +147,20 @@ namespace OasisAPI.Infra.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.OasisMessage", b =>
-                {
-                    b.HasOne("Domain.Entities.OasisChat", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("OasisChatId");
-                });
-
-            modelBuilder.Entity("Domain.ValueObjects.OasisChatBotInfo", b =>
+            modelBuilder.Entity("Domain.Entities.OasisChatBotDetails", b =>
                 {
                     b.HasOne("Domain.Entities.OasisChat", null)
                         .WithMany("ChatBots")
                         .HasForeignKey("OasisChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.OasisMessage", b =>
+                {
+                    b.HasOne("Domain.Entities.OasisChat", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("OasisChatId");
                 });
 
             modelBuilder.Entity("Domain.Entities.OasisChat", b =>

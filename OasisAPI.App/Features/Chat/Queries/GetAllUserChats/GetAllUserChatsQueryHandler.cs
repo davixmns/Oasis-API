@@ -20,6 +20,8 @@ public class GetAllUserChatsQueryHandler : IRequestHandler<GetAllUserChatsQuery,
         var chats = await _unitOfWork.GetRepository<OasisChat>()
             .GetAll()
             .Where(c => c.OasisUserId == request.UserId)
+            // .Include(c => c.Messages)
+            .Include(c => c.ChatBots)
             .ToListAsync(cancellationToken);
         
         return AppResult<IEnumerable<OasisChat>>.Success(chats);
