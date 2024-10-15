@@ -61,7 +61,7 @@ public sealed class ChatController : ControllerBase
         if (!createdOasisChatResult.IsSuccess)
             return BadRequest(createdOasisChatResult);
 
-        var startConversationCommand = new StartConversationWithChatBotsCommand(dto.Message, dto.ChatBotEnums);
+        var startConversationCommand = new StartConversationWithChatBotsCommand(dto.Message);
         var messagesResult = await _mediator.Send(startConversationCommand);
 
         if (!messagesResult.IsSuccess)
@@ -96,7 +96,7 @@ public sealed class ChatController : ControllerBase
         if (!createMessageResult.IsSuccess)
             return BadRequest(createMessageResult);
         
-        var continueConversationCommand = new ContinueConversationWithChatBotsCommand(dto.OasisChatId, dto.Message, dto.ChatBotEnums);
+        var continueConversationCommand = new ContinueConversationWithChatBotsCommand(dto.OasisChatId, dto.Message);
         var chatBotMessagesResult = await _mediator.Send(continueConversationCommand);
         
         return chatBotMessagesResult.IsSuccess 

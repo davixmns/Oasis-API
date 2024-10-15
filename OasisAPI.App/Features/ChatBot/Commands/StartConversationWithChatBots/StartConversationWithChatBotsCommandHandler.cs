@@ -1,3 +1,4 @@
+using Domain.Utils;
 using MediatR;
 using OasisAPI.App.Result;
 using OasisAPI.App.Services.ChatBotClientFacade;
@@ -17,7 +18,7 @@ public class StartConversationWithChatBotsCommandHandler : IRequestHandler<Start
     public async Task<AppResult<IEnumerable<ChatBotMessageDto>>> Handle(StartConversationWithChatBotsCommand request, CancellationToken cancellationToken)
     {
         var receivedMessages = await _chatBotsClientFacade
-            .StartConversationWithChatBots(request.Message, request.ChatBotsEnums);
+            .StartConversationWithChatBots(request.Message, [ChatBotEnum.ChatGpt, ChatBotEnum.Gemini]);
         
         return AppResult<IEnumerable<ChatBotMessageDto>>.Success(receivedMessages);
     }

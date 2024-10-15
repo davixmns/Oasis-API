@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OasisAPI.App", "OasisAPI.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OasisAPI.Domain", "OasisAPI.Domain\OasisAPI.Domain.csproj", "{263480A2-518D-4A5B-8499-B287AC90E2C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OasisAPI.UnitTests", "OasisAPI.UnitTests\OasisAPI.UnitTests.csproj", "{142E9C2E-5DC9-46F0-8F6B-A7032C7FEE55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{263480A2-518D-4A5B-8499-B287AC90E2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{263480A2-518D-4A5B-8499-B287AC90E2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{263480A2-518D-4A5B-8499-B287AC90E2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142E9C2E-5DC9-46F0-8F6B-A7032C7FEE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142E9C2E-5DC9-46F0-8F6B-A7032C7FEE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142E9C2E-5DC9-46F0-8F6B-A7032C7FEE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142E9C2E-5DC9-46F0-8F6B-A7032C7FEE55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

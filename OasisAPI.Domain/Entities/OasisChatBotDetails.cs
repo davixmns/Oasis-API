@@ -11,6 +11,8 @@ public class OasisChatBotDetails : BaseEntity
     
     public OasisChatBotDetails(int oasisChatId, ChatBotEnum chatBotEnum, bool isActive, string? threadId)
     {
+        
+        
         OasisChatId = oasisChatId;
         ChatBotEnum = chatBotEnum;
         IsActive = isActive;

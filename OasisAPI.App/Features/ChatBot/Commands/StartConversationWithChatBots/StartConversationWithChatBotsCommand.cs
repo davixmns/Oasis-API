@@ -8,11 +8,9 @@ namespace OasisAPI.App.Features.ChatBot.Commands.StartConversationWithChatBots;
 public class StartConversationWithChatBotsCommand : IRequest<AppResult<IEnumerable<ChatBotMessageDto>>>
 {
     public string Message { get; }
-    public HashSet<ChatBotEnum> ChatBotsEnums { get; }
     
-    public StartConversationWithChatBotsCommand(string message, HashSet<ChatBotEnum> chatBotsEnums)
+    public StartConversationWithChatBotsCommand(string message)
     {
         Message = message;
-        ChatBotsEnums = chatBotsEnums;
     }
 }

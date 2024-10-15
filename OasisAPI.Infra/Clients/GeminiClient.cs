@@ -4,9 +4,9 @@ using Domain.Utils;
 using GenerativeAI.Models;
 using GenerativeAI.Types;
 using OasisAPI.App.Config;
-using OasisAPI.App.Utils;
 using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Dto;
+using OasisAPI.Infra.Utils;
 
 namespace OasisAPI.Infra.Clients;
 
@@ -30,7 +30,7 @@ public class GeminiClient : IChatBotClient, ICreateThreadAndSendMessage, ISendAl
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
-        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
+        await chat.SendMessageAsync(PromptForChatBots.GeminiPromptText);
 
         var geminiResponse = await chat.SendMessageAsync(message);
 
@@ -41,7 +41,7 @@ public class GeminiClient : IChatBotClient, ICreateThreadAndSendMessage, ISendAl
     {
         var chat = _geminiApi.StartChat(new StartChatParams());
 
-        await chat.SendMessageAsync(PromptForChatbots.GeminiPromptText);
+        await chat.SendMessageAsync(PromptForChatBots.GeminiPromptText);
 
         var formattedMessages = string.Join("\n\n", chatMessages);
         var geminiResponse = await chat.SendMessageAsync(formattedMessages);

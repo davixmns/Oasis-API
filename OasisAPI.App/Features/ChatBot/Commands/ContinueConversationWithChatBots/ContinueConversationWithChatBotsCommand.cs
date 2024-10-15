@@ -9,12 +9,10 @@ public class ContinueConversationWithChatBotsCommand : IRequest<AppResult<IEnume
 {
     public int OasisChatId { get; }
     public string Message { get; }
-    public HashSet<ChatBotEnum> ChatBotsEnums { get; }
     
-    public ContinueConversationWithChatBotsCommand(int oasisChatId, string message, HashSet<ChatBotEnum> chatBotsEnums)
+    public ContinueConversationWithChatBotsCommand(int oasisChatId, string message)
     {
         OasisChatId = oasisChatId;
         Message = message;
-        ChatBotsEnums = chatBotsEnums;
     }
 }

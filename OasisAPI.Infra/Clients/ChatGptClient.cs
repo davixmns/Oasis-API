@@ -1,9 +1,9 @@
 using AutoMapper;
 using Domain.Utils;
 using OasisAPI.App.Config;
-using OasisAPI.App.Utils;
 using OasisAPI.Infra.Clients.Interfaces;
 using OasisAPI.Infra.Dto;
+using OasisAPI.Infra.Utils;
 using OpenAI;
 using OpenAI.Threads;
 

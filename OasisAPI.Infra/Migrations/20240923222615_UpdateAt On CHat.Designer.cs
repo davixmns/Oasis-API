@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OasisAPI.Infra.Context;
 
@@ -11,9 +12,11 @@ using OasisAPI.Infra.Context;
 namespace OasisAPI.Infra.Migrations
 {
     [DbContext(typeof(OasisDbContext))]
-    partial class OasisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923222615_UpdateAt On CHat")]
+    partial class UpdateAtOnCHat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

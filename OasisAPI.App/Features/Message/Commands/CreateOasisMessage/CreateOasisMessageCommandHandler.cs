@@ -16,6 +16,11 @@ public class CreateOasisMessageCommandHandler : IRequestHandler<CreateOasisMessa
     
     public async Task<AppResult<OasisMessage>> Handle(CreateOasisMessageCommand request, CancellationToken cancellationToken)
     {
+        var chat = await _unitOfWork.GetRepository<OasisChat>()
+            .GetAsync(c => c.Id == request.OasisChatId);
+        
+        chat!.UpdatedAt = DateTime.UtcNow;
+        
         var newMessage = new OasisMessage(
             oasisChatId: request.OasisChatId,
             message: request.Message,

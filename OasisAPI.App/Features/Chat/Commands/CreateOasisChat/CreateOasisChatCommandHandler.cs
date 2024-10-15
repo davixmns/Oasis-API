@@ -17,27 +17,14 @@ public class CreateOasisChatCommandHandler : IRequestHandler<CreateOasisChatComm
     
     public async Task<AppResult<OasisChat>> Handle(CreateOasisChatCommand request, CancellationToken cancellationToken)
     {
-        var newOasisChat = new OasisChat(
-            oasisUserId: request.OasisUserId,
-            title: request.Title
-        );
-
-        newOasisChat.ChatBots = new List<OasisChatBotDetails>()
-        {
-            new(newOasisChat.Id, ChatBotEnum.ChatGpt, true, null),
-            new(newOasisChat.Id, ChatBotEnum.Gemini, true, null)
-        };
+        var user = await _unitOfWork.GetRepository<OasisUser>().GetAsync(u => u.Id == request.OasisUserId) ?? throw new Exception("User not found");
         
-        newOasisChat.Messages!.Add(new OasisMessage(
-            oasisChatId: newOasisChat.Id,
-            message: request.InitialMessage,
-            chatBotEnum: ChatBotEnum.User
-        ));
+        var createdChat = user.AddChat(request.Title);
         
-        _unitOfWork.GetRepository<OasisChat>().Create(newOasisChat);
+        createdChat.AddMessage(ChatBotEnum.User, request.InitialMessage);
 
         await _unitOfWork.CommitAsync();
         
-        return AppResult<OasisChat>.Success(newOasisChat);
+        return AppResult<OasisChat>.Success(createdChat);
     }
 }

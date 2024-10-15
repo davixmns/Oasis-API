@@ -3,9 +3,9 @@ using Domain.Utils;
 using MediatR;
 using OasisAPI.App.Result;
 using OasisAPI.App.Services.ChatBotClientFacade;
-using OasisAPI.App.Utils;
 using OasisAPI.Infra.Dto;
 using OasisAPI.Infra.Repositories;
+using OasisAPI.Infra.Utils;
 
 namespace OasisAPI.App.Features.ChatBot.Commands.ContinueConversationWithChatBots;
 
@@ -31,6 +31,11 @@ public class ContinueConversationWithChatBotsCommandHandler : IRequestHandler<Co
             c => c.Messages!, c => c.ChatBots!
         );
 
+        var selectedChatBots = chat!.ChatBots.Where(cb => cb.IsActive).ToHashSet();
+        
+        if(selectedChatBots.Count == 0)
+            return AppResult<IEnumerable<ChatBotMessageDto>>.Fail("No chatbots selected");
+
         //Prepare all the messages to send to Gemini, Gemini dont save the past messages
         var allMessages = chat!.Messages!.Select(m => m).ToList();
         var allMessagesString = allMessages.Select(m => m.Message).ToList();
@@ -45,7 +50,7 @@ public class ContinueConversationWithChatBotsCommandHandler : IRequestHandler<Co
         var receivedMessages = await _chatBotsClientFacade.ContinueConversationWithChatBotsAsync(
             message: formattedMessageToGpt,
             allMessages: allMessagesString,
-            chatBotDetailsSet: chat.ChatBots.ToHashSet()
+            chatBotDetailsSet: selectedChatBots
         );
 
         return AppResult<IEnumerable<ChatBotMessageDto>>.Success(receivedMessages);

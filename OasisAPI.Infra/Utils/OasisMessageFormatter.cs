@@ -1,4 +1,4 @@
-namespace OasisAPI.App.Utils;
+namespace OasisAPI.Infra.Utils;
 
 public static class OasisMessageFormatter
 {
@@ -47,6 +47,6 @@ public static class OasisMessageFormatter
     public static string FormatToGetChatTitle(string message)
     {
         return "Preciso que voce me diga como seria o titulo dessa mensagem," +
-               "use no minimo 1 palavra e no maximo 3, precisa ser um titulo curto: " + message;
+               "use no minimo 1 palavra e no maximo 3, precisa ser um titulo curto. Envie no idioma da mensagem: " + message;
     }
 }

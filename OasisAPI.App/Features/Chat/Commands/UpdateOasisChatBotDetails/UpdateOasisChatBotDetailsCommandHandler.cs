@@ -24,8 +24,6 @@ public class UpdateOasisChatBotDetailsCommandHandler : IRequestHandler<UpdateOas
         
         details.IsActive = request.IsActive;
         
-        _unitOfWork.GetRepository<OasisChatBotDetails>().Update(details);
-        
         await _unitOfWork.CommitAsync();
         
         return AppResult<Unit>.Success(Unit.Value);
