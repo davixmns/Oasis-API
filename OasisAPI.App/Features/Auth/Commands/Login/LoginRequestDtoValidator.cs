@@ -14,6 +14,10 @@ public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
             .EmailAddress()
             .WithMessage("Invalid email address");
         
+        RuleFor(x => x.Password)
+            .NotEmpty()
+            .MinimumLength(6);
+        
         RuleFor(x => x.Email)
             .Must((email) =>
             {
@@ -21,9 +25,5 @@ public class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
                 return userExists != null;
             })
             .WithMessage("User does not exist");
-
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .MinimumLength(1);
     }
 }

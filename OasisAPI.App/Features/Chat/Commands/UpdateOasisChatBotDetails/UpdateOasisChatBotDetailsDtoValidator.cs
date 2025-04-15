@@ -7,7 +7,7 @@ public class UpdateOasisChatBotDetailsDtoValidator : AbstractValidator<UpdateOas
     public UpdateOasisChatBotDetailsDtoValidator()
     {
         RuleFor(x => x.OasisChatBotDetailsId)
-            .GreaterThan(0);
+            .GreaterThanOrEqualTo(0);
         
         RuleFor(x => x.IsActive)
             .NotNull();

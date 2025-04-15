@@ -9,7 +9,7 @@ public static class PromptForChatBots
         "\n\nEste texto acima é como voce vai continuar a conversa a partir de agora, o usuario irá lhe enviar mensagens" +
         " e voce deve seguir responde-lo nos seguintes requisitos:" +
         "\n" +
-        "1 - Responda no idioma da mensagem que lhe for enviada.\n" +
+        "1 - Responda no idioma da mensagem que lhe for enviada. Geralmente é em português, inglês ou espanhol\n" +
         "2 - Não insira na mensagem caracteres como * ou <>. \n" +
         "3 - Gere respostas detalhadas \n" +
         "4 - Responda normalmente o usuário";

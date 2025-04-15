@@ -22,6 +22,12 @@ public class CreateOasisChatCommandHandler : IRequestHandler<CreateOasisChatComm
         var createdChat = user.AddChat(request.Title);
         
         createdChat.AddMessage(ChatBotEnum.User, request.InitialMessage);
+        
+        createdChat.ChatBots = new List<OasisChatBotDetails>
+        {
+            new(createdChat.Id, ChatBotEnum.ChatGpt, true, null),
+            new(createdChat.Id, ChatBotEnum.Gemini, true, null)
+        };
 
         await _unitOfWork.CommitAsync();
         

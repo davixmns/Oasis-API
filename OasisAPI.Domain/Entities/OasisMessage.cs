@@ -12,6 +12,9 @@ public class OasisMessage : BaseEntity
 
     public OasisMessage(ChatBotEnum chatBotEnum, string message, int? oasisChatId = null, bool? isSaved = false)
     {
+        if(string.IsNullOrWhiteSpace(message))
+            throw new ArgumentException("Message cannot be null or empty");
+        
         ChatBotEnum = chatBotEnum;
         Message = message;
         OasisChatId = oasisChatId;

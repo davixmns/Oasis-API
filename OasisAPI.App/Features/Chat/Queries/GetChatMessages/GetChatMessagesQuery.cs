@@ -4,7 +4,7 @@ using OasisAPI.App.Result;
 
 namespace OasisAPI.App.Features.Chat.Queries.GetChatMessages;
 
-public class GetChatMessagesQuery : IRequest<AppResult<IEnumerable<OasisMessage>>>
+public class GetChatMessagesQuery : IRequest<AppResult<OasisChat>>
 {
     public int OasisChatId { get; init; }
     

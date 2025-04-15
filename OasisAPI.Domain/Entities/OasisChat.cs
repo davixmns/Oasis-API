@@ -31,11 +31,7 @@ public class OasisChat : BaseEntity
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         Messages = new Collection<OasisMessage>();
-        ChatBots = new List<OasisChatBotDetails>()
-        {
-            new(Id, ChatBotEnum.ChatGpt, true, null),
-            new(Id, ChatBotEnum.Gemini, true, null)
-        };
+        ChatBots = new List<OasisChatBotDetails>();
     }
 
     public OasisMessage AddMessage(ChatBotEnum sender, string message)
